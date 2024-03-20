@@ -2,8 +2,9 @@
 Scene *Game::createGame()
 {
     auto scene = Scene::create();
-    auto gameLayer = Game::create();
-    scene->addChild(gameLayer);
+    auto layer = Game::create();
+    layer->setName("GameInstance");
+    scene->addChild(layer);
     return scene;
 }
 
@@ -45,21 +46,22 @@ bool Game::init()
     boss->setPosition(Vec2(900, 500));
     boss->setName("HellBeast");
     this->addChild(boss);
-
+    boss->setTarget(_player);
     boss->currentState = boss->roarState;
     boss->currentState->EnterState();
 
 
-    _joystick = Joystick::create();
-    if(_joystick)
-        this->addChild(_joystick, 4000);
+
+
     return true;
 }
+
 
 void Game::updatePlayer(float dt)
 {
     /*enemy->currentState->UpdateState();*/
     _player->currentState->UpdateState();
+    
 }
 
 void Game::updateCamera(float deltaT)
@@ -74,5 +76,4 @@ void Game::updateCamera(float deltaT)
 }
 
 void Game::updateUserInterface(float dt) {
-    _joystick->setPosition(_player->getPosition() - Vec2(visibleSize.width / 4, visibleSize.height / 4));
 }

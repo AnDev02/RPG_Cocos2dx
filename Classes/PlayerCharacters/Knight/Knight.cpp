@@ -2,6 +2,7 @@
 #include "Engine/Engine.h"
 
 bool Knight::init() {
+    if (!PlayerCharacter::init()) return false;
     //Load Animate
     this->loadAnimate();
 
@@ -26,6 +27,9 @@ bool Knight::init() {
     this->deadState = new PlayerCharacterDead(this);
     this->selectState = new PlayerCharacterSelect(this);
 
+
+
+
     //update
     schedule(CC_SCHEDULE_SELECTOR(PlayerCharacter::update), 0.1f);
 
@@ -43,6 +47,8 @@ bool Knight::init() {
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
     return true;
 }
+
+
 
 void Knight::loadAnimate() {
     //Arm Attack  

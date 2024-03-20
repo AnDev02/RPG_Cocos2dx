@@ -9,12 +9,13 @@
 #include "State/PlayerCharacterState/PlayerCharacterIdle.h"
 #include "State/PlayerCharacterState/PlayerCharacterWalk.h"
 #include "State/PlayerCharacterState/PlayerCharacterSelect.h"
-
+#include "UserInterface/InGame/Joystick.h"
 USING_NS_CC;
 
 class PlayerCharacter : public BaseCharacter
 {
 public:
+    Joystick* _joystick;
     PlayerCharacterStateBase* currentState;
     PlayerCharacterStateBase* attackState;
     PlayerCharacterStateBase* walkState;
@@ -169,7 +170,7 @@ public:
 
     float calculateAngle(const Vec2& vectorA, const Vec2& vectorB);
 
-    void movePlayerToPosition(const Vec2& targetPosition);
+    void handleMove(float deltaTime);
 
     void onMouseDown(Event* event);
 

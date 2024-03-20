@@ -1,5 +1,5 @@
 ﻿#include "Boss.h"
-#include "HelloWorldScene.h"
+#include "Game/Game.h"
 
 bool Boss::init() {
 	return true;
@@ -13,7 +13,7 @@ void Boss::detectPlayerCharacter() {
     // Lấy scene chính từ Director
     Scene* currentScene = Director::getInstance()->getRunningScene();
     if (currentScene) {
-        HelloWorld* helloWorld = dynamic_cast<HelloWorld*>(currentScene->getChildByName("HelloWorldInstance"));
+        Game* helloWorld = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
         if (helloWorld) {
             auto children = helloWorld->getChildren();
             for (const auto& child : children) {

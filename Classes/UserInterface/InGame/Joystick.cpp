@@ -82,17 +82,6 @@ Vec2 Joystick::getDirection()
         return joystickBtn->getPosition() - centerPos;
     else
     {
-        if (prevPosBeforeRelease != Vec2::ZERO)
-        {
-            auto dir = prevPosBeforeRelease - centerPos;
-            dir.normalize();
-            return dir;
-        }
-        else
-        {
-            auto dir = Vec2(1, 0);
-            dir.normalize();
-            return dir;
-        }
+        return Vec2::ZERO;
     }
 }
