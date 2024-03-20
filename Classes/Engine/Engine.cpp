@@ -1,4 +1,4 @@
-﻿#include "../Engine/Engine.h"
+#include "../Engine/Engine.h"
 
 Engine* Engine::instance = nullptr;
 

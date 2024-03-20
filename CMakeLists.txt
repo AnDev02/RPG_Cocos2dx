@@ -58,11 +58,99 @@ endif()
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
      Classes/HelloWorldScene.cpp
+     Classes/Audio/AudioEngine.cpp
+     Classes/Engine/Engine.cpp
+     Classes/Game/Game.cpp
+     Classes/Equipment/Type/Weapon/ChippedSword.cpp
+     Classes/Equipment/EquipmentFactory.cpp
+     Classes/Equipment/BaseEquipment.cpp
+     Classes/Inventory/Inventory.cpp
+     Classes/Inventory/InventoryNode.cpp
+     Classes/BaseCharacter/BaseCharacter.cpp
+     Classes/Enemies/ShadowLord/ShadowLord.cpp
+     Classes/Enemies/Skeleton/Skeleton.cpp
+     Classes/Enemies/Slime/Slime.cpp
+     Classes/Enemies/Enemy.cpp
+     Classes/Enemies/EnemyFactory.cpp
+     Classes/PlayerCharacters/Fighter/Fighter.cpp
+     Classes/PlayerCharacters/Knight/Knight.cpp
+     Classes/PlayerCharacters/Warrior/Warrior.cpp
+     Classes/PlayerCharacters/PlayerCharacter.cpp
+     Classes/PlayerCharacters/PlayerCharacterFactory.cpp
+     Classes/State/EnemiesState/EnemiesAttack.cpp
+     Classes/State/EnemiesState/EnemiesDead.cpp
+     Classes/State/EnemiesState/EnemiesIdle.cpp
+     Classes/State/EnemiesState/EnemiesWalk.cpp
+     Classes/State/PlayerCharacterState/PlayerCharacterAttack.cpp
+     Classes/State/PlayerCharacterState/PlayerCharacterDead.cpp
+     Classes/State/PlayerCharacterState/PlayerCharacterIdle.cpp
+     Classes/State/PlayerCharacterState/PlayerCharacterSelect.cpp
+     Classes/State/PlayerCharacterState/PlayerCharacterWalk.cpp
+     Classes/State/BossState/BossAttack.cpp
+     Classes/State/BossState/BossDead.cpp
+     Classes/State/BossState/BossGetHit.cpp
+     Classes/State/BossState/BossIdle.cpp
+     Classes/State/BossState/BossRoar.cpp
+     Classes/State/BossState/BossRun.cpp
+     Classes/State/BossState/BossWalk.cpp
+     Classes/UserInterface/InGame/Joystick.cpp
+     Classes/LightEffect/Effect.cpp
+     Classes/LightEffect/EffectSprite.cpp
+     Classes/LightEffect/LightEffect.cpp
+     Classes/Boss/Boss.cpp
+     Classes/Boss/BossFactory.cpp
+     Classes/Boss/HellBeast.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/HelloWorldScene.h
+     Classes/Audio/AudioEngine.h
+     Classes/Engine/Engine.h
+     Classes/Game/Game.h
+     Classes/Equipment/Type/Weapon/ChippedSword.h
+     Classes/Equipment/EquipmentFactory.h
+     Classes/Equipment/BaseEquipment.h
+     Classes/Inventory/Inventory.h
+     Classes/Inventory/InventoryNode.h
+     Classes/BaseCharacter/BaseCharacter.h
+     Classes/Enemies/ShadowLord/ShadowLord.h
+     Classes/Enemies/Skeleton/Skeleton.h
+     Classes/Enemies/Slime/Slime.h
+     Classes/Enemies/Enemy.h
+     Classes/Enemies/EnemyFactory.h
+     Classes/PlayerCharacters/Fighter/Fighter.h
+     Classes/PlayerCharacters/Knight/Knight.h
+     Classes/PlayerCharacters/Warrior/Warrior.h
+     Classes/PlayerCharacters/PlayerCharacter.h
+     Classes/PlayerCharacters/PlayerCharacterFactory.h
+     Classes/State/EnemiesState/EnemiesAttack.h
+     Classes/State/EnemiesState/EnemiesDead.h
+     Classes/State/EnemiesState/EnemiesIdle.h
+     Classes/State/EnemiesState/EnemiesWalk.h
+     Classes/State/EnemiesState/EnemiesStateBase.h
+     Classes/State/PlayerCharacterState/PlayerCharacterAttack.h
+     Classes/State/PlayerCharacterState/PlayerCharacterDead.h
+     Classes/State/PlayerCharacterState/PlayerCharacterIdle.h
+     Classes/State/PlayerCharacterState/PlayerCharacterSelect.h
+     Classes/State/PlayerCharacterState/PlayerCharacterStateBase.h
+     Classes/State/PlayerCharacterState/PlayerCharacterWalk.h
+     Classes/State/BossState/BossAttack.h
+     Classes/State/BossState/BossDead.h
+     Classes/State/BossState/BossGetHit.h
+     Classes/State/BossState/BossIdle.h
+     Classes/State/BossState/BossRoar.h
+     Classes/State/BossState/BossRun.h
+     Classes/State/BossState/BossStateBase.h
+     Classes/State/BossState/BossWalk.h
+     Classes/UserInterface/InGame/Joystick.h
+     Classes/LightEffect/Effect.h
+     Classes/LightEffect/EffectSprite.h
+     Classes/LightEffect/LightEffect.h
+     Classes/Boss/Boss.h
+     Classes/Boss/BossFactory.h
+     Classes/Boss/HellBeast.h
      )
+     
 
 if(ANDROID)
     # change APP_NAME to the share library name for Android, it's value depend on AndroidManifest.xml

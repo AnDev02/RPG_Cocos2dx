@@ -1,8 +1,8 @@
 #include "HelloWorldScene.h"
-
+#include "./Inventory/Inventory.h"
 USING_NS_CC;
 
-Scene* HelloWorld::createScene()
+Scene *HelloWorld::createScene()
 {
     auto scene = Scene::createWithPhysics();
     scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
@@ -15,10 +15,14 @@ Scene* HelloWorld::createScene()
     return scene;
 }
 
+static void problemLoading(const char *filename)
+{
+    printf("Error while loading: %s\n", filename);
+    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
+}
+
 bool HelloWorld::init()
 {
-    //////////////////////////////
-    // 1. super init first
     if (!Scene::init())
     {
         return false;
@@ -27,60 +31,61 @@ bool HelloWorld::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /*loadFighterToCache();*/
-    loadKnightToCache();
+    // Inventory* inventory = Inventory::createInventory();
+    // inventory->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+    // inventory->setScale(3);
+    // this->addChild(inventory);
 
-    /*loadSkeletonToCache();
-    loadSlimeToCache();*/
+    // loadFighterToCache();
+    loadKnightToCache();
 
     loadHellBeastToCache();
 
-    //CHARACTER
-    playerCharacter = PlayerCharacterFactory::createPlayerCharacter("Knight");
-    playerCharacter->setPosition(Vec2(0, 0));
-    playerCharacter->setName("Knight");
-    this->addChild(playerCharacter);
+    game = Game::create();
+    if (game)
+    {
+        this->addChild(game);
+    }
+    // loadSkeletonToCache();
+    // loadSlimeToCache();
+
+    // playerCharacter = PlayerCharacterFactory::createPlayerCharacter("Knight");
+    // playerCharacter->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+    // this->addChild(playerCharacter);
 
     /*CCLOG("Content size is: %f, %f", )*/
 
-    playerCharacter->currentState = playerCharacter->idleState;
-    playerCharacter->currentState->EnterState();
+    // playerCharacter->currentState = playerCharacter->idleState;
+    // playerCharacter->currentState->EnterState();
 
+    // enemy = EnemyFactory::createEnemy("Slime");
+    // enemy->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+    // this->addChild(enemy);
 
-    //ENEMY
+    // /*CCLOG("Content size is: %f, %f", )*/
 
-    //enemy = EnemiesFactory::createEnemies("Slime");
-    //enemy->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-    //this->addChild(enemy);
+    // enemy->currentState = enemy->walkState;
+    // enemy->currentState->EnterState();
 
-    ///*CCLOG("Content size is: %f, %f", )*/
-
-    //enemy->currentState = enemy->walkState;
-    //enemy->currentState->EnterState();
-
-    //BOSS
-    boss = BossFactory::createBoss("HellBeast");
-    boss->setPosition(Vec2(900, 500));
-    boss->setName("HellBeast");
-    this->addChild(boss);
-
-    boss->currentState = boss->roarState;
-    boss->currentState->EnterState();
-
-
-    schedule(CC_SCHEDULE_SELECTOR(HelloWorld::update), 0.1f);
+    // schedule(CC_SCHEDULE_SELECTOR(HelloWorld::update), 0.06f);
     return true;
 }
 
-void HelloWorld::update(float dt) {
-    /*enemy->currentState->UpdateState();*/
-    playerCharacter->currentState->UpdateState();
-    boss->currentState->UpdateState();
+void HelloWorld::menuCloseCallback(Ref *pSender)
+{
+    Director::getInstance()->end();
 }
 
-//Player Character
-void HelloWorld::loadFighterToCache() {
-    //Armed Idle
+void HelloWorld::update(float dt)
+{
+    /*enemy->currentState->UpdateState();*/
+    playerCharacter->currentState->UpdateState();
+}
+
+// Player Character
+void HelloWorld::loadFighterToCache()
+{
+    // Armed Idle
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_idle/E/fighter_armed_idle_E.plist", "playable character/fighter/fighter_armed_idle/E/fighter_armed_idle_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_idle/N/fighter_armed_idle_N.plist", "playable character/fighter/fighter_armed_idle/N/fighter_armed_idle_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_idle/NE/fighter_armed_idle_NE.plist", "playable character/fighter/fighter_armed_idle/NE/fighter_armed_idle_NE.png");
@@ -98,7 +103,7 @@ void HelloWorld::loadFighterToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_idle/SWW/fighter_armed_idle_SWW.plist", "playable character/fighter/fighter_armed_idle/SWW/fighter_armed_idle_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_idle/W/fighter_armed_idle_W.plist", "playable character/fighter/fighter_armed_idle/W/fighter_armed_idle_W.png");
 
-    //Armed Attack
+    // Armed Attack
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_attack/E/fighter_armed_attack_E.plist", "playable character/fighter/fighter_armed_attack/E/fighter_armed_attack_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_attack/N/fighter_armed_attack_N.plist", "playable character/fighter/fighter_armed_attack/N/fighter_armed_attack_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_attack/NE/fighter_armed_attack_NE.plist", "playable character/fighter/fighter_armed_attack/NE/fighter_armed_attack_NE.png");
@@ -116,7 +121,7 @@ void HelloWorld::loadFighterToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_attack/SWW/fighter_armed_attack_SWW.plist", "playable character/fighter/fighter_armed_attack/SWW/fighter_armed_attack_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_attack/W/fighter_armed_attack_W.plist", "playable character/fighter/fighter_armed_attack/W/fighter_armed_attack_W.png");
 
-    //Arm Walk
+    // Arm Walk
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_walk/E/fighter_armed_walk_E.plist", "playable character/fighter/fighter_armed_walk/E/fighter_armed_walk_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_walk/N/fighter_armed_walk_N.plist", "playable character/fighter/fighter_armed_walk/N/fighter_armed_walk_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_walk/NE/fighter_armed_walk_NE.plist", "playable character/fighter/fighter_armed_walk/NE/fighter_armed_walk_NE.png");
@@ -133,7 +138,7 @@ void HelloWorld::loadFighterToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_walk/SW/fighter_armed_walk_SW.plist", "playable character/fighter/fighter_armed_walk/SW/fighter_armed_walk_SW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_walk/SWW/fighter_armed_walk_SWW.plist", "playable character/fighter/fighter_armed_walk/SWW/fighter_armed_walk_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_armed_walk/W/fighter_armed_walk_W.plist", "playable character/fighter/fighter_armed_walk/W/fighter_armed_walk_W.png");
-    //Default Walk
+    // Default Walk
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_default_walk/E/fighter_default_walk_E.plist", "playable character/fighter/fighter_default_walk/E/fighter_default_walk_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_default_walk/N/fighter_default_walk_N.plist", "playable character/fighter/fighter_default_walk/N/fighter_default_walk_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_default_walk/NE/fighter_default_walk_NE.plist", "playable character/fighter/fighter_default_walk/NE/fighter_default_walk_NE.png");
@@ -151,7 +156,7 @@ void HelloWorld::loadFighterToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_default_walk/SWW/fighter_default_walk_SWW.plist", "playable character/fighter/fighter_default_walk/SWW/fighter_default_walk_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_default_walk/W/fighter_default_walk_W.plist", "playable character/fighter/fighter_default_walk/W/fighter_default_walk_W.png");
 
-    //Special Death
+    // Special Death
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_special_death/E/fighter_special_death_E.plist", "playable character/fighter/fighter_special_death/E/fighter_special_death_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_special_death/N/fighter_special_death_N.plist", "playable character/fighter/fighter_special_death/N/fighter_special_death_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_special_death/NE/fighter_special_death_NE.plist", "playable character/fighter/fighter_special_death/NE/fighter_special_death_NE.png");
@@ -169,7 +174,7 @@ void HelloWorld::loadFighterToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_special_death/SWW/fighter_special_death_SWW.plist", "playable character/fighter/fighter_special_death/SWW/fighter_special_death_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_special_death/W/fighter_special_death_W.plist", "playable character/fighter/fighter_special_death/W/fighter_special_death_W.png");
 
-    //Special Select
+    // Special Select
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_special_select/E/fighter_special_select_E.plist", "playable character/fighter/fighter_special_select/E/fighter_special_select_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_special_select/N/fighter_special_select_N.plist", "playable character/fighter/fighter_special_select/N/fighter_special_select_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_special_select/NE/fighter_special_select_NE.plist", "playable character/fighter/fighter_special_select/NE/fighter_special_select_NE.png");
@@ -187,9 +192,10 @@ void HelloWorld::loadFighterToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_special_select/SWW/fighter_special_select_SWW.plist", "playable character/fighter/fighter_special_select/SWW/fighter_special_select_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/fighter/fighter_special_select/W/fighter_special_select_W.plist", "playable character/fighter/fighter_special_select/W/fighter_special_select_W.png");
 }
-//Knight
-void HelloWorld::loadKnightToCache() {
-    //Armed Idle
+// Knight
+void HelloWorld::loadKnightToCache()
+{
+    // Armed Idle
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_idle/E/knight_armed_idle_E.plist", "playable character/knight/knight_armed_idle/E/knight_armed_idle_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_idle/N/knight_armed_idle_N.plist", "playable character/knight/knight_armed_idle/N/knight_armed_idle_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_idle/NE/knight_armed_idle_NE.plist", "playable character/knight/knight_armed_idle/NE/knight_armed_idle_NE.png");
@@ -207,7 +213,7 @@ void HelloWorld::loadKnightToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_idle/SWW/knight_armed_idle_SWW.plist", "playable character/knight/knight_armed_idle/SWW/knight_armed_idle_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_idle/W/knight_armed_idle_W.plist", "playable character/knight/knight_armed_idle/W/knight_armed_idle_W.png");
 
-    //Armed Attack
+    // Armed Attack
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_attack/E/knight_armed_attack_E.plist", "playable character/knight/knight_armed_attack/E/knight_armed_attack_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_attack/N/knight_armed_attack_N.plist", "playable character/knight/knight_armed_attack/N/knight_armed_attack_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_attack/NE/knight_armed_attack_NE.plist", "playable character/knight/knight_armed_attack/NE/knight_armed_attack_NE.png");
@@ -225,7 +231,7 @@ void HelloWorld::loadKnightToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_attack/SWW/knight_armed_attack_SWW.plist", "playable character/knight/knight_armed_attack/SWW/knight_armed_attack_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_attack/W/knight_armed_attack_W.plist", "playable character/knight/knight_armed_attack/W/knight_armed_attack_W.png");
 
-    //Arm Walk
+    // Arm Walk
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_walk/E/knight_armed_walk_E.plist", "playable character/knight/knight_armed_walk/E/knight_armed_walk_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_walk/N/knight_armed_walk_N.plist", "playable character/knight/knight_armed_walk/N/knight_armed_walk_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_walk/NE/knight_armed_walk_NE.plist", "playable character/knight/knight_armed_walk/NE/knight_armed_walk_NE.png");
@@ -242,7 +248,7 @@ void HelloWorld::loadKnightToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_walk/SW/knight_armed_walk_SW.plist", "playable character/knight/knight_armed_walk/SW/knight_armed_walk_SW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_walk/SWW/knight_armed_walk_SWW.plist", "playable character/knight/knight_armed_walk/SWW/knight_armed_walk_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_armed_walk/W/knight_armed_walk_W.plist", "playable character/knight/knight_armed_walk/W/knight_armed_walk_W.png");
-    //Default Walk
+    // Default Walk
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_default_walk/E/knight_default_walk_E.plist", "playable character/knight/knight_default_walk/E/knight_default_walk_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_default_walk/N/knight_default_walk_N.plist", "playable character/knight/knight_default_walk/N/knight_default_walk_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_default_walk/NE/knight_default_walk_NE.plist", "playable character/knight/knight_default_walk/NE/knight_default_walk_NE.png");
@@ -260,7 +266,7 @@ void HelloWorld::loadKnightToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_default_walk/SWW/knight_default_walk_SWW.plist", "playable character/knight/knight_default_walk/SWW/knight_default_walk_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_default_walk/W/knight_default_walk_W.plist", "playable character/knight/knight_default_walk/W/knight_default_walk_W.png");
 
-    //Special Death
+    // Special Death
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_special_death/E/knight_special_death_E.plist", "playable character/knight/knight_special_death/E/knight_special_death_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_special_death/N/knight_special_death_N.plist", "playable character/knight/knight_special_death/N/knight_special_death_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_special_death/NE/knight_special_death_NE.plist", "playable character/knight/knight_special_death/NE/knight_special_death_NE.png");
@@ -278,7 +284,7 @@ void HelloWorld::loadKnightToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_special_death/SWW/knight_special_death_SWW.plist", "playable character/knight/knight_special_death/SWW/knight_special_death_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_special_death/W/knight_special_death_W.plist", "playable character/knight/knight_special_death/W/knight_special_death_W.png");
 
-    //Special Select
+    // Special Select
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_special_select/E/knight_special_select_E.plist", "playable character/knight/knight_special_select/E/knight_special_select_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_special_select/N/knight_special_select_N.plist", "playable character/knight/knight_special_select/N/knight_special_select_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_special_select/NE/knight_special_select_NE.plist", "playable character/knight/knight_special_select/NE/knight_special_select_NE.png");
@@ -297,11 +303,12 @@ void HelloWorld::loadKnightToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/knight/knight_special_select/W/knight_special_select_W.plist", "playable character/knight/knight_special_select/W/knight_special_select_W.png");
 }
 
-//Enemies
-//Skeleton
-void HelloWorld::loadSkeletonToCache() {
-    //SKELETON
-   // Default Walk
+// Enemies
+// Skeleton
+void HelloWorld::loadSkeletonToCache()
+{
+    // SKELETON
+    // Default Walk
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/skeleton/skeleton_default_walk/E/skeleton_default_walk_E.plist", "enemy/skeleton/skeleton_default_walk/E/skeleton_default_walk_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/skeleton/skeleton_default_walk/N/skeleton_default_walk_N.plist", "enemy/skeleton/skeleton_default_walk/N/skeleton_default_walk_N.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/skeleton/skeleton_default_walk/NE/skeleton_default_walk_NE.plist", "enemy/skeleton/skeleton_default_walk/NE/skeleton_default_walk_NE.png");
@@ -372,8 +379,9 @@ void HelloWorld::loadSkeletonToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/skeleton/skeleton_special_death/SWW/skeleton_special_death_SWW.plist", "enemy/skeleton/skeleton_special_death/SWW/skeleton_special_death_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/skeleton/skeleton_special_death/W/skeleton_special_death_W.plist", "enemy/skeleton/skeleton_special_death/W/skeleton_special_death_W.png");
 }
-//Slime
-void HelloWorld::loadSlimeToCache() {
+// Slime
+void HelloWorld::loadSlimeToCache()
+{
     // Default Walk
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/slime/slime_default_walk/E/slime_default_walk_E.plist", "enemy/slime/slime_default_walk/E/slime_default_walk_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/slime/slime_default_walk/N/slime_default_walk_N.plist", "enemy/slime/slime_default_walk/N/slime_default_walk_N.png");
@@ -410,7 +418,6 @@ void HelloWorld::loadSlimeToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/slime/slime_default_idle/SWW/slime_default_idle_SWW.plist", "enemy/slime/slime_default_idle/SWW/slime_default_idle_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/slime/slime_default_idle/W/slime_default_idle_W.plist", "enemy/slime/slime_default_idle/W/slime_default_idle_W.png");
 
-
     // Default Walk
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/slime/slime_special_death/E/slime_special_death_E.plist", "enemy/slime/slime_special_death/E/slime_special_death_E.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/slime/slime_special_death/N/slime_special_death_N.plist", "enemy/slime/slime_special_death/N/slime_special_death_N.png");
@@ -429,6 +436,7 @@ void HelloWorld::loadSlimeToCache() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/slime/slime_special_death/SWW/slime_special_death_SWW.plist", "enemy/slime/slime_special_death/SWW/slime_special_death_SWW.png");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/slime/slime_special_death/W/slime_special_death_W.plist", "enemy/slime/slime_special_death/W/slime_special_death_W.png");
 }
+
 
 //Boss
 void HelloWorld::loadHellBeastToCache() {
