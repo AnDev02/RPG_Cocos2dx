@@ -8,6 +8,7 @@
 #include "../Enemies/EnemyFactory.h"
 #include "../UserInterface/InGame/Joystick.h"
 #include "../Boss/BossFactory.h"
+#include "MapDecoration/MapDecoration.h"
 
 USING_NS_CC;
 

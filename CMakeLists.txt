@@ -101,6 +101,8 @@ list(APPEND GAME_SOURCE
      Classes/Boss/BossFactory.cpp
      Classes/Boss/HellBeast.cpp
      	Classes/MapDecoration/MapDecoration.cpp
+     	Classes/MapDecoration/Obelisk.cpp
+
 Classes/Skills/SkillBase.cpp
 Classes/Skills/SkillFactory.cpp
 Classes/Skills/AOESkill/AOESkill.cpp
@@ -165,6 +167,8 @@ list(APPEND GAME_HEADER
      Classes/Boss/BossFactory.h
      Classes/Boss/HellBeast.h
           	Classes/MapDecoration/MapDecoration.h
+     	Classes/MapDecoration/Obelisk.h
+
 Classes/Skills/SkillBase.h
 Classes/Skills/SkillFactory.h
 Classes/Skills/AOESkill/AOESkill.h

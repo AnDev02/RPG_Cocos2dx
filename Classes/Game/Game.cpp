@@ -36,8 +36,14 @@ bool Game::init()
     addChild(emitter, 10);
 
     cocos2d::TMXTiledMap *_tileMap = new TMXTiledMap();
-    _tileMap->initWithTMXFile("map/Map0.tmx");
+    _tileMap->initWithTMXFile("map/Map1.tmx");
     this->addChild(_tileMap);
+    MapDecoration* mapDecoration = MapDecoration::getInstance(_tileMap);
+    MapDecoration::getInstance()->loadDecoration("flames");
+    MapDecoration::getInstance()->loadDecoration("subservients working");
+    MapDecoration::getInstance()->loadDecoration("torch");
+    MapDecoration::getInstance()->loadDecoration("Obelisk");
+
 
     _player = PlayerCharacterFactory::createPlayerCharacter("Knight");
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));

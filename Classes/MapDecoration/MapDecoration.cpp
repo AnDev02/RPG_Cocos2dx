@@ -96,6 +96,14 @@ bool MapDecoration::loadDecoration(std::string objectLayerName)
 				listMapDecoration.pushBack(sprite);
 				_tileMap->addChild(sprite, 12);
 			}
+			else if (objectLayerName == "Obelisk") {
+				CCLOG("Object layer Obelisk");
+				auto obelisk = Obelisk::createObelisk();
+				obelisk->setPosition(Vec2(x, y));
+				listObelisk.pushBack(obelisk);
+					_tileMap->addChild(obelisk, 13);
+
+			}
 		}
 		return true;
 	}

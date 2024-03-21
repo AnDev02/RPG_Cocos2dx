@@ -3,6 +3,7 @@
 #include "cocos2d.h";
 #include "Game/Game.h";
 #include "Engine/Engine.h"
+#include "MapDecoration/Obelisk.h";
 
 USING_NS_CC;
 
@@ -48,7 +49,7 @@ private:
 	static MapDecoration* instance;
 	TMXTiledMap* _tileMap;
 	Vector <Sprite*> listMapDecoration;
-
+	Vector <Obelisk*> listObelisk;
 };
 
 #endif // !_MAPDECORATION_H_
