@@ -28,8 +28,33 @@ void PlayerCharacter::onMouseDown(Event* event)
 void PlayerCharacter::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
     switch (keyCode) {
     case EventKeyboard::KeyCode::KEY_Q:
-        if (this->currentState != this->attackState)
-            this->SwitchState(this->attackState);
+        this->skills[0]->activate();
+        break;
+    case EventKeyboard::KeyCode::KEY_W:
+        this->skills[1]->activate();
+        break;
+    case EventKeyboard::KeyCode::KEY_E:
+        this->skills[2]->activate();
+        break;
+    case EventKeyboard::KeyCode::KEY_R:
+        this->skills[3]->activate();
+        break;
+    }
+}
+
+void PlayerCharacter::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
+    switch (keyCode) {
+    case EventKeyboard::KeyCode::KEY_Q:
+        this->skills[0]->deactivate();
+        break;
+    case EventKeyboard::KeyCode::KEY_W:
+        this->skills[1]->deactivate();
+        break;
+    case EventKeyboard::KeyCode::KEY_E:
+        this->skills[2]->deactivate();
+        break;
+    case EventKeyboard::KeyCode::KEY_R:
+        this->skills[3]->deactivate();
         break;
     }
 }

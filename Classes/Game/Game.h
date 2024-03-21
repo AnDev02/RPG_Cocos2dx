@@ -26,7 +26,10 @@ private:
     Joystick* _joystick;
     Size visibleSize;
     Boss* boss;
-    
+    cocos2d::PhysicsWorld* world;
+    void setPhysicsWorld(cocos2d::PhysicsWorld* m_world) {
+        m_world = world;
+    }
 };
 
 #endif // __GAME_H__

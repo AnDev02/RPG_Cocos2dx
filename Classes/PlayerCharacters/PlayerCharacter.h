@@ -10,6 +10,9 @@
 #include "State/PlayerCharacterState/PlayerCharacterWalk.h"
 #include "State/PlayerCharacterState/PlayerCharacterSelect.h"
 #include "UserInterface/InGame/Joystick.h"
+#include "Skills/SkillBase.h"
+#include "Skills/SkillFactory.h"
+
 USING_NS_CC;
 
 class PlayerCharacter : public BaseCharacter
@@ -176,12 +179,21 @@ public:
 
     void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
+    void onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event);
+
     void update(float dt);
+
+    void addSkill(std::string skillName) {
+        auto skill = SkillFactory::createSkill(skillName);
+        skill->retain();
+        skills.push_back(skill);
+        this->addChild(skill);
+    }
 
     CREATE_FUNC(PlayerCharacter);
 
 private:
-
+    std::vector<SkillBase*> skills;
 };
 
 #endif // 

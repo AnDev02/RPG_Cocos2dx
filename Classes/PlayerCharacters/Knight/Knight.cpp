@@ -3,6 +3,13 @@
 
 bool Knight::init() {
     if (!PlayerCharacter::init()) return false;
+
+    //Add skills
+    this->addSkill("AOESkill2");
+    this->addSkill("BuffSkill2");
+    this->addSkill("TargetSkill2");
+    this->addSkill("SkillShot2");
+
     //Load Animate
     this->loadAnimate();
 
@@ -44,6 +51,7 @@ bool Knight::init() {
 
     auto keyboardListener = cocos2d::EventListenerKeyboard::create();
     keyboardListener->onKeyPressed = CC_CALLBACK_2(PlayerCharacter::onKeyPressed, this);
+    keyboardListener->onKeyReleased = CC_CALLBACK_2(PlayerCharacter::onKeyReleased, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
     return true;
 }

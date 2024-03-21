@@ -1,9 +1,13 @@
 #include "Game.h"
 Scene *Game::createGame()
 {
-    auto scene = Scene::create();
+    auto scene = Scene::createWithPhysics();
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setGravity(Vec2(0, -98));
+    scene->getPhysicsWorld()->setSubsteps(10);
     auto layer = Game::create();
     layer->setName("GameInstance");
+    layer->setPhysicsWorld(scene->getPhysicsWorld());
     scene->addChild(layer);
     return scene;
 }
@@ -46,7 +50,6 @@ bool Game::init()
     boss->setPosition(Vec2(900, 500));
     boss->setName("HellBeast");
     this->addChild(boss);
-    boss->setTarget(_player);
     boss->currentState = boss->roarState;
     boss->currentState->EnterState();
 
@@ -61,6 +64,7 @@ void Game::updatePlayer(float dt)
 {
     /*enemy->currentState->UpdateState();*/
     _player->currentState->UpdateState();
+    boss->currentState->UpdateState();
     
 }
 

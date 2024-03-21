@@ -20,10 +20,10 @@ public:
     void loadSkeletonToCache();
     void loadSlimeToCache();
     void loadHellBeastToCache();
+    Game* game;
     CREATE_FUNC(HelloWorld);
 private:
     cocos2d::PhysicsWorld* world;
-    Game* game;
     void setPhysicsWorld(cocos2d::PhysicsWorld* m_world) {
         m_world = world;
     }

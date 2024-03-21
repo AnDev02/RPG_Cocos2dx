@@ -79,7 +79,7 @@ void HelloWorld::menuCloseCallback(Ref *pSender)
 void HelloWorld::update(float dt)
 {
     /*enemy->currentState->UpdateState();*/
-    playerCharacter->currentState->UpdateState();
+    /*playerCharacter->currentState->UpdateState();*/
 }
 
 // Player Character
