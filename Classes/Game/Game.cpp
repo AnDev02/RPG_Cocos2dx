@@ -1,6 +1,9 @@
 ﻿#include "Game.h"
 #include "Skills/SkillFactory.h"
 #include "Skills/SkillBase.h"
+#include "UserInterface/InGame/Minimap.h"
+#include "UserInterface/InGame/InventoryButton.h"
+
 Scene *Game::createGame()
 {
     auto scene = Scene::createWithPhysics();
@@ -25,7 +28,7 @@ bool Game::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     schedule(CC_SCHEDULE_SELECTOR(Game::updatePlayer), 0.06f);
-    schedule(CC_SCHEDULE_SELECTOR(Game::updateUserInterface), 0.06f);
+    schedule(CC_SCHEDULE_SELECTOR(Game::updateUserInterface), 0.0f);
 
     this->schedule([this](float dt)
                    { this->updateCamera(dt); },
@@ -41,21 +44,35 @@ bool Game::init()
     _tileMap->initWithTMXFile("map/Map0.tmx");
     this->addChild(_tileMap);
 
+
+
     _player = PlayerCharacterFactory::createPlayerCharacter("Knight");
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     _player->currentState = _player->idleState;
     _player->currentState->EnterState();
     this->addChild(_player);
 
-    
+    minimap = MinimapLayer::create("map/Map0.tmx", _player);
+    minimap->setPosition(_player->getPosition() / zoomLevel);
+    minimap->setScale(minimap->MINIMAP_SCALE_FACTOR);
+    this->addChild(minimap);
+
+    inventory = Inventory::createInventory();
+    inventory->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+    inventory->setScale(3);
+    this->addChild(inventory, 6);
+
+    inventoryButton = InventoryButton::create(inventory);
+    inventoryButton->setPosition(_player->getPosition());
+    this->addChild(inventoryButton, 5);
+
     //BOSS
-    boss = BossFactory::createBoss("HellBeast");
+  /*  boss = BossFactory::createBoss("HellBeast");
     boss->setPosition(Vec2(900, 500));
     boss->setName("HellBeast");
     this->addChild(boss);
     boss->currentState = boss->roarState;
-    boss->currentState->EnterState();
-
+    boss->currentState->EnterState();*/
     return true;
 }
 
@@ -64,8 +81,7 @@ void Game::updatePlayer(float dt)
 {
     /*enemy->currentState->UpdateState();*/
     _player->currentState->UpdateState();
-    boss->currentState->UpdateState();
-    
+    //boss->currentState->UpdateState();
 }
 
 void Game::updateCamera(float deltaT)
@@ -77,7 +93,11 @@ void Game::updateCamera(float deltaT)
      Vec2 cameraposition = Vec2(-newposition.x * zoomLevel + (visibleSize.width / 2 * zoomLevel),
                                -newposition.y * zoomLevel + (visibleSize.height / 2 * zoomLevel));
      currentscene->setPosition(cameraposition);
+     minimap->setPosition((cameraposition * -1 / zoomLevel) + (Vec2(visibleSize.width / 4, visibleSize.height / 4) / zoomLevel));
 }
 
 void Game::updateUserInterface(float dt) {
+    inventoryButton->setPosition(_player->getPosition() - Vec2(-(visibleSize.width / 6 / zoomLevel), visibleSize.height / 2 / zoomLevel - (inventoryButton->getSpriteSize().height * 2)));
+    if(inventory->isShow())
+        inventory->setPosition(_player->getPosition());
 }

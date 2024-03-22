@@ -31,15 +31,11 @@ bool HelloWorld::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    // Inventory* inventory = Inventory::createInventory();
-    // inventory->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-    // inventory->setScale(3);
-    // this->addChild(inventory);
 
     // loadFighterToCache();
     loadKnightToCache();
 
-    loadHellBeastToCache();
+    // loadHellBeastToCache();
 
     game = Game::create();
     if (game)

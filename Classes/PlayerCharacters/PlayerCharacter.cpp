@@ -41,7 +41,7 @@ void PlayerCharacter::handleMove(float deltaTime) {
     Vec2 currentPosition = this->getPosition();*/
     if (_joystick) {
         Vec2 direction = _joystick->getDirection();
-            this->getPhysicsBody()->setVelocity(direction * (this->MS / 10));
+            this->getPhysicsBody()->setVelocity(direction * (this->MS));
 
             float angleResult = calculateAngle(direction, Vec2(1, 0));
 
@@ -76,7 +76,7 @@ void PlayerCharacter::update(float dt) {
     }
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    _joystick->setPosition(this->getPosition() - Vec2(visibleSize.width / 4, visibleSize.height / 4));
+    _joystick->setPosition(this->getPosition() - Vec2(visibleSize.width / 3.5, visibleSize.height / 3.5));
     handleMove(dt);
 
     /*if (this->skills[0] && this->skills[1] && this->skills[2] && this->skills[3] && this->getScene()) {

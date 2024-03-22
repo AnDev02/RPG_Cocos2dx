@@ -20,7 +20,7 @@ bool Knight::init() {
     characterCurrentSprite = Sprite::createWithSpriteFrameName("knight_armed_idle_E_0.0_0.png");
 
     //MovementSpeed
-    MS = 170;
+    MS = 10;
 
     //Init physics
     auto physicsBody = PhysicsBody::createBox(Size(20, 20), PhysicsMaterial(1.0f, 0.0f, 0.0f));

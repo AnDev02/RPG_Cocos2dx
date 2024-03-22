@@ -95,27 +95,29 @@ list(APPEND GAME_SOURCE
      Classes/State/BossState/BossWalk.cpp
      Classes/UserInterface/InGame/Joystick.cpp
      Classes/UserInterface/InGame/SkillButton.cpp
+     Classes/UserInterface/InGame/InventoryButton.cpp
+     Classes/UserInterface/InGame/Minimap.cpp
      Classes/LightEffect/Effect.cpp
      Classes/LightEffect/EffectSprite.cpp
      Classes/LightEffect/LightEffect.cpp
      Classes/Boss/Boss.cpp
      Classes/Boss/BossFactory.cpp
      Classes/Boss/HellBeast.cpp
-    Classes/MapDecoration/MapDecoration.cpp
-Classes/Skills/SkillBase.cpp
-Classes/Skills/SkillFactory.cpp
-Classes/Skills/AOESkill/AOESkill.cpp
-Classes/Skills/AOESkill/AOESkill1.cpp
-Classes/Skills/AOESkill/AOESkill2.cpp
-Classes/Skills/BuffSkill/BuffSkill.cpp
-Classes/Skills/BuffSkill/BuffSkill1.cpp
-Classes/Skills/BuffSkill/BuffSkill2.cpp
-Classes/Skills/SkillShot/SkillShot.cpp
-Classes/Skills/SkillShot/SkillShot1.cpp
-Classes/Skills/SkillShot/SkillShot2.cpp
-Classes/Skills/TargetSkill/TargetSkill.cpp
-Classes/Skills/TargetSkill/TargetSkill1.cpp
-Classes/Skills/TargetSkill/TargetSkill2.cpp
+     Classes/MapDecoration/MapDecoration.cpp
+     Classes/Skills/SkillBase.cpp
+     Classes/Skills/SkillFactory.cpp
+     Classes/Skills/AOESkill/AOESkill.cpp
+     Classes/Skills/AOESkill/AOESkill1.cpp
+     Classes/Skills/AOESkill/AOESkill2.cpp
+     Classes/Skills/BuffSkill/BuffSkill.cpp
+     Classes/Skills/BuffSkill/BuffSkill1.cpp
+     Classes/Skills/BuffSkill/BuffSkill2.cpp
+     Classes/Skills/SkillShot/SkillShot.cpp
+     Classes/Skills/SkillShot/SkillShot1.cpp
+     Classes/Skills/SkillShot/SkillShot2.cpp
+     Classes/Skills/TargetSkill/TargetSkill.cpp
+     Classes/Skills/TargetSkill/TargetSkill1.cpp
+     Classes/Skills/TargetSkill/TargetSkill2.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -159,33 +161,30 @@ list(APPEND GAME_HEADER
      Classes/State/BossState/BossStateBase.h
      Classes/State/BossState/BossWalk.h
      Classes/UserInterface/InGame/Joystick.h
-	Classes/UserInterface/InGame/SkillButton.h
+	 Classes/UserInterface/InGame/SkillButton.h
+     Classes/UserInterface/InGame/InventoryButton.h
+     Classes/UserInterface/InGame/Minimap.h
      Classes/LightEffect/Effect.h
      Classes/LightEffect/EffectSprite.h
      Classes/LightEffect/LightEffect.h
      Classes/Boss/Boss.h
      Classes/Boss/BossFactory.h
      Classes/Boss/HellBeast.h
-          	Classes/MapDecoration/MapDecoration.h
-Classes/Skills/SkillBase.h
-Classes/Skills/SkillFactory.h
-Classes/Skills/AOESkill/AOESkill.h
-Classes/Skills/AOESkill/AOESkill1.h
-Classes/Skills/AOESkill/AOESkill2.h
-Classes/Skills/BuffSkill/BuffSkill.h
-Classes/Skills/BuffSkill/BuffSkill1.h
-Classes/Skills/BuffSkill/BuffSkill2.h
-Classes/Skills/SkillShot/SkillShot.h
-Classes/Skills/SkillShot/SkillShot1.h
-Classes/Skills/SkillShot/SkillShot2.h
-Classes/Skills/TargetSkill/TargetSkill.h
-Classes/Skills/TargetSkill/TargetSkill1.h
-Classes/Skills/TargetSkill/TargetSkill2.h
-
-
-
-
-
+     Classes/MapDecoration/MapDecoration.h
+     Classes/Skills/SkillBase.h
+     Classes/Skills/SkillFactory.h
+     Classes/Skills/AOESkill/AOESkill.h
+     Classes/Skills/AOESkill/AOESkill1.h
+     Classes/Skills/AOESkill/AOESkill2.h
+     Classes/Skills/BuffSkill/BuffSkill.h
+     Classes/Skills/BuffSkill/BuffSkill1.h
+     Classes/Skills/BuffSkill/BuffSkill2.h
+     Classes/Skills/SkillShot/SkillShot.h
+     Classes/Skills/SkillShot/SkillShot1.h
+     Classes/Skills/SkillShot/SkillShot2.h
+     Classes/Skills/TargetSkill/TargetSkill.h
+     Classes/Skills/TargetSkill/TargetSkill1.h
+     Classes/Skills/TargetSkill/TargetSkill2.h
      )
      
 

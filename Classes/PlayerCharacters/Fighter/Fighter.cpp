@@ -15,7 +15,7 @@ bool Fighter::init() {
     direction = 1;
 
     //Init movement speed
-    this->MS = 170;
+    this->MS = 10;
 
     //Create Sprite For Fighter
     characterCurrentSprite = Sprite::createWithSpriteFrameName("fighter_armed_idle_E_0.0_0.png");

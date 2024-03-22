@@ -18,6 +18,9 @@ public:
     void removeEquipment();
     void removeItem();
     void displayInventory();
+    void showInventory();
+    void hideInventory();
+    bool isShow() const { return isSo; };
 private:
     Sprite* mainInventory;
     Sprite* subInventory;
@@ -26,6 +29,7 @@ private:
     std::vector<InventoryNode*> inventoryNodes;
     InventoryNode* currentNode;
     bool isDraggingItem = false;
+    bool isSo = false;
     
 };
 

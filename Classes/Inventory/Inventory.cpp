@@ -22,10 +22,27 @@ bool Inventory::init()
         return false;
     }
 
+    auto layer = LayerColor::create(Color4B(0, 0, 0, 140));
+    layer->setContentSize(Director::getInstance()->getVisibleSize());
+    layer->setAnchorPoint(Vec2(0, 0));
+    layer->setPosition(Vec2(-Director::getInstance()->getVisibleSize().width / 2, -Director::getInstance()->getVisibleSize().height / 2));
+    this->addChild(layer, 1);
+    hideInventory();
+
+    auto touchListener2 = EventListenerTouchOneByOne::create();
+    touchListener2->onTouchBegan = [&](Touch* touch, Event* event) {
+        if (isSo && mainInventory && !mainInventory->getBoundingBox().containsPoint(this->convertToNodeSpace(touch->getLocation()))) {
+            hideInventory();
+            return true;
+        }
+        return false;
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener2, layer);
+
     auto touchListener = EventListenerTouchOneByOne::create();
     touchListener->onTouchBegan = [&](Touch *touch, Event *event)
     {
-        if (isDraggingItem == false)
+        if (isDraggingItem == false && isSo)
         {
             auto startPoint = this->convertToNodeSpace(touch->getLocation());
             for (auto &i : inventoryNodes)
@@ -37,7 +54,7 @@ bool Inventory::init()
                         equipment = EquipmentFactory::createEquipment(i->getBaseEquipment()->getEquipmentName());
                         equipment->setScale(0.3);
                         equipment->setPosition(startPoint);
-                        this->addChild(equipment);
+                        this->addChild(equipment, 10);
                         i->removeBaseEquipment();
                         currentNode = i;
                         isDraggingItem = true;
@@ -51,14 +68,14 @@ bool Inventory::init()
     };
     touchListener->onTouchMoved = [&](Touch *touch, Event *event)
     {
-        if (isDraggingItem)
+        if (isDraggingItem && isSo)
         {
             equipment->setPosition(this->convertToNodeSpace(touch->getLocation()));
         }
     };
     touchListener->onTouchEnded = [&](Touch *touch, Event *event)
     {
-        if (isDraggingItem)
+        if (isDraggingItem && isSo)
         {
             auto endPoint = this->convertToNodeSpace(touch->getLocation());
             int count = 0;
@@ -88,12 +105,12 @@ bool Inventory::init()
     subInventory = Sprite::create("res/sub-inventory.png");
     subInventory->setAnchorPoint(Vec2(0, 0.5));
     subInventory->setPosition(Vec2(0, 0));
-    this->addChild(subInventory);
+    this->addChild(subInventory, 10);
 
     mainInventory = Sprite::create("res/main-inventory.png");
     mainInventory->setAnchorPoint(Vec2(0, 0.5));
     mainInventory->setPosition(Vec2(subInventory->getContentSize().width, 0));
-    this->addChild(mainInventory);
+    this->addChild(mainInventory, 10);
 
     const int numRows = 4;
     const int numCols = 4;
@@ -107,7 +124,7 @@ bool Inventory::init()
         {
             auto node = InventoryNode::createInventoryNode(squareSize);
             node->setPosition(t + Vec2(col * (squareSize + gapX), -row * (squareSize + gapY)));
-            this->addChild(node);
+            this->addChild(node, 10);
             inventoryNodes.push_back(node);
         }
     }
@@ -121,5 +138,17 @@ bool Inventory::init()
         }
     }
 
+
+
     return true;
+}
+
+void Inventory::showInventory() {
+    this->setVisible(true);
+    isSo = true;
+}
+
+void Inventory::hideInventory() {
+    this->setVisible(false);
+    isSo = false;
 }
