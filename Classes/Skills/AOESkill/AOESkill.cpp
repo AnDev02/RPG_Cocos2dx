@@ -4,36 +4,64 @@ bool AOESkill::init() {
 	return true;
 }
 
-// Kích hoạt kỹ năng FireBall
-void AOESkill::activate() {
-    // Hiển thị hình ảnh màu đỏ (AOE) và cập nhật vị trí của nó
-    _aoeSprite->setVisible(true);
-    // Bắt đầu lắng nghe sự kiện di chuyển chuột
-    auto listener = EventListenerMouse::create();
-    listener->onMouseMove = CC_CALLBACK_1(AOESkill::onMouseMove, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+bool AOESkill::onTouchBegan(Touch* touch, Event* event)
+{
+
+    Vec2 touchLocationInNode = _skillButton->convertToNodeSpace(touch->getLocation());
+
+    if (_skillButton->skillButtonBtn->getBoundingBox().containsPoint(touchLocationInNode))
+    {
+        _skillButton->isPressed = true;
+        this->_aoeSprite->setVisible(true);
+        return true;
+    }
+    return false;
 }
 
-// Thực hiện xử lý khi di chuyển chuột
-void AOESkill::onMouseMove(Event* event) {
-    EventMouse* e = (EventMouse*)event;
-    cursorPos = Vec2(e->getCursorX(), e->getCursorY());
-    // Cập nhật vị trí của AOE theo vị trí chuột
-    Vec2 cursorWorldPos = this->getParent()->convertToNodeSpace(cursorPos);
+void AOESkill::onTouchMoved(Touch* touch, Event* event)
+{
+    if (_skillButton->isPressed)
+    {
+        CCLOG("Moving");
+        Vec2 touchLocationInNode = _skillButton->convertToNodeSpace(touch->getLocation());
+        Vec2 direction = touchLocationInNode - _skillButton->centerPos;
+        float distance = direction.length();
 
-    // Cập nhật vị trí của AOE theo vị trí chuột trong world space
+        float radius = 40;
 
-    _aoeSprite->setPosition(cursorWorldPos);
+        if (distance > radius)
+        {
+            direction.normalize();
+            direction *= radius;
+            _skillButton->skillButtonBtn->setPosition(_skillButton->centerPos + direction);
+            _skillButton->currentPos = _skillButton->centerPos + direction;
+        }
+        else
+        {
+            _skillButton->skillButtonBtn->setPosition(touchLocationInNode);
+            _skillButton->currentPos = touchLocationInNode;
+        }
+
+        float rate = _skillButton->getCurrentPos().distance(_skillButton->getCenterPos()) / 40;
+
+        auto dir = _skillButton->getDirection();
+        dir.normalize();
+
+        Vec2 out = this->getPosition() + dir * rate * 100;
+        this->_aoeSprite->setPosition(out);
+
+    }
 }
 
-// Tắt kỹ năng FireBall
-void AOESkill::deactivate() {
-    // Ẩn hình ảnh màu đỏ (AOE)
-    _aoeSprite->setVisible(false);
+void AOESkill::onTouchEnded(Touch* touch, Event* event)
+{
+    _skillButton->prevPosBeforeRelease = _skillButton->skillButtonBtn->getPosition();
+    _skillButton->skillButtonBtn->setPosition(_skillButton->centerPos);
+    _skillButton->isPressed = false;
 
-    performSkill(cursorPos);
-    // Loại bỏ lắng nghe sự kiện di chuyển chuột
-    _eventDispatcher->removeEventListenersForTarget(this);
+    Vec2 pos = this->convertToWorldSpace(this->_aoeSprite->getPosition());
+    performSkill(pos);
+    this->_aoeSprite->setVisible(false);
 }
 
 void AOESkill::performSkill(Vec2 target) {
@@ -45,4 +73,7 @@ void AOESkill::performSkill(Vec2 target) {
     sprite->setScale(0.1);
     auto scene = this->getParent()->getScene();
     scene->addChild(sprite);
+}
+void AOESkill::update(float dt) {
+
 }

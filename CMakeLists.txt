@@ -94,13 +94,14 @@ list(APPEND GAME_SOURCE
      Classes/State/BossState/BossRun.cpp
      Classes/State/BossState/BossWalk.cpp
      Classes/UserInterface/InGame/Joystick.cpp
+     Classes/UserInterface/InGame/SkillButton.cpp
      Classes/LightEffect/Effect.cpp
      Classes/LightEffect/EffectSprite.cpp
      Classes/LightEffect/LightEffect.cpp
      Classes/Boss/Boss.cpp
      Classes/Boss/BossFactory.cpp
      Classes/Boss/HellBeast.cpp
-     	Classes/MapDecoration/MapDecoration.cpp
+    Classes/MapDecoration/MapDecoration.cpp
 Classes/Skills/SkillBase.cpp
 Classes/Skills/SkillFactory.cpp
 Classes/Skills/AOESkill/AOESkill.cpp
@@ -158,6 +159,7 @@ list(APPEND GAME_HEADER
      Classes/State/BossState/BossStateBase.h
      Classes/State/BossState/BossWalk.h
      Classes/UserInterface/InGame/Joystick.h
+	Classes/UserInterface/InGame/SkillButton.h
      Classes/LightEffect/Effect.h
      Classes/LightEffect/EffectSprite.h
      Classes/LightEffect/LightEffect.h

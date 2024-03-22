@@ -177,10 +177,6 @@ public:
 
     void onMouseDown(Event* event);
 
-    void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
-
-    void onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event);
-
     void update(float dt);
 
     void addSkill(std::string skillName) {
@@ -190,9 +186,11 @@ public:
         this->addChild(skill);
     }
 
+
+
     CREATE_FUNC(PlayerCharacter);
 
-private:
+protected:
     std::vector<SkillBase*> skills;
 };
 

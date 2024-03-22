@@ -11,6 +11,7 @@ public:
     virtual bool init();
     //Cac phuong thuc danh rieng cho Player
     void loadAnimate();
+
     CREATE_FUNC(Fighter);
 
 private:

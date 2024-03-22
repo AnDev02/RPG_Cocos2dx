@@ -1,4 +1,6 @@
-#include "Game.h"
+﻿#include "Game.h"
+#include "Skills/SkillFactory.h"
+#include "Skills/SkillBase.h"
 Scene *Game::createGame()
 {
     auto scene = Scene::createWithPhysics();
@@ -30,7 +32,7 @@ bool Game::init()
                    "update_camera");
 
     // zoomLevel cua camera
-    zoomLevel = (visibleSize.width / visibleSize.height) * 1.5625;
+    zoomLevel = (visibleSize.width / visibleSize.height);
 
     auto emitter = ParticleRain::create();
     addChild(emitter, 10);
@@ -45,6 +47,7 @@ bool Game::init()
     _player->currentState->EnterState();
     this->addChild(_player);
 
+    
     //BOSS
     boss = BossFactory::createBoss("HellBeast");
     boss->setPosition(Vec2(900, 500));
@@ -52,9 +55,6 @@ bool Game::init()
     this->addChild(boss);
     boss->currentState = boss->roarState;
     boss->currentState->EnterState();
-
-
-
 
     return true;
 }

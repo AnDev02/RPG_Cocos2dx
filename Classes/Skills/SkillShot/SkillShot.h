@@ -8,40 +8,20 @@ USING_NS_CC;
 class SkillShot : public SkillBase
 {
 public:
-    //Init
+
     virtual bool init() override;
 
-    //About Implement Skill
-    virtual void activate() override;
+    virtual bool onTouchBegan(Touch* touch, Event* event) override;
 
-    virtual void deactivate() override;
+    virtual void onTouchMoved(Touch* touch, Event* event) override;
 
-    virtual void onMouseMove(Event* event) override;
+    virtual void onTouchEnded(Touch* touch, Event* event) override;
 
     virtual void performSkill(Vec2 target) override;
 
-    ////About SkillTree
-    //SkillBase* parent;
+    virtual void update(float dt) override;
 
-    //std::vector<SkillBase*> children;
-
-    //virtual int getUnlockScore() override;
-
-    //virtual void unlock() override;
-
-    //virtual bool isLock() override;
-    //
-protected:
-    Sprite* _aoeSprite;
-    Sprite* _iconSprite;
-    Sprite* _skillSprite;
-
-    Vec2 lastTarget;
-    Vec2 cursorPos;
-
-    bool isLocked = true;
-    int unlockScore;
-    std::string skillName;
+    CREATE_FUNC(SkillShot);
 };
 
 #endif 

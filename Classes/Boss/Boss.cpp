@@ -16,7 +16,6 @@ void Boss::detectPlayerCharacter() {
     if (currentScene) {
         HelloWorld* helloWorld = dynamic_cast<HelloWorld*>(currentScene->getChildByName("HelloWorldInstance"));
         if (helloWorld) {
-            CCLOG("Get GameScene completed");
             Game* game = helloWorld->game;
             auto children = game->getChildren();
             for (const auto& child : children) {
@@ -86,7 +85,7 @@ void Boss::runToTarget() {
         if (angleResult >= 22.5 && angleResult < 45) { this->direction = 15; } //SE
         if (angleResult >= 0 && angleResult < 22.5) { this->direction = 16; } //SEE
 
-        CCLOG("boss in dir: %d", this->direction);
+        
     }
 }
 

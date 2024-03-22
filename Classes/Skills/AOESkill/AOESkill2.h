@@ -9,7 +9,9 @@ class AOESkill2 : public AOESkill
 {
 public:
     virtual bool init();
+    void update(float dt);
     CREATE_FUNC(AOESkill2);
+    
 };
 
 #endif 

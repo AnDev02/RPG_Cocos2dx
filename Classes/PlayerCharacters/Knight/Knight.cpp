@@ -49,13 +49,8 @@ bool Knight::init() {
     // Thêm nghe sự kiện vào danh sách nghe sự kiện
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
-    auto keyboardListener = cocos2d::EventListenerKeyboard::create();
-    keyboardListener->onKeyPressed = CC_CALLBACK_2(PlayerCharacter::onKeyPressed, this);
-    keyboardListener->onKeyReleased = CC_CALLBACK_2(PlayerCharacter::onKeyReleased, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
     return true;
 }
-
 
 
 void Knight::loadAnimate() {

@@ -25,40 +25,6 @@ void PlayerCharacter::onMouseDown(Event* event)
     //}
 }
 
-void PlayerCharacter::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
-    switch (keyCode) {
-    case EventKeyboard::KeyCode::KEY_Q:
-        this->skills[0]->activate();
-        break;
-    case EventKeyboard::KeyCode::KEY_W:
-        this->skills[1]->activate();
-        break;
-    case EventKeyboard::KeyCode::KEY_E:
-        this->skills[2]->activate();
-        break;
-    case EventKeyboard::KeyCode::KEY_R:
-        this->skills[3]->activate();
-        break;
-    }
-}
-
-void PlayerCharacter::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
-    switch (keyCode) {
-    case EventKeyboard::KeyCode::KEY_Q:
-        this->skills[0]->deactivate();
-        break;
-    case EventKeyboard::KeyCode::KEY_W:
-        this->skills[1]->deactivate();
-        break;
-    case EventKeyboard::KeyCode::KEY_E:
-        this->skills[2]->deactivate();
-        break;
-    case EventKeyboard::KeyCode::KEY_R:
-        this->skills[3]->deactivate();
-        break;
-    }
-}
-
 float PlayerCharacter::calculateAngle(const Vec2& vectorA, const Vec2& vectorB) {
     // Tính góc giữa hai vector sử dụng atan2
     float angle = vectorA.getAngle(vectorB);
@@ -79,7 +45,6 @@ void PlayerCharacter::handleMove(float deltaTime) {
 
             float angleResult = calculateAngle(direction, Vec2(1, 0));
 
-            CCLOG("Degree: %f", angleResult);
 
             if (angleResult >= -22.5 && angleResult < 0) { this->direction = 1; } //E
             if (angleResult >= -45 && angleResult < -22.5) { this->direction = 2; } //NEE
@@ -98,7 +63,6 @@ void PlayerCharacter::handleMove(float deltaTime) {
             if (angleResult >= 45 && angleResult < 67.5) { this->direction = 14; } //SSE
             if (angleResult >= 22.5 && angleResult < 45) { this->direction = 15; } //SE
             if (angleResult >= 0 && angleResult < 22.5) { this->direction = 16; } //SEE
-            CCLOG("Dir: %d", this->direction);
     }
 }
 
@@ -114,6 +78,15 @@ void PlayerCharacter::update(float dt) {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     _joystick->setPosition(this->getPosition() - Vec2(visibleSize.width / 4, visibleSize.height / 4));
     handleMove(dt);
+
+    /*if (this->skills[0] && this->skills[1] && this->skills[2] && this->skills[3] && this->getScene()) {
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        CCLOG("Hello");
+        this->skills[0]->setPosition(this->getPosition() + Vec2(visibleSize.width / 4, visibleSize.height / 4));
+        this->skills[1]->setPosition(this->getPosition() + Vec2(visibleSize.width / 4, visibleSize.height / 4 + 100));
+        this->skills[2]->setPosition(this->getPosition() + Vec2(visibleSize.width / 4, visibleSize.height / 4 + 200));
+        this->skills[3]->setPosition(this->getPosition() + Vec2(visibleSize.width / 4, visibleSize.height / 4 + 300));
+    }*/
     //Vec2 currentPosition = this->getPosition();
   //float distance = currentPosition.distance(mouseClickPos);
 

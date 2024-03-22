@@ -7,6 +7,7 @@ bool Fighter::init() {
     this->addSkill("BuffSkill1");
     this->addSkill("TargetSkill1");
     this->addSkill("SkillShot1");
+
     //Load Animate
     this->loadAnimate();
 
@@ -43,11 +44,6 @@ bool Fighter::init() {
 
     // Thêm nghe sự kiện vào danh sách nghe sự kiện
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
-
-    auto keyboardListener = cocos2d::EventListenerKeyboard::create();
-    keyboardListener->onKeyPressed = CC_CALLBACK_2(PlayerCharacter::onKeyPressed, this);
-    keyboardListener->onKeyReleased = CC_CALLBACK_2(PlayerCharacter::onKeyReleased, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
     return true;
 }
 
