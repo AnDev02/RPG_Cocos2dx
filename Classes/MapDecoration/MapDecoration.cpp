@@ -20,25 +20,21 @@ bool MapDecoration::loadDecoration(std::string objectLayerName)
 			ValueMap objectProperties = object.asValueMap();
 			float x = objectProperties["x"].asFloat();
 			float y = objectProperties["y"].asFloat();
+			auto sprite = Sprite::create();
 			if (objectLayerName == "flames") {
 				// tạo ra flames
 				CCLOG("Object layer flames");
 				loadFlamesVFXToCache();
 				CCLOG("Flames X: %f Flames Y: %f", x, y);
-				auto sprite = Sprite::createWithSpriteFrameName("flames_0.png");
+				//auto sprite = Sprite::createWithSpriteFrameName("flames_0.png");
 				sprite->runAction(RepeatForever::create(flamesAnimate));
-				sprite->setPosition(Vec2(x, y));
 				listMapDecoration.pushBack(sprite);
-				_tileMap->addChild(sprite, 12);
 			}
 			else if(objectLayerName == "torch") {
 				CCLOG("OBJECT LAYER TORCH");
 				loadTorchFlameToCache();
-				auto sprite = Sprite::createWithSpriteFrameName("flame_glow_0.png");
 				sprite->runAction(RepeatForever::create(torchFlamesAnimate));
-				sprite->setPosition(Vec2(x, y));
 				listMapDecoration.pushBack(sprite);
-				_tileMap->addChild(sprite, 12);
 
 			}
 			else if (objectLayerName == "subservients working") {
@@ -46,7 +42,6 @@ bool MapDecoration::loadDecoration(std::string objectLayerName)
 				loadSubservientWorkingToCache();
 				CCLOG("Sub Woring X: %f Sub Working Y: %f", x, y);
 				std::string name = objectProperties["name"].asString();
-				auto sprite = Sprite::create();
 				if (name.find("subservient_special_working_E") != std::string::npos) {
 					sprite->runAction(RepeatForever::create(subservientsWorking_E_));
 				}
@@ -92,9 +87,7 @@ bool MapDecoration::loadDecoration(std::string objectLayerName)
 				if (name.find("subservient_special_working_W") != std::string::npos) {
 					sprite->runAction(RepeatForever::create(subservientsWorking_W_));
 				}
-				sprite->setPosition(Vec2(x, y));
 				listMapDecoration.pushBack(sprite);
-				_tileMap->addChild(sprite, 12);
 			}
 			else if (objectLayerName == "Obelisk") {
 				CCLOG("Object layer Obelisk");
@@ -102,9 +95,18 @@ bool MapDecoration::loadDecoration(std::string objectLayerName)
 				obelisk->setPosition(Vec2(x, y));
 				listObelisk.pushBack(obelisk);
 					_tileMap->addChild(obelisk, 13);
-
 			}
+			else if (objectLayerName == "End Point") {
+				CCLOG("Object layer teleport effects");
+				loadTeleportEffectsToCache();
+				sprite->setScale(2);
+				sprite->runAction(RepeatForever::create(teleport_effects));
+				listMapDecoration.pushBack(sprite);
+			}
+			sprite->setPosition(Vec2(x, y));
+			_tileMap->addChild(sprite, 12);
 		}
+
 		return true;
 	}
 	return false;
@@ -174,6 +176,12 @@ void MapDecoration::loadTorchFlameToCache()
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("map/vfx/flame/torchFlame.plist","map/vfx/flame/torchFlame.png");
 	torchFlamesAnimate = Animate::create(Engine::getInstance()->createAnimation1("flame_glow_", 7, 0.2));
 	torchFlamesAnimate->retain();
+}
+void MapDecoration::loadTeleportEffectsToCache()
+{
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("map/prop/teleport/teleport_effects.plist", "map/prop/teleport/teleport_effects.png");
+	teleport_effects = Animate::create(Engine::getInstance()->createAnimation1("teleport_effects_", 9, 0.1));
+	teleport_effects->retain();
 }
 MapDecoration::~MapDecoration() {
 

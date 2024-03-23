@@ -14,12 +14,16 @@ public:
 	void loadFlamesVFXToCache();
 	void loadSubservientWorkingToCache();
 	void loadTorchFlameToCache();
+	void loadTeleportEffectsToCache();
 private:
 	Animate* flamesAnimate;
 	Sprite* flamesSprite;
 	
 	Animate* torchFlamesAnimate;
 	Sprite* torchFlamesSprite;
+
+	Animate* teleport_effects;
+	Sprite* teleport_effects_sprite;
 
 	Animate* subservientsWorking_E_;
 	Animate* subservientsWorking_N_;

@@ -64,7 +64,7 @@
  <objectgroup id="15" name="Start Point">
   <object id="1" name="Start Point" x="286" y="1371.33"/>
  </objectgroup>
- <objectgroup id="16" name="End Point">
+ <objectgroup id="16" name="End Point" offsetx="2.66667" offsety="-9">
   <object id="2" name="End Point" x="158.667" y="154.667"/>
  </objectgroup>
  <objectgroup id="17" name="NPC">
