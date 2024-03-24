@@ -4,6 +4,7 @@
 #include "Game/Game.h";
 #include "Engine/Engine.h"
 #include "MapDecoration/Obelisk.h";
+#include "MapDecoration/BloodMoonTower.h"
 
 USING_NS_CC;
 
@@ -54,6 +55,7 @@ private:
 	TMXTiledMap* _tileMap;
 	Vector <Sprite*> listMapDecoration;
 	Vector <Obelisk*> listObelisk;
+	Vector<BloodMoonTower*> listBloodMoon;
 };
 
 #endif // !_MAPDECORATION_H_

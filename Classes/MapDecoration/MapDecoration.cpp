@@ -96,6 +96,13 @@ bool MapDecoration::loadDecoration(std::string objectLayerName)
 				listObelisk.pushBack(obelisk);
 					_tileMap->addChild(obelisk, 13);
 			}
+			else if (objectLayerName == "BloodMoon Tower") {
+				CCLOG("Object layer BloodMoon Tower");
+				auto bloodMoon = BloodMoonTower::createBloodMoonTower();
+				bloodMoon->setPosition(Vec2(x, y));
+				listBloodMoon.pushBack(bloodMoon);
+				_tileMap->addChild(bloodMoon, 13);
+			}
 			else if (objectLayerName == "End Point") {
 				CCLOG("Object layer teleport effects");
 				loadTeleportEffectsToCache();
