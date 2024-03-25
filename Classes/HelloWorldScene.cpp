@@ -36,14 +36,13 @@ bool HelloWorld::init()
     loadKnightToCache();
 
     // loadHellBeastToCache();
-
+    loadSlimeToCache();
     game = Game::create();
     if (game)
     {
         this->addChild(game);
     }
     // loadSkeletonToCache();
-    // loadSlimeToCache();
 
     // playerCharacter = PlayerCharacterFactory::createPlayerCharacter("Knight");
     // playerCharacter->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
@@ -54,14 +53,6 @@ bool HelloWorld::init()
     // playerCharacter->currentState = playerCharacter->idleState;
     // playerCharacter->currentState->EnterState();
 
-    // enemy = EnemyFactory::createEnemy("Slime");
-    // enemy->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-    // this->addChild(enemy);
-
-    // /*CCLOG("Content size is: %f, %f", )*/
-
-    // enemy->currentState = enemy->walkState;
-    // enemy->currentState->EnterState();
 
     // schedule(CC_SCHEDULE_SELECTOR(HelloWorld::update), 0.06f);
     return true;

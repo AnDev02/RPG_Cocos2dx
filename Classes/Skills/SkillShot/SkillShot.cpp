@@ -1,4 +1,5 @@
 ﻿#include "SkillShot.h"
+#include "Engine/Engine.h"
 
 bool SkillShot::init() {
     return true;
@@ -42,13 +43,16 @@ void SkillShot::onTouchMoved(Touch* touch, Event* event)
             _skillButton->currentPos = touchLocationInNode;
         }
 
-        float rate = _skillButton->getCurrentPos().distance(_skillButton->getCenterPos()) / 40;
+        // Calculate the angle between the vector and the x-axis
+        float angleRadians = atan2(direction.y, direction.x);
+        float angleDegrees = CC_RADIANS_TO_DEGREES(-angleRadians); // Convert radians to degrees
 
-        auto dir = _skillButton->getDirection();
-        dir.normalize();
+        CCLOG("Angle: %f", angleDegrees);
+        // Rotate the sprite to face the direction
+        _aoeSprite->setRotation(angleDegrees);
+        lastAngleRotate = angleDegrees;
 
-        Vec2 out = this->getPosition() + dir * rate * 100;
-        this->_aoeSprite->setPosition(out);
+        dir = direction;
 
     }
 }
@@ -58,21 +62,32 @@ void SkillShot::onTouchEnded(Touch* touch, Event* event)
     _skillButton->prevPosBeforeRelease = _skillButton->skillButtonBtn->getPosition();
     _skillButton->skillButtonBtn->setPosition(_skillButton->centerPos);
     _skillButton->isPressed = false;
-
+    
     Vec2 pos = this->convertToWorldSpace(this->_aoeSprite->getPosition());
+    _skillSprite->setRotation(lastAngleRotate);
     performSkill(pos);
     this->_aoeSprite->setVisible(false);
+
 }
 
 void SkillShot::performSkill(Vec2 target) {
-    /*Vec2 tar = */
-    CCLOG("Perform FireBall to: %f, %f", target.x, target.y);
-    auto sprite = Sprite::create("HelloWorld.png");
-    Vec2 applyPosition = this->getParent()->getParent()->convertToNodeSpace(target);
-    sprite->setPosition(applyPosition);
-    sprite->setScale(0.1);
-    auto scene = this->getParent()->getScene();
-    scene->addChild(sprite);
+    if (!_skillSprite->getParent()) {
+        Vec2 applyPosition = this->getParent()->getParent()->convertToNodeSpace(target);
+        _skillSprite->setPosition(applyPosition);
+        _skillSprite->setScale(0.1);
+        auto scene = this->getParent()->getScene();
+        //if(_skillSprite->getParent())
+        scene->addChild(_skillSprite);
+
+        dir.normalize();
+        Vec2 tar = _skillSprite->getPosition() + dir * _aoeSprite->getBoundingBox().size.width;
+
+        auto moveTo = MoveTo::create(1.0f, tar);
+
+        auto spawn = Spawn::create(moveTo, _skillAnimate, nullptr);
+
+        _skillSprite->runAction(Sequence::create(spawn, RemoveSelf::create(), nullptr));
+    }
 }
 void SkillShot::update(float dt) {
 

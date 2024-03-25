@@ -12,9 +12,22 @@ bool AOESkill2::init() {
     _iconSprite = Sprite::create("skill/SkillSprite/12.png");
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
+
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/thunder/thunder.plist", "skill/SkillSprite/thunder/thunder.png");
+    //Skill Sprite
+    _skillSprite = Sprite::createWithSpriteFrameName("thunder (1).png");
+    _skillSprite->setAnchorPoint(Vec2(0.5, 0.5));
+    _skillSprite->setScale(2);
+    _skillSprite->retain();
+
+    //Skill Animate
+    _skillAnimate = Animate::create(Engine::createAnimation2("thunder", 13, 0.05));
+    _skillAnimate->retain();
+
     //SkillTree...
+    //SkillButton
     _skillButton = SkillButton::create();
-    //_skillButton->setSkillButtonBorder(_iconSprite);
+    _skillButton->setSkillButtonBorder(_iconSprite);
     _skillButton->setPosition(Vec2(100, 0));
     this->addChild(_skillButton);
     _skillButton->setVisible(true);

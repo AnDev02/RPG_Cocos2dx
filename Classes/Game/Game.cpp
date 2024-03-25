@@ -92,12 +92,39 @@ bool Game::init()
     //this->addChild(boss);
     //boss->currentState = boss->roarState;
     //boss->currentState->EnterState();
+
+     enemy = EnemyFactory::createEnemy("Slime");
+     enemy->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+     this->addChild(enemy);
+
+     /*CCLOG("Content size is: %f, %f", )*/
+
+     enemy->currentState = enemy->walkState;
+     enemy->currentState->EnterState();
+
+     enemy1 = EnemyFactory::createEnemy("Slime");
+     enemy1->setPosition(Vec2(visibleSize.width / 2+50, visibleSize.height / 2));
+     this->addChild(enemy1);
+
+     /*CCLOG("Content size is: %f, %f", )*/
+
+     enemy1->currentState = enemy1->walkState;
+     enemy1->currentState->EnterState();
+
+     enemy2 = EnemyFactory::createEnemy("Slime");
+     enemy2->setPosition(Vec2(visibleSize.width / 2+100, visibleSize.height / 2));
+     this->addChild(enemy2);
+
+     /*CCLOG("Content size is: %f, %f", )*/
+
+     enemy2->currentState = enemy2->walkState;
+     enemy2->currentState->EnterState();
     return true;
 }
 
 void Game::updatePlayer(float dt)
 {
-    /*enemy->currentState->UpdateState();*/
+    enemy->currentState->UpdateState();
     if(_joystick)
         _player->movementDirection = _joystick->getDirection();
     _player->currentState->UpdateState();

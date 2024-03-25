@@ -1,4 +1,7 @@
 ﻿#include "TargetSkill.h"
+#include "HelloWorldScene.h"
+#include "Enemies/Enemy.h"
+#include "Game/Game.h"
 
 bool TargetSkill::init() {
     return true;
@@ -41,16 +44,48 @@ void TargetSkill::onTouchMoved(Touch* touch, Event* event)
             _skillButton->skillButtonBtn->setPosition(touchLocationInNode);
             _skillButton->currentPos = touchLocationInNode;
         }
+        //Detect all Enemies and Boss be added to scene
+          // Lấy scene chính từ Director
+        Scene* currentScene = Director::getInstance()->getRunningScene();
+        if (currentScene) {
+            HelloWorld* helloWorld = dynamic_cast<HelloWorld*>(currentScene->getChildByName("HelloWorldInstance"));
+            if (helloWorld) {
+                Game* game = helloWorld->game;
+                auto children = game->getChildren();
+                for (const auto& child : children) {
+                    auto enemy = dynamic_cast<Enemy*>(child);
+                    if (enemy) {
+                        Vec2 enemyInWorldCoor = enemy->getParent()->convertToWorldSpace(enemy->getPosition());
+                        Vec2 enemyInSkillCoor = this->convertToNodeSpace(enemyInWorldCoor);
 
-        float rate = _skillButton->getCurrentPos().distance(_skillButton->getCenterPos()) / 40;
+                        float distance = enemyInSkillCoor.distance(this->getPosition());
 
-        auto dir = _skillButton->getDirection();
-        dir.normalize();
-
-        Vec2 out = this->getPosition() + dir * rate * 100;
-        this->_aoeSprite->setPosition(out);
-
+                        if (distance <= applyRange) {
+                            //If enemy in range and not have target then: 
+                            if (!enemy->getChildByName("Target")) {
+                                auto target = Sprite::create("skill/AOERangeSprite/Target.png");
+                                target->setName("Target");
+                                enemy->addChild(target);
+                                enemies.push_back(enemy);
+                            }
+                        }
+                        else {
+                            if (enemy->getChildByName("Target")) {
+                                auto sprite = enemy->getChildByName("Target");
+                                enemy->removeChild(sprite);
+                                auto it = std::find(enemies.begin(), enemies.end(), enemy);
+                                // If found, erase it
+                                if (it != enemies.end()) {
+                                    enemies.erase(it);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
+    CCLOG("%d", enemies.size());
 }
 
 void TargetSkill::onTouchEnded(Touch* touch, Event* event)
@@ -65,14 +100,35 @@ void TargetSkill::onTouchEnded(Touch* touch, Event* event)
 }
 
 void TargetSkill::performSkill(Vec2 target) {
-    /*Vec2 tar = */
-    CCLOG("Perform FireBall to: %f, %f", target.x, target.y);
-    auto sprite = Sprite::create("HelloWorld.png");
-    Vec2 applyPosition = this->getParent()->getParent()->convertToNodeSpace(target);
-    sprite->setPosition(applyPosition);
-    sprite->setScale(0.1);
-    auto scene = this->getParent()->getScene();
-    scene->addChild(sprite);
+    std::vector<Enemy*> enemiesRemove;
+    for (auto enemy : enemies) {
+        CCLOG("LULE");
+        auto sprite = enemy->getChildByName("Target");
+        auto skillSprite = Sprite::createWithSpriteFrameName("darkpower (1).png");
+        skillSprite->setAnchorPoint(Vec2(0.5, 0.25));
+        skillSprite->setScale(applyRange/skillSprite->getContentSize().width, applyRange / skillSprite->getContentSize().height);
+        skillSprite->setPosition(sprite->getPosition());
+        enemy->removeChild(sprite);
+        enemy->addChild(skillSprite);
+
+        //Skill Animate
+        Animate* skillAnimate = Animate::create(Engine::createAnimation2("darkpower", 15, 0.1));
+
+        auto sqe = Sequence::create(skillAnimate, RemoveSelf::create(), nullptr);
+
+        skillSprite->runAction(sqe);
+        enemiesRemove.push_back(enemy);
+    }
+    for(auto enemyRemove : enemiesRemove){
+        //Remove from enemies
+        auto it = std::find(enemies.begin(), enemies.end(), enemyRemove);
+        // If found, erase it
+        if (it != enemies.end()) {
+                enemies.erase(it);
+            }
+    }
+        
+
 }
 void TargetSkill::update(float dt) {
 

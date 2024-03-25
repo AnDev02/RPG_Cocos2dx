@@ -34,6 +34,9 @@ private:
     float zoomLevel;
     Joystick* _joystick;
     
+    Enemy* enemy;
+    Enemy* enemy1;
+    Enemy* enemy2;
     Size visibleSize;
     Boss* boss;
     Inventory* inventory;

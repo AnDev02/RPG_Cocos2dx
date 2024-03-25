@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 #include "UserInterface/InGame/SkillButton.h"
-
+#include "Engine/Engine.h"
 
 USING_NS_CC;
 
@@ -44,6 +44,9 @@ protected:
     Sprite* _iconSprite;
     Sprite* _aoeSprite;
     Sprite* _skillSprite;
+
+    Animate* _skillAnimate;
+
     SkillButton* _skillButton;
 
     Vec2 lastTarget;

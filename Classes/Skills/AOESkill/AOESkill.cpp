@@ -1,4 +1,5 @@
 ﻿#include "AOESkill.h"
+#include "Engine/Engine.h"
 
 bool AOESkill::init() {
 	return true;
@@ -65,14 +66,14 @@ void AOESkill::onTouchEnded(Touch* touch, Event* event)
 }
 
 void AOESkill::performSkill(Vec2 target) {
-    /*Vec2 tar = */
-    CCLOG("Perform FireBall to: %f, %f", target.x, target.y);
-    auto sprite = Sprite::create("HelloWorld.png");
+    
     Vec2 applyPosition = this->getParent()->getParent()->convertToNodeSpace(target);
-    sprite->setPosition(applyPosition);
-    sprite->setScale(0.1);
+    _skillSprite->setPosition(applyPosition);
     auto scene = this->getParent()->getScene();
-    scene->addChild(sprite);
+    scene->addChild(_skillSprite);
+
+    auto sqe = Sequence::create(_skillAnimate, RemoveSelf::create(), nullptr);
+    _skillSprite->runAction(sqe);
 }
 void AOESkill::update(float dt) {
 
