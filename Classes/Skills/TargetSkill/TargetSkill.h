@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Skills/SkillBase.h"
+class Enemy;
 USING_NS_CC;
 
 class TargetSkill : public SkillBase
@@ -21,6 +22,12 @@ public:
     virtual void update(float dt) override;
 
     CREATE_FUNC(TargetSkill);
+
+protected:
+    float applyRange;
+    Sprite* _targetSprite;
+    std::vector<Enemy*> enemies;
+    
 };
 
 #endif 

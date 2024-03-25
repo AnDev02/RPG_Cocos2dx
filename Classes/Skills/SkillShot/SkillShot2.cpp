@@ -3,10 +3,22 @@
 bool SkillShot2::init() {
 
     //AOE Range
-    _aoeSprite = Sprite::create("skill/AOERangeSprite/CircleRange.png");
+    _aoeSprite = Sprite::create("skill/AOERangeSprite/SkillShotTarget.png");
     _aoeSprite->setOpacity(100);
+    _aoeSprite->setScale(0.5);
+    _aoeSprite->setAnchorPoint(Vec2(0, 0.5));
     this->addChild(_aoeSprite);
     _aoeSprite->setVisible(false);
+
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/fireball/fireball.plist", "skill/SkillSprite/fireball/fireball.png");
+    //Skill Sprite
+    _skillSprite = Sprite::createWithSpriteFrameName("fireball (1).png");
+    _skillSprite->setAnchorPoint(Vec2(0, 0.5));
+    _skillSprite->retain();
+    //Skill Animate
+    //Skill Animate
+    _skillAnimate = Animate::create(Engine::createAnimation2("fireball", 40, 0.025));
+    _skillAnimate->retain();
 
     //Skill Icon...
     _iconSprite = Sprite::create("skill/SkillSprite/15.png");
@@ -15,22 +27,15 @@ bool SkillShot2::init() {
     //SkillTree...
     _skillButton = SkillButton::create();
     _skillButton->setSkillButtonBorder(_iconSprite);
-    _skillButton->setPosition(Vec2(300, 0));
+    _skillButton->setPosition(Vec2(-100, 0));
     this->addChild(_skillButton);
     _skillButton->setVisible(true);
 
-    //// Đăng ký sự kiện chạm cho _iconSprite
-    //auto touchListener = EventListenerTouchOneByOne::create();
-    //touchListener->setSwallowTouches(true);
-    //touchListener->onTouchBegan = CC_CALLBACK_2(SkillBase::onTouchBegan, this);
-    //touchListener->onTouchEnded = CC_CALLBACK_2(SkillBase::onTouchEnded, this);
-    //_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, _iconSprite);
-    /*auto touchListener = EventListenerTouchOneByOne::create();
+    auto touchListener = EventListenerTouchOneByOne::create();
     touchListener->setSwallowTouches(true);
-    touchListener->onTouchBegan = CC_CALLBACK_2(SkillBase::onTouchBegan, this);
-    touchListener->onTouchMoved = CC_CALLBACK_2(SkillBase::onTouchMoved, this);
-    touchListener->onTouchEnded = CC_CALLBACK_2(SkillBase::onTouchEnded, this);
+    touchListener->onTouchBegan = CC_CALLBACK_2(SkillShot2::onTouchBegan, this);
+    touchListener->onTouchMoved = CC_CALLBACK_2(SkillShot2::onTouchMoved, this);
+    touchListener->onTouchEnded = CC_CALLBACK_2(SkillShot2::onTouchEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, _skillButton);
-    schedule(CC_SCHEDULE_SELECTOR(AOESkill2::update), 0.05f);*/
     return true;
 }

@@ -12,6 +12,17 @@ bool AOESkill1::init() {
     _iconSprite = Sprite::create("skill/SkillSprite/10.png");
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
+
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/thunder/thunder.plist", "skill/SkillSprite/thunder/thunder.png");
+    //Skill Sprite
+    _skillSprite = Sprite::createWithSpriteFrameName("thunder (1).png");
+    _skillSprite->setAnchorPoint(Vec2(0.5, 0.5));
+    _skillSprite->retain();
+
+    //Skill Animate
+    _skillAnimate = Animate::create(Engine::createAnimation2("thunder", 13, 0.05));
+    _skillAnimate->retain();
+
     //SkillTree...
     _skillButton = SkillButton::create();
     _skillButton->setSkillButtonBorder(_iconSprite);
@@ -19,14 +30,15 @@ bool AOESkill1::init() {
     this->addChild(_skillButton);
     _skillButton->setVisible(true);
 
-    //// Đăng ký sự kiện chạm cho _iconSprite
-    //auto touchListener = EventListenerTouchOneByOne::create();
-    //touchListener->setSwallowTouches(true);
-    //touchListener->onTouchBegan = CC_CALLBACK_2(SkillBase::onTouchBegan, this);
-    //touchListener->onTouchEnded = CC_CALLBACK_2(SkillBase::onTouchEnded, this);
-    //_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, _iconSprite);
+    // Đăng ký sự kiện onTouch cho SkillButton
+    auto touchListener = EventListenerTouchOneByOne::create();
+    touchListener->setSwallowTouches(true);
+    touchListener->onTouchBegan = CC_CALLBACK_2(AOESkill1::onTouchBegan, this);
+    touchListener->onTouchMoved = CC_CALLBACK_2(AOESkill1::onTouchMoved, this);
+    touchListener->onTouchEnded = CC_CALLBACK_2(AOESkill1::onTouchEnded, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, _skillButton);
+    schedule(CC_SCHEDULE_SELECTOR(AOESkill1::update), 0.05f);
 
-    schedule(CC_SCHEDULE_SELECTOR(AOESkill1::update), 0.5f);
 	return true;
 }
 

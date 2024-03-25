@@ -22,6 +22,9 @@ public:
     virtual void update(float dt) override;
 
     CREATE_FUNC(SkillShot);
+private:
+    Vec2 dir;
+    float lastAngleRotate;
 };
 
 #endif 

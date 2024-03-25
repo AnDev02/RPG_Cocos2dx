@@ -12,7 +12,6 @@ bool BuffSkill::onTouchBegan(Touch* touch, Event* event)
     if (_skillButton->skillButtonBtn->getBoundingBox().containsPoint(touchLocationInNode))
     {
         _skillButton->isPressed = true;
-        this->_aoeSprite->setVisible(true);
         return true;
     }
     return false;
@@ -42,14 +41,6 @@ void BuffSkill::onTouchMoved(Touch* touch, Event* event)
             _skillButton->currentPos = touchLocationInNode;
         }
 
-        float rate = _skillButton->getCurrentPos().distance(_skillButton->getCenterPos()) / 40;
-
-        auto dir = _skillButton->getDirection();
-        dir.normalize();
-
-        Vec2 out = this->getPosition() + dir * rate * 100;
-        this->_aoeSprite->setPosition(out);
-
     }
 }
 
@@ -59,20 +50,15 @@ void BuffSkill::onTouchEnded(Touch* touch, Event* event)
     _skillButton->skillButtonBtn->setPosition(_skillButton->centerPos);
     _skillButton->isPressed = false;
 
-    Vec2 pos = this->convertToWorldSpace(this->_aoeSprite->getPosition());
-    performSkill(pos);
-    this->_aoeSprite->setVisible(false);
+    performSkill(Vec2::ZERO);
 }
 
 void BuffSkill::performSkill(Vec2 target) {
-    /*Vec2 tar = */
-    CCLOG("Perform FireBall to: %f, %f", target.x, target.y);
-    auto sprite = Sprite::create("HelloWorld.png");
-    Vec2 applyPosition = this->getParent()->getParent()->convertToNodeSpace(target);
-    sprite->setPosition(applyPosition);
-    sprite->setScale(0.1);
-    auto scene = this->getParent()->getScene();
-    scene->addChild(sprite);
+    if (!_skillSprite->getParent()) {
+        this->getParent()->addChild(_skillSprite, -1);
+        auto sqe = Sequence::create(_skillAnimate, RemoveSelf::create(), nullptr);
+        _skillSprite->runAction(sqe);
+    }
 }
 void BuffSkill::update(float dt) {
 
