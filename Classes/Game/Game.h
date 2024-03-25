@@ -12,6 +12,7 @@
 #include "../Inventory/Inventory.h"
 #include "../UserInterface/InGame/HealthBar.h"
 #include "../UserInterface/InGame/Joystick.h"
+#include "MapDecoration/MapDecoration.h"
 
 
 USING_NS_CC;

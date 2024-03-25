@@ -41,10 +41,13 @@ bool Game::init()
     addChild(emitter, 10);
 
     cocos2d::TMXTiledMap *_tileMap = new TMXTiledMap();
-    _tileMap->initWithTMXFile("map/worldOfSins.tmx");
+    _tileMap->initWithTMXFile("map/map0.tmx");
     this->addChild(_tileMap);
-
-
+    //MapDecoration* mapDecoration = MapDecoration::getInstance(_tileMap);
+    //MapDecoration::getInstance()->loadDecoration("flames");
+    //MapDecoration::getInstance()->loadDecoration("subservients working");
+    //MapDecoration::getInstance()->loadDecoration("torch");
+    //MapDecoration::getInstance()->loadDecoration("Obelisk");
 
     _player = PlayerCharacterFactory::createPlayerCharacter("Knight");
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
@@ -52,7 +55,7 @@ bool Game::init()
     _player->currentState->EnterState();
     this->addChild(_player);
 
-    minimap = MinimapLayer::create("map/worldOfSins.tmx", _player);
+    minimap = MinimapLayer::create("map/map0.tmx", _player);
     minimap->setPosition(_player->getPosition() / zoomLevel);
     minimap->setScale(minimap->MINIMAP_SCALE_FACTOR);
     this->addChild(minimap);
@@ -106,12 +109,14 @@ void Game::updateCamera(float deltaT)
       Vec2 cameraposition = Vec2((-newposition.x + visibleSize.width * 0.5) * zoomLevel,
                                  (-newposition.y + visibleSize.height * 0.5) * zoomLevel);
      currentscene->setPosition(cameraposition);
-     minimap->setPosition((cameraposition * -1 / zoomLevel) + (Vec2(visibleSize.width / 4, visibleSize.height / 4) / zoomLevel));
+     minimap->setPosition((cameraposition * -1 / zoomLevel) + (Vec2(visibleSize.width / 3.5, visibleSize.height / 6.2) / zoomLevel));
 }
 
 void Game::updateUserInterface(float dt) {
-    inventoryButton->setPosition(_player->getPosition() - Vec2(-(visibleSize.width / 6 / zoomLevel), visibleSize.height / 2 / zoomLevel - (inventoryButton->getSpriteSize().height)));
+    //minimap->setPosition(_player->getPosition());
+
+    inventoryButton->setPosition(_player->getPosition() - Vec2(-(visibleSize.width / 4 / zoomLevel), visibleSize.height / 2 / zoomLevel - (inventoryButton->getSpriteSize().height)));
     if(inventory->isShow()) inventory->setPosition(_player->getPosition() - Vec2((visibleSize.width / 2 / zoomLevel), 0));
     healthBar->setPosition(_player->getPosition() - Vec2(0, visibleSize.height / 4 / zoomLevel));
-    _joystick->setPosition(_player->getPosition() - Vec2(visibleSize.width / 2.6 / zoomLevel, visibleSize.height / zoomLevel - (_joystick->getSize().height * 2.3)));
+    _joystick->setPosition(_player->getPosition() - Vec2((visibleSize.width / 3 / zoomLevel), visibleSize.height / 2 / zoomLevel - (_joystick->getSize().height)));
 }

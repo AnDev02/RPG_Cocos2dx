@@ -42,10 +42,12 @@ bool MinimapLayer::initWithTiledMap(std::string mapName, PlayerCharacter* player
     this->addChild(clipNode, 2);
 
     Sprite* minimapFrm = Sprite::create("res/minimap_frame.png");
-    minimapFrm->setScale(tileSize.width * tileSize2.width / minimapFrm->getContentSize().width * 1.1, tileSize.height * tileSize2.height / minimapFrm->getContentSize().height * 1.1);
+    auto minimapFrmScaleWidth = tileSize.width * tileSize2.width / minimapFrm->getContentSize().width * 1.1;
+    auto minimapFrmScaleHeight = tileSize.height * tileSize2.height / minimapFrm->getContentSize().height * 1.1;
+    minimapFrm->setScale(minimapFrmScaleWidth, minimapFrmScaleHeight);
     minimapFrm->setPosition(tileSize.width * tileSize2.width / 2, tileSize.height * tileSize2.height / 2);
     this->addChild(minimapFrm, 1);
-
+    mapSize = Size(minimapFrm->getContentSize().width * minimapFrmScaleWidth, minimapFrm->getContentSize().height * minimapFrmScaleHeight);
     this->scheduleUpdate();
     this->_player = player;
 
