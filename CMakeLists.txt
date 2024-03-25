@@ -105,6 +105,7 @@ list(APPEND GAME_SOURCE
      Classes/Boss/HellBeast.cpp
      	Classes/MapDecoration/MapDecoration.cpp
      	Classes/MapDecoration/Obelisk.cpp
+Classes/MapDecoration/BloodMoonTower.cpp
 
 Classes/Skills/SkillBase.cpp
 Classes/Skills/SkillFactory.cpp
@@ -174,6 +175,7 @@ list(APPEND GAME_HEADER
      Classes/Boss/HellBeast.h
           	Classes/MapDecoration/MapDecoration.h
      	Classes/MapDecoration/Obelisk.h
+Classes/MapDecoration/BloodMoonTower.h
 
 Classes/Skills/SkillBase.h
 Classes/Skills/SkillFactory.h

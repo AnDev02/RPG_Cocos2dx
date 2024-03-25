@@ -3,7 +3,7 @@
 #include "Skills/SkillBase.h"
 #include "UserInterface/InGame/Minimap.h"
 #include "UserInterface/InGame/InventoryButton.h"
-
+#include "MapDecoration/MapDecoration.h"
 Scene *Game::createGame()
 {
     auto scene = Scene::createWithPhysics();
@@ -41,13 +41,17 @@ bool Game::init()
     addChild(emitter, 10);
 
     cocos2d::TMXTiledMap *_tileMap = new TMXTiledMap();
-    _tileMap->initWithTMXFile("map/map0.tmx");
+    _tileMap->initWithTMXFile("map/BossRoom1.tmx");
     this->addChild(_tileMap);
-    //MapDecoration* mapDecoration = MapDecoration::getInstance(_tileMap);
-    //MapDecoration::getInstance()->loadDecoration("flames");
-    //MapDecoration::getInstance()->loadDecoration("subservients working");
-    //MapDecoration::getInstance()->loadDecoration("torch");
-    //MapDecoration::getInstance()->loadDecoration("Obelisk");
+    MapDecoration* mapDecoration = MapDecoration::getInstance(_tileMap);
+    MapDecoration::getInstance()->loadDecoration("flames");
+    MapDecoration::getInstance()->loadDecoration("subservients working");
+    MapDecoration::getInstance()->loadDecoration("torch");
+    MapDecoration::getInstance()->loadDecoration("Obelisk");
+    MapDecoration::getInstance()->loadDecoration("End Point");
+    MapDecoration::getInstance()->loadDecoration("BloodMoon Tower");
+
+
 
     _player = PlayerCharacterFactory::createPlayerCharacter("Knight");
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
@@ -55,7 +59,7 @@ bool Game::init()
     _player->currentState->EnterState();
     this->addChild(_player);
 
-    minimap = MinimapLayer::create("map/map0.tmx", _player);
+    minimap = MinimapLayer::create("map/BossRoom1.tmx", _player);
     minimap->setPosition(_player->getPosition() / zoomLevel);
     minimap->setScale(minimap->MINIMAP_SCALE_FACTOR);
     this->addChild(minimap);
@@ -82,12 +86,12 @@ bool Game::init()
     this->addChild(_joystick);
 
     //BOSS
-    /* boss = BossFactory::createBoss("HellBeast");
-    boss->setPosition(Vec2(900, 500));
-    boss->setName("HellBeast");
-    this->addChild(boss);
-    boss->currentState = boss->roarState;
-    boss->currentState->EnterState();*/
+    // boss = BossFactory::createBoss("HellBeast");
+    //boss->setPosition(Vec2(900, 500));
+    //boss->setName("HellBeast");
+    //this->addChild(boss);
+    //boss->currentState = boss->roarState;
+    //boss->currentState->EnterState();
     return true;
 }
 
