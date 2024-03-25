@@ -10,6 +10,9 @@
 #include "../Boss/BossFactory.h"
 #include "../UserInterface/InGame/Minimap.h"
 #include "../Inventory/Inventory.h"
+#include "../UserInterface/InGame/HealthBar.h"
+#include "../UserInterface/InGame/Joystick.h"
+
 
 USING_NS_CC;
 class InventoryButton;
@@ -25,9 +28,11 @@ private:
     void updateUserInterface(float dt);
     InventoryButton* inventoryButton;
     MinimapLayer* minimap;
+    HealthBar* healthBar;
     PlayerCharacter* _player;
     float zoomLevel;
     Joystick* _joystick;
+    
     Size visibleSize;
     Boss* boss;
     Inventory* inventory;

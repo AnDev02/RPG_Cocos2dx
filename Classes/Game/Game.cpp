@@ -41,7 +41,7 @@ bool Game::init()
     addChild(emitter, 10);
 
     cocos2d::TMXTiledMap *_tileMap = new TMXTiledMap();
-    _tileMap->initWithTMXFile("map/Map0.tmx");
+    _tileMap->initWithTMXFile("map/worldOfSins.tmx");
     this->addChild(_tileMap);
 
 
@@ -52,22 +52,34 @@ bool Game::init()
     _player->currentState->EnterState();
     this->addChild(_player);
 
-    minimap = MinimapLayer::create("map/Map0.tmx", _player);
+    minimap = MinimapLayer::create("map/worldOfSins.tmx", _player);
     minimap->setPosition(_player->getPosition() / zoomLevel);
     minimap->setScale(minimap->MINIMAP_SCALE_FACTOR);
     this->addChild(minimap);
 
-    inventory = Inventory::createInventory();
-    inventory->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-    inventory->setScale(3);
-    this->addChild(inventory, 6);
+    inventory = Inventory::createInventory(zoomLevel, _player);
+    inventory->setScale(1);
+    this->addChild(inventory, 20);
 
     inventoryButton = InventoryButton::create(inventory);
     inventoryButton->setPosition(_player->getPosition());
+    inventoryButton->setScale(0.3);
     this->addChild(inventoryButton, 5);
 
+    healthBar = HealthBar::create("res/health-bar-border.png", "res/health-bar-inside.png", 10000, 5000);
+    healthBar->setPosition(_player->getPosition());
+    healthBar->decreaseHealth(7000);
+    healthBar->decreaseMana(2500);
+    healthBar->setScale(0.2);
+    this->addChild(healthBar, 5);
+
+    _joystick = Joystick::create();
+    _joystick->setPosition(_player->getPosition());
+    _joystick->setScale(0.7);
+    this->addChild(_joystick);
+
     //BOSS
-  /*  boss = BossFactory::createBoss("HellBeast");
+    /* boss = BossFactory::createBoss("HellBeast");
     boss->setPosition(Vec2(900, 500));
     boss->setName("HellBeast");
     this->addChild(boss);
@@ -76,10 +88,11 @@ bool Game::init()
     return true;
 }
 
-
 void Game::updatePlayer(float dt)
 {
     /*enemy->currentState->UpdateState();*/
+    if(_joystick)
+        _player->movementDirection = _joystick->getDirection();
     _player->currentState->UpdateState();
     //boss->currentState->UpdateState();
 }
@@ -90,14 +103,15 @@ void Game::updateCamera(float deltaT)
      Vec2 newposition = _player->getPosition();
      Scene *currentscene = Director::getInstance()->getRunningScene();
       currentscene->setScale(zoomLevel);
-     Vec2 cameraposition = Vec2(-newposition.x * zoomLevel + (visibleSize.width / 2 * zoomLevel),
-                               -newposition.y * zoomLevel + (visibleSize.height / 2 * zoomLevel));
+      Vec2 cameraposition = Vec2((-newposition.x + visibleSize.width * 0.5) * zoomLevel,
+                                 (-newposition.y + visibleSize.height * 0.5) * zoomLevel);
      currentscene->setPosition(cameraposition);
      minimap->setPosition((cameraposition * -1 / zoomLevel) + (Vec2(visibleSize.width / 4, visibleSize.height / 4) / zoomLevel));
 }
 
 void Game::updateUserInterface(float dt) {
-    inventoryButton->setPosition(_player->getPosition() - Vec2(-(visibleSize.width / 6 / zoomLevel), visibleSize.height / 2 / zoomLevel - (inventoryButton->getSpriteSize().height * 2)));
-    if(inventory->isShow())
-        inventory->setPosition(_player->getPosition());
+    inventoryButton->setPosition(_player->getPosition() - Vec2(-(visibleSize.width / 6 / zoomLevel), visibleSize.height / 2 / zoomLevel - (inventoryButton->getSpriteSize().height)));
+    if(inventory->isShow()) inventory->setPosition(_player->getPosition() - Vec2((visibleSize.width / 2 / zoomLevel), 0));
+    healthBar->setPosition(_player->getPosition() - Vec2(0, visibleSize.height / 4 / zoomLevel));
+    _joystick->setPosition(_player->getPosition() - Vec2(visibleSize.width / 2.6 / zoomLevel, visibleSize.height / zoomLevel - (_joystick->getSize().height * 2.3)));
 }

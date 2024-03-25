@@ -23,8 +23,8 @@ bool InventoryButton::init(Inventory* inventory) {
     this->addChild(btnSprite);
 
     auto touchListener = EventListenerTouchOneByOne::create();
-    touchListener->setSwallowTouches(true); // ??m b?o r?ng s? ki?n ch?m ch? ???c x? lý b?i sprite này
-    touchListener->onTouchBegan = CC_CALLBACK_2(InventoryButton::onTouchBegan, this); // G?n hàm x? lý onTouchBegan
+    touchListener->setSwallowTouches(true);
+    touchListener->onTouchBegan = CC_CALLBACK_2(InventoryButton::onTouchBegan, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, btnSprite);
 
 

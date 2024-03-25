@@ -7,12 +7,12 @@
 #include "./InventoryNode.h"
 
 USING_NS_CC;
-
+class PlayerCharacter;
 class Inventory : public Node
 {
 public:
-    static Inventory *createInventory();
-    virtual bool init() override;
+    static Inventory *createInventory(float zoomLevel, PlayerCharacter* _player);
+    virtual bool init(float zoomLevel, PlayerCharacter* _player);
     void addEquipment();
     void addItem();
     void removeEquipment();
@@ -22,12 +22,14 @@ public:
     void hideInventory();
     bool isShow() const { return isSo; };
 private:
+    Sprite* buttonClose;
     Sprite* mainInventory;
     Sprite* subInventory;
     EventListenerTouchOneByOne *touchListener;
     BaseEquipment *equipment;
     std::vector<InventoryNode*> inventoryNodes;
     InventoryNode* currentNode;
+    Node* inventoryBorder;
     bool isDraggingItem = false;
     bool isSo = false;
     

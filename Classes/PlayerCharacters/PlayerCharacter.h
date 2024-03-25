@@ -18,6 +18,8 @@ USING_NS_CC;
 class PlayerCharacter : public BaseCharacter
 {
 public:
+    Vec2 movementDirection;
+
     Joystick* _joystick;
     PlayerCharacterStateBase* currentState;
     PlayerCharacterStateBase* attackState;

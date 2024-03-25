@@ -1,9 +1,9 @@
 #include "Inventory.h"
-
-Inventory *Inventory::createInventory()
+#include "../PlayerCharacters/PlayerCharacter.h"
+Inventory *Inventory::createInventory(float zoomLevel, PlayerCharacter* _player)
 {
     auto inventory = new (std::nothrow) Inventory();
-    if (inventory && inventory->init())
+    if (inventory && inventory->init(zoomLevel, _player))
     {
         inventory->autorelease();
         return inventory;
@@ -15,22 +15,37 @@ Inventory *Inventory::createInventory()
     }
 }
 
-bool Inventory::init()
+bool Inventory::init(float zoomLevel, PlayerCharacter* _player)
 {
     if (!Node::init())
     {
         return false;
     }
-
-    auto layer = LayerColor::create(Color4B(0, 0, 0, 140));
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    inventoryBorder = Node::create();
+    this->addChild(inventoryBorder);
+    buttonClose = Sprite::create("res/c_header_close.png");
+    buttonClose->setScale(0.4);
+    buttonClose->retain();
+    buttonClose->setPosition(Vec2((visibleSize.width - buttonClose->getContentSize().width) / zoomLevel, (visibleSize.height / 2 - buttonClose->getContentSize().height) / zoomLevel));
+    inventoryBorder->addChild(buttonClose, 50);
+    auto layer = LayerColor::create(Color4B(0, 0, 0, 255));
     layer->setContentSize(Director::getInstance()->getVisibleSize());
     layer->setAnchorPoint(Vec2(0, 0));
     layer->setPosition(Vec2(-Director::getInstance()->getVisibleSize().width / 2, -Director::getInstance()->getVisibleSize().height / 2));
-    this->addChild(layer, 1);
-    hideInventory();
+
+    inventoryBorder->addChild(layer, 1);
 
     auto touchListener2 = EventListenerTouchOneByOne::create();
     touchListener2->onTouchBegan = [&](Touch* touch, Event* event) {
+        auto startPoint = this->convertToNodeSpace(touch->getLocation());
+        CCLOG("buttonClose1 %f, %f", buttonClose->getPositionX(), buttonClose->getPositionY());
+        CCLOG("buttonClose2 %f, %f", buttonClose->getContentSize().width, buttonClose->getContentSize().height);
+        if (buttonClose->getBoundingBox().containsPoint(startPoint))
+        {
+            CCLOG("close");
+            hideInventory();
+        }
         if (isSo && mainInventory && !mainInventory->getBoundingBox().containsPoint(this->convertToNodeSpace(touch->getLocation()))) {
             hideInventory();
             return true;
@@ -54,7 +69,7 @@ bool Inventory::init()
                         equipment = EquipmentFactory::createEquipment(i->getBaseEquipment()->getEquipmentName());
                         equipment->setScale(0.3);
                         equipment->setPosition(startPoint);
-                        this->addChild(equipment, 10);
+                        inventoryBorder->addChild(equipment, 25);
                         i->removeBaseEquipment();
                         currentNode = i;
                         isDraggingItem = true;
@@ -99,32 +114,43 @@ bool Inventory::init()
             equipment = nullptr;
         }
         isDraggingItem = false;
+
     };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
-    subInventory = Sprite::create("res/sub-inventory.png");
-    subInventory->setAnchorPoint(Vec2(0, 0.5));
+
+    mainInventory = Sprite::create("res/inventory-border.png");
+
+
+    subInventory = Sprite::create("res/inventory-border.png");
     subInventory->setPosition(Vec2(0, 0));
-    this->addChild(subInventory, 10);
+    inventoryBorder->addChild(subInventory, 10);
 
-    mainInventory = Sprite::create("res/main-inventory.png");
     mainInventory->setAnchorPoint(Vec2(0, 0.5));
-    mainInventory->setPosition(Vec2(subInventory->getContentSize().width, 0));
-    this->addChild(mainInventory, 10);
+    inventoryBorder->addChild(mainInventory, 12);
+    float subInventoryScaleX = (visibleSize.width / 2 / zoomLevel) / subInventory->getContentSize().width;
+    float subInventoryScaleY = visibleSize.height / zoomLevel / subInventory->getContentSize().height;
+    subInventory->setScale(subInventoryScaleX, subInventoryScaleY);
+    mainInventory->setScale(subInventoryScaleX, subInventoryScaleY);
 
-    const int numRows = 4;
-    const int numCols = 4;
-    const float squareSize = mainInventory->getContentSize().width / 5.18;
-    const float gapX = mainInventory->getContentSize().width / 30;
-    const float gapY = mainInventory->getContentSize().width / 30;
-    auto t = Vec2(mainInventory->getPosition().x + mainInventory->getContentSize().width / 15.4, mainInventory->getPosition().y + mainInventory->getContentSize().height / 4);
+    subInventory->setPosition(Vec2((subInventory->getContentSize().width * subInventoryScaleX) / 2, 0));
+    mainInventory->setPosition(Vec2((subInventory->getContentSize().width * subInventoryScaleX) / 2 + subInventory->getContentSize().width * (subInventoryScaleX / 2), 0));
+
+    const int numRows = 7;
+    const int numCols = 8;
+    float squareSize = (subInventory->getContentSize().width * subInventoryScaleX) / 10;
+    const float gapX = squareSize / 30;
+    const float gapY = squareSize / 30;
+
+    
+    auto t = Vec2(subInventory->getContentSize().width * subInventoryScaleX / 9 / 1.3, -(subInventory->getContentSize().height * subInventoryScaleY / 4)) + Vec2(subInventory->getContentSize().width * subInventoryScaleX / 2 + subInventory->getContentSize().width * (subInventoryScaleX / 2), subInventory->getContentSize().height * subInventoryScaleY / 2);
     for (int row = 0; row < numRows; ++row)
     {
         for (int col = 0; col < numCols; ++col)
         {
             auto node = InventoryNode::createInventoryNode(squareSize);
             node->setPosition(t + Vec2(col * (squareSize + gapX), -row * (squareSize + gapY)));
-            this->addChild(node, 10);
+            inventoryBorder->addChild(node, 20);
             inventoryNodes.push_back(node);
         }
     }
@@ -137,6 +163,7 @@ bool Inventory::init()
             break;
         }
     }
+    hideInventory();
 
 
 
@@ -144,11 +171,11 @@ bool Inventory::init()
 }
 
 void Inventory::showInventory() {
-    this->setVisible(true);
+    inventoryBorder->setVisible(true);
     isSo = true;
 }
 
 void Inventory::hideInventory() {
-    this->setVisible(false);
+    inventoryBorder->setVisible(false);
     isSo = false;
 }

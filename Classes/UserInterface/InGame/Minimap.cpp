@@ -18,10 +18,34 @@ bool MinimapLayer::initWithTiledMap(std::string mapName, PlayerCharacter* player
     playerDot = DrawNode::create();
     playerDot->drawDot(Vec2::ZERO, 20, Color4F::RED);
     this->addChild(playerDot, 1000);
+
     this->tiledMap = new TMXTiledMap();
     this->tiledMap->initWithTMXFile(mapName);
-    this->addChild(this->tiledMap);
-    this->drawMiniMapBorder();
+    Size tileSize = tiledMap->getMapSize();
+    int numColumns = tileSize.width;
+    Size tileSize2 = tiledMap->getTileSize();
+    int tileWidth = tileSize2.width;
+
+
+    auto stencil = DrawNode::create();
+    int radius = numColumns * tileWidth / 2; 
+    int numPoints = 100;
+    float angleStep = 2 * M_PI / numPoints;
+    Vec2 circleCenter = Vec2(radius, radius); 
+    stencil->drawSolidCircle(circleCenter, radius, angleStep, numPoints, Color4F::WHITE);
+
+    auto clipNode = ClippingNode::create();
+    clipNode->setStencil(stencil);
+    clipNode->setInverted(false); 
+    clipNode->setPosition(0, 0);
+    clipNode->addChild(this->tiledMap);
+    this->addChild(clipNode, 2);
+
+    Sprite* minimapFrm = Sprite::create("res/minimap_frame.png");
+    minimapFrm->setScale(tileSize.width * tileSize2.width / minimapFrm->getContentSize().width * 1.1, tileSize.height * tileSize2.height / minimapFrm->getContentSize().height * 1.1);
+    minimapFrm->setPosition(tileSize.width * tileSize2.width / 2, tileSize.height * tileSize2.height / 2);
+    this->addChild(minimapFrm, 1);
+
     this->scheduleUpdate();
     this->_player = player;
 

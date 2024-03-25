@@ -3,10 +3,10 @@
 
 bool Fighter::init() {
     //Add skills
-    this->addSkill("AOESkill1");
+    /*this->addSkill("AOESkill1");
     this->addSkill("BuffSkill1");
     this->addSkill("TargetSkill1");
-    this->addSkill("SkillShot1");
+    this->addSkill("SkillShot1");*/
 
     //Load Animate
     this->loadAnimate();

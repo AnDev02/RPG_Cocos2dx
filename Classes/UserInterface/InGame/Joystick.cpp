@@ -15,12 +15,10 @@ bool Joystick::init()
 
     joystickBorder = Sprite::create("res/joystick-border.png");
     joystickBorder->setPosition(Vec2(0, 0));
-    joystickBorder->setOpacity(60);
     this->addChild(joystickBorder, 300);
 
     joystickBtn = Sprite::create("res/joystick-btn.png");
     joystickBtn->setPosition(Vec2(0, 0));
-    joystickBtn->setOpacity(60);
     this->addChild(joystickBtn, 500);
     centerPos = joystickBtn->getPosition();
 

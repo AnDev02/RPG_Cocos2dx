@@ -19,6 +19,7 @@ public:
     // Trả về hướng của joystick
     Vec2 getDirection();
     bool getIsPress() const { return isPressed; };
+    Size getSize() const { return joystickBorder->getContentSize(); };
     CREATE_FUNC(Joystick);
 
 private:

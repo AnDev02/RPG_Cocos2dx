@@ -22,6 +22,11 @@ bool InventoryNode::init(float size)
         return false;
     }
     this->setContentSize(Size(size, size));
+    Sprite* nodeSpr = Sprite::create("res/inventory-node.png");
+    nodeSpr->setScale(size / nodeSpr->getContentSize().width, size / nodeSpr->getContentSize().height);
+    nodeSpr->setAnchorPoint(Vec2(0, 0));
+    nodeSpr->setPosition(size / (nodeSpr->getContentSize().width / 2), size / (nodeSpr->getContentSize().height / 2));
+    this->addChild(nodeSpr);
 
     return true;
 }
@@ -50,7 +55,7 @@ bool InventoryNode::setBaseEquipment(std::string be)
         {
             this->setStatus("busy");
             this->baseEquipment->setScale(0.3);
-            this->baseEquipment->setPosition(Vec2(this->baseEquipment->getContentSize().width * 0.269, this->baseEquipment->getContentSize().height * 0.269));
+            this->baseEquipment->setPosition(Vec2(this->baseEquipment->getContentSize().width * 0.35, this->baseEquipment->getContentSize().height * 0.35));
             this->addChild(this->baseEquipment);
         }
         return true;
