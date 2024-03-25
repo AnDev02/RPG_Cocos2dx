@@ -117,6 +117,8 @@ void Game::updateUserInterface(float dt) {
 
     inventoryButton->setPosition(_player->getPosition() - Vec2(-(visibleSize.width / 4 / zoomLevel), visibleSize.height / 2 / zoomLevel - (inventoryButton->getSpriteSize().height)));
     if(inventory->isShow()) inventory->setPosition(_player->getPosition() - Vec2((visibleSize.width / 2 / zoomLevel), 0));
-    healthBar->setPosition(_player->getPosition() - Vec2(0, visibleSize.height / 4 / zoomLevel));
-    _joystick->setPosition(_player->getPosition() - Vec2((visibleSize.width / 3 / zoomLevel), visibleSize.height / 2 / zoomLevel - (_joystick->getSize().height)));
+    CCLOG("%f healthBar->getHeight()", healthBar->getHeight());
+    healthBar->setPosition(_player->getPosition() - Vec2(0, visibleSize.height / 2 / zoomLevel - healthBar->getHeight()));
+    //visibleSize.height / 2 / zoomLevel - (healthBar->getHeight())
+    _joystick->setPosition(_player->getPosition() - Vec2((visibleSize.width / 2.7 / zoomLevel), visibleSize.height / 2 / zoomLevel - (_joystick->getSize().height * 0.8)));
 }

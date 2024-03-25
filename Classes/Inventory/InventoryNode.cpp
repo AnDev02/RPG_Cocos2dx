@@ -22,8 +22,11 @@ bool InventoryNode::init(float size)
         return false;
     }
     this->setContentSize(Size(size, size));
-    Sprite* nodeSpr = Sprite::create("res/inventory-node.png");
-    nodeSpr->setScale(size / nodeSpr->getContentSize().width, size / nodeSpr->getContentSize().height);
+    nodeSpr = Sprite::create("res/inventory-node.png");
+    nodeSpr->retain();
+    nodeScaleX = size / nodeSpr->getContentSize().width;
+    nodeScaleY = size / nodeSpr->getContentSize().height;
+    nodeSpr->setScale(nodeScaleX, nodeScaleY);
     nodeSpr->setAnchorPoint(Vec2(0, 0));
     nodeSpr->setPosition(size / (nodeSpr->getContentSize().width / 2), size / (nodeSpr->getContentSize().height / 2));
     this->addChild(nodeSpr);
@@ -54,8 +57,11 @@ bool InventoryNode::setBaseEquipment(std::string be)
         if (this->baseEquipment)
         {
             this->setStatus("busy");
-            this->baseEquipment->setScale(0.3);
-            this->baseEquipment->setPosition(Vec2(this->baseEquipment->getContentSize().width * 0.35, this->baseEquipment->getContentSize().height * 0.35));
+            float equipmentScaleX = nodeSpr->getContentSize().width * nodeScaleX * 0.5 / this->baseEquipment->getContentSize().width;
+            this->baseEquipment->setAnchorPoint(Vec2(0, 0));
+            float equipmentScaleY = nodeSpr->getContentSize().height * nodeScaleY * 0.5 / this->baseEquipment->getContentSize().height;
+            this->baseEquipment->setScale(equipmentScaleX, equipmentScaleY);
+            this->baseEquipment->setPosition(Vec2(nodeSpr->getContentSize().width * equipmentScaleX / 2, nodeSpr->getContentSize().height * equipmentScaleY / 2));
             this->addChild(this->baseEquipment);
         }
         return true;

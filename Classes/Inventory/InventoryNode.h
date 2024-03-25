@@ -23,10 +23,13 @@ public:
     bool removeBaseEquipment();
     bool decreaseBaseEquipment(int);
 private:
+    Sprite* nodeSpr;
     std::string status; // busy, free
     BaseEquipment* baseEquipment;
     int quantityItem;
     int id;
+    float nodeScaleX;
+    float nodeScaleY;
     bool isDraggingItem = false;
     Node* node;
 };

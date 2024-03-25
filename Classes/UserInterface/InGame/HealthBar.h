@@ -79,7 +79,7 @@ public:
         maxHealthLabel->setString(std::to_string(static_cast<int>(m_currentHealth)) + " / " + std::to_string(static_cast<int>(m_maxHealth)));
         updateHealthBar();*/
     }
-    float getHeight() const { return progressBarBorder->getContentSize().height + bottomInventory->getContentSize().height; };
+    float getHeight() const { return healthBar->getContentSize().height; };
 private:
     Sprite* progressBarBorder;
     Sprite* healthBar;
