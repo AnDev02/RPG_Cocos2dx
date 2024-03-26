@@ -1,0 +1,169 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "theWorldOfSins.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/BossRoom1.tmx": {
+            "scale": 0.63234375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 638.8930071658018,
+                "y": 641.265134667655
+            }
+        },
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/bones1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/bricks.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/column.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/ground_darken.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/ground_stone1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/ground_variation1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/ground_variation2.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/subservient_special_worship ver 1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/subservient_special_worship ver 2.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/tiles.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/torch.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/wall.tsx": {
+            "scaleInDock": 1
+        },
+        "Ground_moss.tsx": {
+            "scaleInDock": 1.5,
+            "scaleInEditor": 3
+        },
+        "Objects.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "Rocky Tileset/Tiled_files/Rocky_area.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 23,
+            "viewCenter": {
+                "x": 327.33333333333337,
+                "y": 250.33333333333334
+            }
+        },
+        "Rocky Tileset/Tiled_files/Rocky_area.tmx#Ground_grass": {
+            "scaleInDock": 1
+        },
+        "Rocky Tileset/Tiled_files/Rocky_area.tmx#Objects": {
+            "scaleInDock": 1
+        },
+        "Rocky Tileset/Tiled_files/Rocky_area.tmx#Water_coasts": {
+            "scaleInDock": 1
+        },
+        "Rocky Tileset/Tiled_files/Rocky_area.tmx#Water_detilazation": {
+            "scaleInDock": 3
+        },
+        "Rocky Tileset/Tiled_files/Rocky_area.tmx#Water_under_objects": {
+            "scaleInDock": 1
+        },
+        "Rocky Tileset/Tiled_files/Rocky_area.tmx#Waterfalls": {
+            "scaleInDock": 1
+        },
+        "Rocky Tileset/Tiled_files/Rocky_area.tmx#details": {
+            "scaleInDock": 1
+        },
+        "Rocky Tileset/Tiled_files/Water_detilazation2.tsx": {
+            "scaleInDock": 1
+        },
+        "Water_coasts.tsx": {
+            "scaleInDock": 1.5,
+            "scaleInEditor": 3
+        },
+        "Water_under_objects.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 3
+        },
+        "details.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 3
+        },
+        "theWorldOfSins.tmx": {
+            "expandedObjectLayers": [
+                28,
+                11
+            ],
+            "scale": 2,
+            "selectedLayer": 26,
+            "viewCenter": {
+                "x": 790.5,
+                "y": 1427.25
+            }
+        },
+        "water_detilazation.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 3
+        },
+        "water_detilazation_v2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 3
+        },
+        "waterfall.tsx": {
+            "scaleInDock": 4,
+            "scaleInEditor": 3
+        }
+    },
+    "last.imagePath": "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/The World Of Sins/Rocky Tileset/PNG",
+    "map.height": 100,
+    "map.lastUsedFormat": "tmx",
+    "map.layerDataFormat": null,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 100,
+    "openFiles": [
+        "theWorldOfSins.tmx",
+        "Ground_moss.tsx",
+        "details.tsx",
+        "Objects.tsx",
+        "Water_coasts.tsx",
+        "water_detilazation.tsx",
+        "water_detilazation_v2.tsx",
+        "Water_under_objects.tsx",
+        "waterfall.tsx",
+        "Rocky Tileset/Tiled_files/Rocky_area.tmx"
+    ],
+    "project": "theWorldOfSins.tiled-project",
+    "recentFiles": [
+        "Rocky Tileset/Tiled_files/Rocky_area.tmx",
+        "waterfall.tsx",
+        "Water_under_objects.tsx",
+        "water_detilazation_v2.tsx",
+        "water_detilazation.tsx",
+        "Water_coasts.tsx",
+        "Objects.tsx",
+        "details.tsx",
+        "Ground_moss.tsx",
+        "theWorldOfSins.tmx",
+        "C:/cocos2d/Project Soul Slayer/RPG_Cocos2dx/Resources/map/BossRoom1.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}

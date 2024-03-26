@@ -41,7 +41,7 @@ bool Game::init()
     addChild(emitter, 10);
 
     cocos2d::TMXTiledMap *_tileMap = new TMXTiledMap();
-    _tileMap->initWithTMXFile("map/BossRoom1.tmx");
+    _tileMap->initWithTMXFile("map/The World Of Sins/theWorldOfSins.tmx");
     this->addChild(_tileMap);
     MapDecoration* mapDecoration = MapDecoration::getInstance(_tileMap);
     MapDecoration::getInstance()->loadDecoration("flames");
@@ -59,7 +59,7 @@ bool Game::init()
     _player->currentState->EnterState();
     this->addChild(_player);
 
-    minimap = MinimapLayer::create("map/BossRoom1.tmx", _player);
+    minimap = MinimapLayer::create("map/The World Of Sins/theWorldOfSins.tmx", _player);
     minimap->setPosition(_player->getPosition() / zoomLevel);
     minimap->setScale(minimap->MINIMAP_SCALE_FACTOR);
     this->addChild(minimap);
