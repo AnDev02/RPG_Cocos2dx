@@ -21,15 +21,19 @@ bool SkillShot2::init() {
     _skillAnimate->retain();
 
     //Skill Icon...
-    _iconSprite = Sprite::create("skill/SkillSprite/15.png");
+    iconSpritePath = "skill/SkillSprite/15.png";
+    _iconSprite = Sprite::create(iconSpritePath);
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
-    //SkillTree...
+
+    //SkillButton
     _skillButton = SkillButton::create();
     _skillButton->setSkillButtonBorder(_iconSprite);
     _skillButton->setPosition(Vec2(-100, 0));
     this->addChild(_skillButton);
     _skillButton->setVisible(true);
+
+    //SkillTree...
 
     auto touchListener = EventListenerTouchOneByOne::create();
     touchListener->setSwallowTouches(true);

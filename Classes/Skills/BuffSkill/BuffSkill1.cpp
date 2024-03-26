@@ -2,9 +2,11 @@
 #include "PlayerCharacters/PlayerCharacter.h"
 bool BuffSkill1::init() {
     //Skill Icon...
-    _iconSprite = Sprite::create("skill/SkillSprite/11.png");
+    iconSpritePath = "skill/SkillSprite/11.png";
+    _iconSprite = Sprite::create(iconSpritePath);
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
+    
 
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/zhonya/zhonya.plist", "skill/SkillSprite/zhonya/zhonya.png");
     //Skill Sprite
@@ -17,12 +19,14 @@ bool BuffSkill1::init() {
     _skillAnimate = Animate::create(Engine::createAnimation2("zhonya", 15, 0.1));
     _skillAnimate->retain();
     
-    //SkillTree...
+    //SkillButton
     _skillButton = SkillButton::create();
     _skillButton->setSkillButtonBorder(_iconSprite);
     _skillButton->setPosition(Vec2(200, 0));
     this->addChild(_skillButton);
     _skillButton->setVisible(true);
+
+    //SkillTree...
 
     auto touchListener = EventListenerTouchOneByOne::create();
     touchListener->setSwallowTouches(true);

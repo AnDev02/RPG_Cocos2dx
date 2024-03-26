@@ -15,7 +15,8 @@ bool TargetSkill2::init() {
     _targetSprite->retain();
 
     //Skill Icon...
-    _iconSprite = Sprite::create("skill/SkillSprite/17.png");
+    iconSpritePath = "skill/SkillSprite/17.png";
+    _iconSprite = Sprite::create(iconSpritePath);
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
 
@@ -30,11 +31,14 @@ bool TargetSkill2::init() {
     _skillAnimate = Animate::create(Engine::createAnimation2("darkpower", 15, 0.1));
     _skillAnimate->retain();
 
+    //Skill Button
     _skillButton = SkillButton::create();
     _skillButton->setSkillButtonBorder(_iconSprite);
     _skillButton->setPosition(Vec2(-200, 0));
     this->addChild(_skillButton);
     _skillButton->setVisible(true);
+
+    //SkillTree...
 
     auto touchListener = EventListenerTouchOneByOne::create();
     touchListener->setSwallowTouches(true);

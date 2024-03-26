@@ -9,7 +9,8 @@ bool AOESkill1::init() {
     _aoeSprite->setVisible(false);
 
     //Skill Icon...
-    _iconSprite = Sprite::create("skill/SkillSprite/10.png");
+    iconSpritePath = "skill/SkillSprite/10.png";
+    _iconSprite = Sprite::create(iconSpritePath);
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
 
@@ -23,13 +24,15 @@ bool AOESkill1::init() {
     _skillAnimate = Animate::create(Engine::createAnimation2("thunder", 13, 0.05));
     _skillAnimate->retain();
 
-    //SkillTree...
+    //SkillButton
     _skillButton = SkillButton::create();
     _skillButton->setSkillButtonBorder(_iconSprite);
     _skillButton->setPosition(Vec2(100, 0));
     this->addChild(_skillButton);
     _skillButton->setVisible(true);
 
+    //SkillTree...
+    
     // Đăng ký sự kiện onTouch cho SkillButton
     auto touchListener = EventListenerTouchOneByOne::create();
     touchListener->setSwallowTouches(true);

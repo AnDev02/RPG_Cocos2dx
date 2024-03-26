@@ -188,12 +188,19 @@ public:
         this->addChild(skill);
     }
 
-
+    void increaseSkillPoint(int pnt) {
+        this->skillPoint += pnt;
+    };
+    void decreaseSkillPoint(int pnt) {
+        this->skillPoint -= pnt;
+    };
+    int getSkillPoint() const { return skillPoint; };
 
     CREATE_FUNC(PlayerCharacter);
 
 protected:
     std::vector<SkillBase*> skills;
+    int skillPoint;
 };
 
 #endif // 

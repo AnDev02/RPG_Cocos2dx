@@ -9,17 +9,17 @@ USING_NS_CC;
 class TargetSkill : public SkillBase
 {
 public:
-    virtual bool init() override;
+    bool init();
 
-    virtual bool onTouchBegan(Touch* touch, Event* event) override;
+    bool onTouchBegan(Touch* touch, Event* event);
 
-    virtual void onTouchMoved(Touch* touch, Event* event) override;
+    void onTouchMoved(Touch* touch, Event* event);
 
-    virtual void onTouchEnded(Touch* touch, Event* event) override;
+    void onTouchEnded(Touch* touch, Event* event);
 
-    virtual void performSkill(Vec2 target) override;
+    void performSkill(Vec2 target);
 
-    virtual void update(float dt) override;
+    void update(float dt);
 
     CREATE_FUNC(TargetSkill);
 

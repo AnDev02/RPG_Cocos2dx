@@ -11,36 +11,40 @@ class SkillBase : public Node
 {
 public:
     //Init
-    virtual bool init() = 0;
+    bool init();
 
-    virtual bool onTouchBegan(Touch* touch, Event* event) = 0;
+    bool onTouchBegan(Touch* touch, Event* event);
 
-    virtual void onTouchMoved(Touch* touch, Event* event) = 0;
+    void onTouchMoved(Touch* touch, Event* event);
 
-    virtual void onTouchEnded(Touch* touch, Event* event) = 0;
+    void onTouchEnded(Touch* touch, Event* event);
 
-    virtual void performSkill(Vec2 target) = 0;
+    void performSkill(Vec2 target);
 
-    virtual void update(float dt) = 0;
+    void update(float dt);
 
-    //// Phương thức xử lý sự kiện chạm
-    //virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
-    //virtual void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
+    int getUnlockScore() const { return this->unlockScore; };
+    void unlock() {
+        if (isLocked) {
+            isLocked = false;
+            this->removeChildByName("overlay");
+        }
+        /*...*/
+    };
+    bool isLock() const { return isLocked; };
+
+    std::string getSkillName() const { return skillName; };
+
+    void setSkillIconSprite(Sprite* spr) { _iconSprite = spr; };
+
+    Sprite* getSkillIconSprite() const { return this->_iconSprite; };
 
     ////About SkillTree
-    //SkillBase* parent;
+    SkillBase* parent;
 
-    //std::vector<SkillBase*> children;
+    std::vector<SkillBase*> children;
 
-    //virtual int getUnlockScore() = 0;
-
-    //virtual void unlock() = 0;
-
-    //virtual bool isLock() = 0;
-    // 
-    ////
-
-protected:
+    //protected:
     Sprite* _iconSprite;
     Sprite* _aoeSprite;
     Sprite* _skillSprite;
@@ -56,6 +60,7 @@ protected:
     bool isLocked = true;
     int unlockScore;
     std::string skillName;
+    std::string iconSpritePath;
 };
 
 #endif 
