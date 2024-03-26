@@ -6,10 +6,19 @@
 #include "Engine/Engine.h"
 
 USING_NS_CC;
-
 class SkillBase : public Node
 {
 public:
+    struct SkillTalent {
+        std::string skillName;
+        std::string iconPath;
+        int unlockPoint;
+        std::string description;
+        std::string skillType;
+        SkillBase::SkillTalent* parent;
+        std::vector<SkillBase::SkillTalent*> children;
+        bool isLock;
+    };
     //Init
     bool init();
 
@@ -36,9 +45,14 @@ public:
     std::string getSkillName() const { return skillName; };
 
     void setSkillIconSprite(Sprite* spr) { _iconSprite = spr; };
-
+    
     Sprite* getSkillIconSprite() const { return this->_iconSprite; };
 
+    Size getSkillIconSize() const { return _iconSprite->getContentSize(); };
+
+    SkillTalent* getSkillTalent() const { return skillTalent; };
+
+    SkillTalent* skillTalent;
     ////About SkillTree
     SkillBase* parent;
 

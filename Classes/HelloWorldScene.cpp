@@ -36,7 +36,7 @@ bool HelloWorld::init()
     loadKnightToCache();
 
     // loadHellBeastToCache();
-    loadSlimeToCache();
+   // loadSlimeToCache();
     game = Game::create();
     if (game)
     {

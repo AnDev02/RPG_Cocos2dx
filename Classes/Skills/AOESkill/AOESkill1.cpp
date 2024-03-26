@@ -1,5 +1,6 @@
 ﻿#include "AOESkill1.h"
 #include "PlayerCharacters/PlayerCharacter.h"
+#include <string>
 bool AOESkill1::init() {
 	
     //AOE Range
@@ -8,11 +9,25 @@ bool AOESkill1::init() {
     this->addChild(_aoeSprite);
     _aoeSprite->setVisible(false);
 
+
+    skillTalent = new SkillTalent;
+    skillTalent->children.push_back(SkillFactory::createSkill("AOESkill2")->getSkillTalent());
+    skillTalent->parent = nullptr;
+    skillTalent->iconPath = "skill/SkillSprite/10.png";
+    skillTalent->skillName = "AOESkill1";
+    skillTalent->unlockPoint = 10;
+    skillTalent->skillType = "AOE";
+    skillTalent->description = "Dung rat phe";
+    skillTalent->isLock = false;
+    this->unlockScore = 10;
+
+
     //Skill Icon...
-    iconSpritePath = "skill/SkillSprite/10.png";
-    _iconSprite = Sprite::create(iconSpritePath);
+    _iconSprite = Sprite::create("skill/SkillSprite/10.png");
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
+
+
 
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/thunder/thunder.plist", "skill/SkillSprite/thunder/thunder.png");
     //Skill Sprite

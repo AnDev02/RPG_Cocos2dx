@@ -8,9 +8,19 @@ bool AOESkill2::init() {
     this->addChild(_aoeSprite);
     _aoeSprite->setVisible(false);
 
+
+
+    skillTalent = new SkillTalent;
+    skillTalent->iconPath = "skill/SkillSprite/16.png";
+    skillTalent->skillName = "AOESkill2";
+    skillTalent->unlockPoint = 10;
+    skillTalent->skillType = "AOE";
+    skillTalent->description = "Dung rat phe";
+    skillTalent->isLock = true;
+    this->unlockScore = 10;
+
     //Skill Icon...
-    iconSpritePath = "skill/SkillSprite/16.png";
-    _iconSprite = Sprite::create(iconSpritePath);
+    _iconSprite = Sprite::create(skillTalent->iconPath);
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
 

@@ -19,7 +19,6 @@ class PlayerCharacter : public BaseCharacter
 {
 public:
     Vec2 movementDirection;
-
     Joystick* _joystick;
     PlayerCharacterStateBase* currentState;
     PlayerCharacterStateBase* attackState;
@@ -200,7 +199,7 @@ public:
 
 protected:
     std::vector<SkillBase*> skills;
-    int skillPoint;
+    int skillPoint = 100;
 };
 
 #endif // 

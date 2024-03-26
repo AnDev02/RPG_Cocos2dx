@@ -13,7 +13,7 @@
 #include "../UserInterface/InGame/HealthBar.h"
 #include "../UserInterface/InGame/Joystick.h"
 #include "MapDecoration/MapDecoration.h"
-
+#include "../Skills/SkillTree.h"
 
 USING_NS_CC;
 class InventoryButton;
@@ -24,6 +24,7 @@ public:
     virtual bool init();
     CREATE_FUNC(Game);
 private:
+    SkillTree* skillTree;
     void updateCamera(float dt);
     void updatePlayer(float dt);
     void updateUserInterface(float dt);

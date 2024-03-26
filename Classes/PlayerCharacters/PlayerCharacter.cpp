@@ -5,7 +5,6 @@ bool PlayerCharacter::init() {
 
         //     Director::getInstance()->getRunningScene()->addChild(_joystick, 5000);
              //this->getScene()->addChild(_joystick, 4000);
-
     return true;
 }
 
