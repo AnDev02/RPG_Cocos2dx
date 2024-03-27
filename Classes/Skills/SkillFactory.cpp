@@ -2,29 +2,68 @@
 
 SkillBase* SkillFactory::createSkill(std::string skillType) {
 	SkillBase* result;
-	if (skillType == "AOESkill1") {
-		result = AOESkill1::create();
+	
+	//AOE Skill
+	if (skillType == "DarkHole") {
+		result = DarkHole::create();
 	}
-	if (skillType == "AOESkill2") {
-		result = AOESkill2::create();
+	if (skillType == "ElectricArea") {
+		result = ElectricArea::create();
 	}
-	if (skillType == "BuffSkill1") {
-		result = BuffSkill1::create();
+	if (skillType == "FireFlower") {
+		result = FireFlower::create();
 	}
-	if (skillType == "BuffSkill2") {
-		result = BuffSkill2::create();
+	if (skillType == "IllumiArea") {
+		result = IllumiArea::create();
 	}
-	if (skillType == "TargetSkill1") {
-		result = TargetSkill1::create();
+	if (skillType == "RumbleArea") {
+		result = RumbleArea::create();
 	}
-	if (skillType == "TargetSkill2") {
-		result = TargetSkill2::create();
+	if (skillType == "ShadowArea") {
+		result = ShadowArea::create();
 	}
-	if (skillType == "SkillShot1") {
-		result = SkillShot1::create();
+	if (skillType == "UltimateIllumiPower") {
+		result = UltimateIllumiPower::create();
 	}
-	if (skillType == "SkillShot2") {
-		result = SkillShot2::create();
+
+	//Buff Skill
+	if (skillType == "FireHurricane") {
+		result = FireHurricane::create();
 	}
+	if (skillType == "FireShield") {
+		result = FireShield::create();
+	}
+	if (skillType == "HealingBuff") {
+		result = HealingBuff::create();
+	}
+	if (skillType == "IllumiShield") {
+		result = IllumiShield::create();
+	}
+	if (skillType == "ShadowShield") {
+		result = ShadowShield::create();
+	}
+	//Skill Shot
+	if (skillType == "DarkBall") {
+		result = DarkBall::create();
+	}
+	if (skillType == "DarkSpear") {
+		result = DarkSpear::create();
+	}
+	if (skillType == "FireBall") {
+		result = FireBall::create();
+	}
+	if (skillType == "IllumiBall") {
+		result = IllumiBall::create();
+	}
+	if (skillType == "IllumiWave") {
+		result = IllumiWave::create();
+	}
+	if (skillType == "ShadowHurricane") {
+		result = ShadowHurricane::create();
+	}
+	if (skillType == "ShadowWave") {
+		result = ShadowWave::create();
+	}
+	//Target Skill
 	return result;
 }

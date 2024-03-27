@@ -24,6 +24,12 @@ bool SkillButton::init()
     this->addChild(skillButtonBtn, 500);
     centerPos = skillButtonBtn->getPosition();
 
+    cancelButton = Sprite::create("res/cancelBorder.png");
+    cancelButton->setPosition(Vec2(0, 50));
+    cancelButton->setOpacity(60);
+    this->addChild(cancelButton, 500);
+    cancelButton->setVisible(false);
+
     //auto touchListener = EventListenerTouchOneByOne::create();
     //touchListener->setSwallowTouches(true);
     //touchListener->onTouchBegan = CC_CALLBACK_2(SkillButton::onTouchBegan, this);

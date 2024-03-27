@@ -86,11 +86,11 @@ bool Game::init()
     this->addChild(_joystick);
 
 
-    SkillBase* skillRoot = SkillFactory::createSkill("AOESkill1");
+    /*SkillBase* skillRoot = SkillFactory::createSkill("AOESkill1");
     skillTree = SkillTree::createSkillTree(_player, skillRoot->getSkillTalent());
     skillTree->setPosition(_player->getPosition());
     skillTree->setScale(0.2);
-    this->addChild(skillTree);
+    this->addChild(skillTree);*/
 
     //_player->addSkill("AOESkill2");
 

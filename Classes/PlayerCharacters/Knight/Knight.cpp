@@ -5,10 +5,13 @@ bool Knight::init() {
     if (!PlayerCharacter::init()) return false;
 
     //Add skills
-    //this->addSkill("AOESkill2");
-    //this->addSkill("BuffSkill2");
-    //this->addSkill("TargetSkill2");
-    //this->addSkill("SkillShot2");
+    this->addSkill("DarkHole");
+    this->addSkill("ElectricArea");
+    this->addSkill("FireFlower");
+    this->addSkill("IllumiArea");
+    this->addSkill("RumbleArea");
+    this->addSkill("ShadowArea");
+    this->addSkill("UltimateIllumiPower");
 
     //Load Animate
     this->loadAnimate();

@@ -43,6 +43,7 @@ public:
     bool isPressed;
     Sprite* skillButtonBorder;
     Sprite* skillButtonBtn;
+    Sprite* cancelButton;
     Vec2 prevPosBeforeRelease = Vec2::ZERO;
     Vec2 centerPos;
     Vec2 originalPosition;

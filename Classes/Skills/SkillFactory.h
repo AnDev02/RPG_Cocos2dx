@@ -3,14 +3,27 @@
 
 #include "cocos2d.h"
 #include "SkillBase.h"
-#include "SkillShot/SkillShot1.h"
-#include "SkillShot/SkillShot2.h"
-#include "AOESkill/AOESkill1.h"
-#include "AOESkill/AOESkill2.h"
-#include "BuffSkill/BuffSkill1.h"
-#include "BuffSkill/BuffSkill2.h"
-#include "TargetSkill/TargetSkill1.h"
-#include "TargetSkill/TargetSkill2.h"
+#include "AOESkill/DarkHole.h"
+#include "AOESkill/ElectricArea.h"
+#include "AOESkill/FireFlower.h"
+#include "AOESkill/IllumiArea.h"
+#include "AOESkill/RumbleArea.h"
+#include "AOESkill/ShadowArea.h"
+#include "AOESkill/UltimateIllumiPower.h"
+
+#include "BuffSkill/FireHurricane.h"
+#include "BuffSkill/FireShield.h"
+#include "BuffSkill/HealingBuff.h"
+#include "BuffSkill/IllumiShield.h"
+#include "BuffSkill/ShadowShield.h"
+
+#include "SkillShot/DarkBall.h"
+#include "SkillShot/DarkSpear.h"
+#include "SkillShot/FireBall.h"
+#include "SkillShot/IllumiBall.h"
+#include "SkillShot/IllumiWave.h"
+#include "SkillShot/ShadowHurricane.h"
+#include "SkillShot/ShadowWave.h"
 
 USING_NS_CC;
 
