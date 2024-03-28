@@ -3,6 +3,15 @@
 #include <string>
 bool RumbleArea::init() {
 
+
+    skillTalent = new SkillTalent;
+    skillTalent->skillName = "RumbleArea";
+    skillTalent->iconPath = "skill/SkillSprite/SkillIcon/14.png";
+    skillTalent->unlockPoint = 10;
+    skillTalent->description = "good";
+    skillTalent->skillType = "AOE";
+    skillTalent->isLock = true;
+
     //AOE Range
     _aoeSprite = Sprite::create("skill/AOERangeSprite/RectangleRange.png");
     _aoeSprite->setOpacity(100);

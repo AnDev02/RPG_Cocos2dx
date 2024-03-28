@@ -3,6 +3,16 @@
 #include <string>
 bool DarkSpear::init() {
 
+    skillTalent = new SkillTalent;
+    skillTalent->skillName = "DarkSpear";
+    skillTalent->iconPath = "skill/SkillSprite/SkillIcon/23.png";
+    skillTalent->unlockPoint = 10;
+    skillTalent->description = "black like squid";
+    skillTalent->skillType = "SkillShot";
+    skillTalent->parent = nullptr;
+    skillTalent->children.push_back(SkillFactory::createSkill("FireBall")->getSkillTalent());
+    skillTalent->children.push_back(SkillFactory::createSkill("IllumiBall")->getSkillTalent());
+    skillTalent->isLock = true;
     //AOE Range
     _aoeSprite = Sprite::create("skill/AOERangeSprite/SkillShotTarget.png");
     _aoeSprite->setOpacity(100);
@@ -11,7 +21,7 @@ bool DarkSpear::init() {
     _aoeSprite->setVisible(false);
 
     //Skill Icon...
-    _iconSprite = Sprite::create("skill/SkillSprite/SkillIcon/23.png");
+    _iconSprite = Sprite::create(skillTalent->iconPath);
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
 

@@ -5,13 +5,13 @@ bool Knight::init() {
     if (!PlayerCharacter::init()) return false;
 
     //Add skills
-    this->addSkill("DarkHole");
+  /*  this->addSkill("DarkHole");
     this->addSkill("ElectricArea");
     this->addSkill("FireFlower");
     this->addSkill("IllumiArea");
     this->addSkill("RumbleArea");
     this->addSkill("ShadowArea");
-    this->addSkill("UltimateIllumiPower");
+    this->addSkill("UltimateIllumiPower");*/
 
     //Load Animate
     this->loadAnimate();
@@ -23,7 +23,7 @@ bool Knight::init() {
     characterCurrentSprite = Sprite::createWithSpriteFrameName("knight_armed_idle_E_0.0_0.png");
 
     //MovementSpeed
-    MS = 10;
+    MS = 300;
 
     //Init physics
     auto physicsBody = PhysicsBody::createBox(Size(20, 20), PhysicsMaterial(1.0f, 0.0f, 0.0f));

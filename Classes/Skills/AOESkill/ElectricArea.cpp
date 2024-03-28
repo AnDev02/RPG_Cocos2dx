@@ -2,6 +2,14 @@
 #include "PlayerCharacters/PlayerCharacter.h"
 #include <string>
 bool ElectricArea::init() {
+    skillTalent = new SkillTalent;
+    skillTalent->skillName = "ElectricArea";
+    skillTalent->iconPath = "skill/SkillSprite/SkillIcon/11.png";
+    skillTalent->unlockPoint = 10;
+    skillTalent->description = "good";
+    skillTalent->skillType = "AOE";
+    skillTalent->children.push_back(SkillFactory::createSkill("RumbleArea")->getSkillTalent());
+    skillTalent->isLock = true;
 
     //AOE Range
     _aoeSprite = Sprite::create("skill/AOERangeSprite/CircleRange.png");

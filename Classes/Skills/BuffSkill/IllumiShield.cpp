@@ -3,6 +3,14 @@
 #include <string>
 bool IllumiShield::init() {
 
+    skillTalent = new SkillTalent;
+    skillTalent->skillName = "IllumiShield";
+    skillTalent->iconPath = "skill/SkillSprite/SkillIcon/20.png";
+    skillTalent->unlockPoint = 10;
+    skillTalent->description = "black like squid";
+    skillTalent->skillType = "Buff";
+    skillTalent->parent = nullptr;
+    skillTalent->isLock = true;
     //Skill Icon...
     _iconSprite = Sprite::create("skill/SkillSprite/SkillIcon/20.png");
     _iconSprite->setScale(0.1);

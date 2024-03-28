@@ -1,28 +1,21 @@
-#ifndef __JOYSTICK_H__
-#define __JOYSTICK_H__
+#ifndef __JOYSTICK_SKILL__
+#define __JOYSTICK_SKILL__
 
 #include "cocos2d.h"
 USING_NS_CC;
-class Joystick : public cocos2d::Node
+class SkillBase;
+class JoystickSkill : public cocos2d::Node
 {
 public:
-    Joystick();
-
-    // Khởi tạo joystick
+    JoystickSkill();
     virtual bool init();
-
-    // Phương thức xử lý sự kiện chạm
     bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
     void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
     void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
-
-    // Trả về hướng của joystick
     Vec2 getDirection();
-    Vec2 previousDirection();
     bool getIsPress() const { return isPressed; };
     Size getSize() const { return joystickBorder->getContentSize(); };
-    CREATE_FUNC(Joystick);
-
+    CREATE_FUNC(JoystickSkill);
 private:
     bool isPressed;
     Sprite* joystickBorder;
@@ -31,7 +24,6 @@ private:
     Vec2 centerPos;
     Vec2 originalPosition;
     Vec2 currentDirection;
-    Vec2 prevDirection = Vec2::ZERO;
 };
 
-#endif // __JOYSTICK_H__
+#endif // __JOYSTICK_SKILL__

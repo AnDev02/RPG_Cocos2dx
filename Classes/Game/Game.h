@@ -13,9 +13,12 @@
 #include "../UserInterface/InGame/HealthBar.h"
 #include "../UserInterface/InGame/Joystick.h"
 #include "MapDecoration/MapDecoration.h"
+#include "../UserInterface/InGame/TalentCarousel.h"
+#include "../UserInterface/InGame/TalentButton.h"
 //#include "../Skills/SkillTree.h"
 
 USING_NS_CC;
+class InGameUI;
 class InventoryButton;
 class Game : public cocos2d::Scene
 {
@@ -24,6 +27,7 @@ public:
     virtual bool init();
     CREATE_FUNC(Game);
 private:
+    InGameUI* inGameUI;
     //SkillTree* skillTree;
     void updateCamera(float dt);
     void updatePlayer(float dt);

@@ -3,6 +3,14 @@
 #include <string>
 bool UltimateIllumiPower::init() {
 
+    skillTalent = new SkillTalent;
+    skillTalent->skillName = "UltimateIllumiPower";
+    skillTalent->iconPath = "skill/SkillSprite/SkillIcon/16.png";
+    skillTalent->unlockPoint = 10;
+    skillTalent->description = "good";
+    skillTalent->skillType = "AOE";
+    skillTalent->isLock = true;
+
     //AOE Range
     _aoeSprite = Sprite::create("skill/AOERangeSprite/SkillShotTarget.png");
     _aoeSprite->setOpacity(100);

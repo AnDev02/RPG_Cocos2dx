@@ -1,9 +1,9 @@
 #include "Inventory.h"
 #include "../PlayerCharacters/PlayerCharacter.h"
-Inventory *Inventory::createInventory(float zoomLevel, PlayerCharacter* _player)
+Inventory *Inventory::createInventory(PlayerCharacter* _player)
 {
     auto inventory = new (std::nothrow) Inventory();
-    if (inventory && inventory->init(zoomLevel, _player))
+    if (inventory && inventory->init(_player))
     {
         inventory->autorelease();
         return inventory;
@@ -15,23 +15,19 @@ Inventory *Inventory::createInventory(float zoomLevel, PlayerCharacter* _player)
     }
 }
 
-bool Inventory::init(float zoomLevel, PlayerCharacter* _player)
+bool Inventory::init(PlayerCharacter* _player)
 {
     if (!Node::init())
     {
         return false;
     }
+    //this->setAnchorPoint(Vec2(0.5, 0.5));
+
     Size visibleSize = Director::getInstance()->getVisibleSize();
     inventoryBorder = Node::create();
     this->addChild(inventoryBorder);
-    buttonClose = Sprite::create("res/c_header_close.png");
-    buttonClose->setScale(0.4);
-    buttonClose->retain();
-    buttonClose->setPosition(Vec2((visibleSize.width - buttonClose->getContentSize().width) / zoomLevel, (visibleSize.height / 2 - buttonClose->getContentSize().height) / zoomLevel));
-    inventoryBorder->addChild(buttonClose, 50);
     auto layer = LayerColor::create(Color4B(0, 0, 0, 255));
     layer->setContentSize(Director::getInstance()->getVisibleSize());
-    layer->setAnchorPoint(Vec2(0, 0));
     layer->setPosition(Vec2(-Director::getInstance()->getVisibleSize().width / 2, -Director::getInstance()->getVisibleSize().height / 2));
 
     inventoryBorder->addChild(layer, 1);
@@ -39,11 +35,8 @@ bool Inventory::init(float zoomLevel, PlayerCharacter* _player)
     auto touchListener2 = EventListenerTouchOneByOne::create();
     touchListener2->onTouchBegan = [&](Touch* touch, Event* event) {
         auto startPoint = this->convertToNodeSpace(touch->getLocation());
-        CCLOG("buttonClose1 %f, %f", buttonClose->getPositionX(), buttonClose->getPositionY());
-        CCLOG("buttonClose2 %f, %f", buttonClose->getContentSize().width, buttonClose->getContentSize().height);
         if (buttonClose->getBoundingBox().containsPoint(startPoint))
         {
-            CCLOG("close");
             hideInventory();
         }
         if (isSo && mainInventory && !mainInventory->getBoundingBox().containsPoint(this->convertToNodeSpace(touch->getLocation()))) {
@@ -123,18 +116,22 @@ bool Inventory::init(float zoomLevel, PlayerCharacter* _player)
 
 
     subInventory = Sprite::create("res/inventory-border.png");
-    subInventory->setPosition(Vec2(0, 0));
     inventoryBorder->addChild(subInventory, 10);
 
-    mainInventory->setAnchorPoint(Vec2(0, 0.5));
     inventoryBorder->addChild(mainInventory, 12);
-    float subInventoryScaleX = (visibleSize.width / 2 / zoomLevel) / subInventory->getContentSize().width;
-    float subInventoryScaleY = visibleSize.height / zoomLevel / subInventory->getContentSize().height;
+    float subInventoryScaleX = (visibleSize.width / 2 / (visibleSize.width / visibleSize.height)) / subInventory->getContentSize().width;
+    float subInventoryScaleY = visibleSize.height / (visibleSize.width / visibleSize.height) / subInventory->getContentSize().height;
     subInventory->setScale(subInventoryScaleX, subInventoryScaleY);
     mainInventory->setScale(subInventoryScaleX, subInventoryScaleY);
 
-    subInventory->setPosition(Vec2((subInventory->getContentSize().width * subInventoryScaleX) / 2, 0));
-    mainInventory->setPosition(Vec2((subInventory->getContentSize().width * subInventoryScaleX) / 2 + subInventory->getContentSize().width * (subInventoryScaleX / 2), 0));
+    subInventory->setPosition(Vec2(-mainInventory->getContentSize().width * subInventoryScaleX / 2, 0));
+    mainInventory->setPosition(Vec2(subInventory->getContentSize().width* subInventoryScaleX / 2 , 0));
+
+    buttonClose = Sprite::create("res/c_header_close.png");
+    buttonClose->setScale(0.4);
+    buttonClose->retain();
+    buttonClose->setPosition(Vec2(mainInventory->getPositionX() + mainInventory->getContentSize().width * subInventoryScaleX / 2 - buttonClose->getContentSize().width * 0.4, mainInventory->getPositionY() + mainInventory->getContentSize().height * subInventoryScaleY / 2 - buttonClose->getContentSize().height * 0.4));
+    inventoryBorder->addChild(buttonClose, 50);
 
     const int numRows = 7;
     const int numCols = 8;
@@ -142,8 +139,8 @@ bool Inventory::init(float zoomLevel, PlayerCharacter* _player)
     const float gapX = squareSize / 30;
     const float gapY = squareSize / 30;
 
-    
-    auto t = Vec2(subInventory->getContentSize().width * subInventoryScaleX / 9 / 1.3, -(subInventory->getContentSize().height * subInventoryScaleY / 4)) + Vec2(subInventory->getContentSize().width * subInventoryScaleX / 2 + subInventory->getContentSize().width * (subInventoryScaleX / 2), subInventory->getContentSize().height * subInventoryScaleY / 2);
+    //auto t = Vec2(20, 60);
+    auto t = Vec2(subInventory->getContentSize().width * subInventoryScaleX * 0.08, subInventory->getContentSize().height * subInventoryScaleY * 0.26);
     for (int row = 0; row < numRows; ++row)
     {
         for (int col = 0; col < numCols; ++col)

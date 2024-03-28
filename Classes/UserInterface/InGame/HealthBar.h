@@ -112,12 +112,12 @@ private:
         this->addChild(progressBarBorder, 10);
 
         healthBar = Sprite::create("res/ab2_bonus_frame_globe_fill_red.png");
-        healthBar->setPosition(Vec2(-33, 0));
+        healthBar->setPosition(Vec2(-(healthBar->getContentSize().width / 2), 0));
         healthBar->setTag(102);
         this->addChild(healthBar, 5);
 
         energyBar = Sprite::create("res/ab2_bonus_frame_globe_fill_blue.png");
-        energyBar->setPosition(Vec2(healthBar->getContentSize().width - 33, 0));
+        energyBar->setPosition(Vec2(healthBar->getContentSize().width - (healthBar->getContentSize().width / 2), 0));
         energyBar->setTag(103);
         this->addChild(energyBar, 5);
 

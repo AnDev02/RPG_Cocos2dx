@@ -1,7 +1,31 @@
 ﻿#include "DarkHole.h"
 #include "PlayerCharacters/PlayerCharacter.h"
+#include "Skills/SkillFactory.h"
 #include <string>
 bool DarkHole::init() {
+
+   /* struct SkillTalent {
+        std::string skillName;
+        std::string iconPath;
+        int unlockPoint;
+        std::string description;
+        std::string skillType;
+        SkillBase::SkillTalent* parent;
+        std::vector<SkillBase::SkillTalent*> children;
+        bool isLock;
+    };*/
+
+    skillTalent = new SkillTalent;
+    skillTalent->skillName = "DarkHole";
+    skillTalent->iconPath = "skill/SkillSprite/SkillIcon/10.png";
+    skillTalent->unlockPoint = 10;
+    skillTalent->description = "black like squid";
+    skillTalent->skillType = "AOE";
+    skillTalent->parent = nullptr;
+    skillTalent->children.push_back(SkillFactory::createSkill("ElectricArea")->getSkillTalent());
+    skillTalent->children.push_back(SkillFactory::createSkill("FireFlower")->getSkillTalent());
+    skillTalent->children.push_back(SkillFactory::createSkill("IllumiArea")->getSkillTalent());
+    skillTalent->isLock = true;
 	
     //AOE Range
     _aoeSprite = Sprite::create("skill/AOERangeSprite/CircleRange.png");
@@ -10,7 +34,7 @@ bool DarkHole::init() {
     _aoeSprite->setVisible(false);
 
     //Skill Icon...
-    _iconSprite = Sprite::create("skill/SkillSprite/SkillIcon/10.png");
+    _iconSprite = Sprite::create(skillTalent->iconPath);
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
 

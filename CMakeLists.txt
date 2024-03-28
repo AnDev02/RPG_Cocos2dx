@@ -96,7 +96,11 @@ list(APPEND GAME_SOURCE
      Classes/UserInterface/InGame/Joystick.cpp
      Classes/UserInterface/InGame/SkillButton.cpp
      Classes/UserInterface/InGame/InventoryButton.cpp
+     Classes/UserInterface/InGame/TalentButton.cpp
      Classes/UserInterface/InGame/Minimap.cpp
+     Classes/UserInterface/InGame/TalentCarousel.cpp
+     Classes/UserInterface/InGame/InGameUI.cpp
+     Classes/UserInterface/InGame/JoystickSkill.cpp
      Classes/LightEffect/Effect.cpp
      Classes/LightEffect/EffectSprite.cpp
      Classes/LightEffect/LightEffect.cpp
@@ -189,7 +193,11 @@ list(APPEND GAME_HEADER
      Classes/UserInterface/InGame/Joystick.h
 	 Classes/UserInterface/InGame/SkillButton.h
      Classes/UserInterface/InGame/InventoryButton.h
+     Classes/UserInterface/InGame/TalentButton.h
      Classes/UserInterface/InGame/Minimap.h
+     Classes/UserInterface/InGame/TalentCarousel.h
+     Classes/UserInterface/InGame/InGameUI.h
+     Classes/UserInterface/InGame/JoystickSkill.h
      Classes/LightEffect/Effect.h
      Classes/LightEffect/EffectSprite.h
      Classes/LightEffect/LightEffect.h

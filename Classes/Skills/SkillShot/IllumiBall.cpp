@@ -3,6 +3,16 @@
 #include <string>
 bool IllumiBall::init() {
 
+    skillTalent = new SkillTalent;
+    skillTalent->skillName = "IllumiBall";
+    skillTalent->iconPath = "skill/SkillSprite/SkillIcon/23.png";
+    skillTalent->unlockPoint = 10;
+    skillTalent->description = "black like squid";
+    skillTalent->skillType = "SkillShot";
+    skillTalent->parent = nullptr;
+    skillTalent->children.push_back(SkillFactory::createSkill("ShadowHurricane")->getSkillTalent());
+    skillTalent->children.push_back(SkillFactory::createSkill("ShadowWave")->getSkillTalent());
+    skillTalent->isLock = true;
     //AOE Range
     _aoeSprite = Sprite::create("skill/AOERangeSprite/SkillShotTarget.png");
     _aoeSprite->setOpacity(100);

@@ -15,6 +15,7 @@ bool MinimapLayer::initWithTiledMap(std::string mapName, PlayerCharacter* player
     if (!Layer::init()) {
         return false;
     }
+    this->setPosition(0, 0);
     playerDot = DrawNode::create();
     playerDot->drawDot(Vec2::ZERO, 20, Color4F::RED);
     this->addChild(playerDot, 1000);
@@ -48,8 +49,8 @@ bool MinimapLayer::initWithTiledMap(std::string mapName, PlayerCharacter* player
     minimapFrm->setPosition(tileSize.width * tileSize2.width / 2, tileSize.height * tileSize2.height / 2);
     this->addChild(minimapFrm, 1);
     mapSize = Size(minimapFrm->getContentSize().width * minimapFrmScaleWidth, minimapFrm->getContentSize().height * minimapFrmScaleHeight);
-    this->scheduleUpdate();
     this->_player = player;
+    this->scheduleUpdate();
 
     return true;
 }

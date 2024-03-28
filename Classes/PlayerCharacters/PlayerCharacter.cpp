@@ -39,29 +39,32 @@ float PlayerCharacter::calculateAngle(const Vec2& vectorA, const Vec2& vectorB) 
 void PlayerCharacter::handleMove(float deltaTime) {
    /* mouseClickPos = targetPosition;
     Vec2 currentPosition = this->getPosition();*/
-            Vec2 direction = movementDirection;
-            this->getPhysicsBody()->setVelocity(direction * (this->MS));
+    Vec2 direction = movementDirection;
 
-            float angleResult = calculateAngle(direction, Vec2(1, 0));
+    
+    this->getPhysicsBody()->setVelocity(direction * (this->MS));
 
 
-            if (angleResult >= -22.5 && angleResult < 0) { this->direction = 1; } //E
-            if (angleResult >= -45 && angleResult < -22.5) { this->direction = 2; } //NEE
-            if (angleResult >= -67.5 && angleResult < -45) { this->direction = 3; } //NE
-            if (angleResult >= -90 && angleResult < -67.5) { this->direction = 4; } //NNE
-            if (angleResult >= -112.5 && angleResult < -90) { this->direction = 5; } //N
-            if (angleResult >= -135 && angleResult < -112.5) { this->direction = 6; } //NNW
-            if (angleResult >= -157.5 && angleResult < -135) { this->direction = 7; } //NW
-            if (angleResult >= -180 && angleResult < -157.5) { this->direction = 8; } //NWW
+    float angleResult = calculateAngle(direction, Vec2(1, 0));
 
-            if (angleResult >= 157.5 && angleResult < 180) { this->direction = 9; } //W
-            if (angleResult >= 135 && angleResult < 157.5) { this->direction = 10; } //SWW
-            if (angleResult >= 112.5 && angleResult < 135) { this->direction = 11; } //SW
-            if (angleResult >= 90 && angleResult < 112.5) { this->direction = 12; } //SSW
-            if (angleResult >= 67.5 && angleResult < 90) { this->direction = 13; } //S
-            if (angleResult >= 45 && angleResult < 67.5) { this->direction = 14; } //SSE
-            if (angleResult >= 22.5 && angleResult < 45) { this->direction = 15; } //SE
-            if (angleResult >= 0 && angleResult < 22.5) { this->direction = 16; } //SEE
+
+    if (angleResult >= -22.5 && angleResult < 0) { this->direction = 1; } //E
+    if (angleResult >= -45 && angleResult < -22.5) { this->direction = 2; } //NEE
+    if (angleResult >= -67.5 && angleResult < -45) { this->direction = 3; } //NE
+    if (angleResult >= -90 && angleResult < -67.5) { this->direction = 4; } //NNE
+    if (angleResult >= -112.5 && angleResult < -90) { this->direction = 5; } //N
+    if (angleResult >= -135 && angleResult < -112.5) { this->direction = 6; } //NNW
+    if (angleResult >= -157.5 && angleResult < -135) { this->direction = 7; } //NW
+    if (angleResult >= -180 && angleResult < -157.5) { this->direction = 8; } //NWW
+
+    if (angleResult >= 157.5 && angleResult < 180) { this->direction = 9; } //W
+    if (angleResult >= 135 && angleResult < 157.5) { this->direction = 10; } //SWW
+    if (angleResult >= 112.5 && angleResult < 135) { this->direction = 11; } //SW
+    if (angleResult >= 90 && angleResult < 112.5) { this->direction = 12; } //SSW
+    if (angleResult >= 67.5 && angleResult < 90) { this->direction = 13; } //S
+    if (angleResult >= 45 && angleResult < 67.5) { this->direction = 14; } //SSE
+    if (angleResult >= 22.5 && angleResult < 45) { this->direction = 15; } //SE
+    if (angleResult >= 0 && angleResult < 22.5) { this->direction = 16; } //SEE
 }
 
 void PlayerCharacter::update(float dt) {
@@ -69,7 +72,6 @@ void PlayerCharacter::update(float dt) {
 
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    handleMove(dt);
 
     /*if (this->skills[0] && this->skills[1] && this->skills[2] && this->skills[3] && this->getScene()) {
         auto visibleSize = Director::getInstance()->getVisibleSize();

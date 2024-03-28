@@ -3,6 +3,14 @@
 #include <string>
 bool ShadowShield::init() {
 
+    skillTalent = new SkillTalent;
+    skillTalent->skillName = "ShadowShield";
+    skillTalent->iconPath = "skill/SkillSprite/SkillIcon/21.png";
+    skillTalent->unlockPoint = 10;
+    skillTalent->description = "black like squid";
+    skillTalent->skillType = "Buff";
+    skillTalent->parent = nullptr;
+    skillTalent->isLock = true;
     //Skill Icon...
     _iconSprite = Sprite::create("skill/SkillSprite/SkillIcon/21.png");
     _iconSprite->setScale(0.1);

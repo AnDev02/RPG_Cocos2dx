@@ -11,8 +11,8 @@ class PlayerCharacter;
 class Inventory : public Node
 {
 public:
-    static Inventory *createInventory(float zoomLevel, PlayerCharacter* _player);
-    virtual bool init(float zoomLevel, PlayerCharacter* _player);
+    static Inventory *createInventory(PlayerCharacter* _player);
+    virtual bool init(PlayerCharacter* _player);
     void addEquipment();
     void addItem();
     void removeEquipment();
@@ -21,6 +21,7 @@ public:
     void showInventory();
     void hideInventory();
     bool isShow() const { return isSo; };
+    float widthSize;
 private:
     Sprite* buttonClose;
     Sprite* mainInventory;

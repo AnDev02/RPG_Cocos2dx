@@ -3,6 +3,16 @@
 #include <string>
 bool IllumiArea::init() {
 
+
+    skillTalent = new SkillTalent;
+    skillTalent->skillName = "IllumiArea";
+    skillTalent->iconPath = "skill/SkillSprite/SkillIcon/13.png";
+    skillTalent->unlockPoint = 10;
+    skillTalent->description = "good";
+    skillTalent->skillType = "AOE";
+    skillTalent->children.push_back(SkillFactory::createSkill("UltimateIllumiPower")->getSkillTalent());
+    skillTalent->isLock = true;
+
     //AOE Range
     _aoeSprite = Sprite::create("skill/AOERangeSprite/CircleRange.png");
     _aoeSprite->setOpacity(100);
@@ -10,7 +20,7 @@ bool IllumiArea::init() {
     _aoeSprite->setVisible(false);
 
     //Skill Icon...
-    _iconSprite = Sprite::create("skill/SkillSprite/SkillIcon/13.png");
+    _iconSprite = Sprite::create(skillTalent->iconPath);
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
 

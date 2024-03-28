@@ -3,8 +3,19 @@
 #include <string>
 bool FireHurricane::init() {
 
+
+    skillTalent = new SkillTalent;
+    skillTalent->skillName = "FireHurricane";
+    skillTalent->iconPath = "skill/SkillSprite/SkillIcon/17.png";
+    skillTalent->unlockPoint = 10;
+    skillTalent->description = "black like squid";
+    skillTalent->skillType = "Buff";
+    skillTalent->parent = nullptr;
+    skillTalent->children.push_back(SkillFactory::createSkill("FireShield")->getSkillTalent());
+    skillTalent->isLock = true;
+
     //Skill Icon...
-    _iconSprite = Sprite::create("skill/SkillSprite/SkillIcon/17.png");
+    _iconSprite = Sprite::create(skillTalent->iconPath);
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
 

@@ -42,6 +42,7 @@ SkillBase* SkillFactory::createSkill(std::string skillType) {
 	if (skillType == "ShadowShield") {
 		result = ShadowShield::create();
 	}
+
 	//Skill Shot
 	if (skillType == "DarkBall") {
 		result = DarkBall::create();

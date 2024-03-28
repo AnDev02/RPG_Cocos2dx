@@ -2,9 +2,20 @@
 #include "PlayerCharacters/PlayerCharacter.h"
 #include <string>
 bool FireShield::init() {
+    skillTalent = new SkillTalent;
+    skillTalent->skillName = "FireShield";
+    skillTalent->iconPath = "skill/SkillSprite/SkillIcon/18.png";
+    skillTalent->unlockPoint = 10;
+    skillTalent->description = "black like squid";
+    skillTalent->skillType = "Buff";
+    skillTalent->parent = nullptr;
+    skillTalent->children.push_back(SkillFactory::createSkill("HealingBuff")->getSkillTalent());
+    skillTalent->children.push_back(SkillFactory::createSkill("IllumiShield")->getSkillTalent());
+    skillTalent->children.push_back(SkillFactory::createSkill("ShadowShield")->getSkillTalent());
+    skillTalent->isLock = true;
 
     //Skill Icon...
-    _iconSprite = Sprite::create("skill/SkillSprite/SkillIcon/18.png");
+    _iconSprite = Sprite::create(skillTalent->iconPath);
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
 

@@ -1,12 +1,12 @@
-#include "Joystick.h"
+#include "JoystickSkill.h"
 
 USING_NS_CC;
 
-Joystick::Joystick() : isPressed(false), currentDirection(Vec2::ZERO)
+JoystickSkill::JoystickSkill() : isPressed(false), currentDirection(Vec2::ZERO)
 {
 }
 
-bool Joystick::init()
+bool JoystickSkill::init()
 {
     if (!Node::init()) // Thay đổi đường dẫn hình ảnh joystick của bạn
     {
@@ -24,15 +24,15 @@ bool Joystick::init()
 
     auto touchListener = EventListenerTouchOneByOne::create();
     touchListener->setSwallowTouches(true);
-    touchListener->onTouchBegan = CC_CALLBACK_2(Joystick::onTouchBegan, this);
-    touchListener->onTouchMoved = CC_CALLBACK_2(Joystick::onTouchMoved, this);
-    touchListener->onTouchEnded = CC_CALLBACK_2(Joystick::onTouchEnded, this);
+    touchListener->onTouchBegan = CC_CALLBACK_2(JoystickSkill::onTouchBegan, this);
+    touchListener->onTouchMoved = CC_CALLBACK_2(JoystickSkill::onTouchMoved, this);
+    touchListener->onTouchEnded = CC_CALLBACK_2(JoystickSkill::onTouchEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
     return true;
 }
 
-bool Joystick::onTouchBegan(Touch *touch, Event *event)
+bool JoystickSkill::onTouchBegan(Touch *touch, Event *event)
 {
     Vec2 touchLocationInNode = this->convertToNodeSpace(touch->getLocation());
 
@@ -44,7 +44,7 @@ bool Joystick::onTouchBegan(Touch *touch, Event *event)
     return false;
 }
 
-void Joystick::onTouchMoved(Touch *touch, Event *event)
+void JoystickSkill::onTouchMoved(Touch *touch, Event *event)
 {
     if (isPressed)
     {
@@ -67,28 +67,22 @@ void Joystick::onTouchMoved(Touch *touch, Event *event)
     }
 }
 
-void Joystick::onTouchEnded(Touch *touch, Event *event)
+void JoystickSkill::onTouchEnded(Touch *touch, Event *event)
 {
     prevPosBeforeRelease = joystickBtn->getPosition();
     joystickBtn->setPosition(centerPos);
     isPressed = false;
 }
 
-Vec2 Joystick::getDirection()
+Vec2 JoystickSkill::getDirection()
 {
     if (isPressed) {
         auto result = joystickBtn->getPosition() - centerPos;
         result.normalize();
-        prevDirection = result;
-        prevPosBeforeRelease = result;
         return result;
     }
     else
     {
-        return prevPosBeforeRelease;
+        return Vec2::ZERO;
     }
-}
-
-Vec2 Joystick::previousDirection() {
-    return prevPosBeforeRelease;
 }
