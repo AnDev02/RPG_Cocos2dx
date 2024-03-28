@@ -2,6 +2,7 @@
 #define __BASE_CHARACTER_H__
 
 #include "cocos2d.h"
+#include "../Equipment/BaseEquipment.h"
 USING_NS_CC;
 
 class BaseCharacter : public Node
@@ -47,11 +48,12 @@ public:
 protected:
     float HP;
     float MP;
-    float armor;
-    float CDR;
-    float damage;
+    float baseArmor;
+    float baseCDR;
+    float baseDamage;
     float MS;
     int direction;
+
     float attackRange;
     Sprite* characterCurrentSprite;
     //std::vector<Skill*> skills;
