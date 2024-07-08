@@ -192,7 +192,7 @@ bool SelectMapLayer::onTouchBegan(Touch* touch, Event* event) {
 					auto temp = game->getChildByName("ovlay");
 					if (temp) {
 						temp->setVisible(true);
-						overlay->setOpacity(0);
+						temp->setOpacity(0);
 						temp->runAction(FadeIn::create(1));
 					}
 					});
