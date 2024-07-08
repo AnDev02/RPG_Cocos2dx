@@ -179,36 +179,40 @@ bool SelectMapLayer::onTouchBegan(Touch* touch, Event* event) {
 					hide();
 					game->inGameUI->setVisible(false);
 					game->compass->setVisible(false);
-					auto overlay = LayerColor::create(Color4B::BLACK);
-					overlay->setVisible(false);
-					overlay->setName("ovlay");
-					game->addChild(overlay);
 					//game->pauseGame();
 					});
 				auto loadRs = CallFunc::create([this, mapIndex]() {
 					game->gameMap->loadResource(mapIndex);
 					});
 				auto hideOvlay = CallFunc::create([this, mapIndex]() {
-					auto temp = game->getChildByName("ovlay");
+					Node* temp = game->getChildByName("ovlay");
 					if (temp) {
-						temp->setVisible(true);
-						temp->setOpacity(0);
-						temp->runAction(FadeIn::create(1));
+						temp->removeFromParentAndCleanup(true);
 					}
+					Node* overlay = LayerColor::create(Color4B::BLACK);
+					overlay->setName("ovlay");
+					game->addChild(overlay);
+					overlay->setVisible(true);
+					overlay->setOpacity(0);
+					overlay->runAction(FadeIn::create(1));
 					});
 				auto loadMapAction = CallFunc::create([this, mapIndex]() {
+					game->resumeGame();
 					if(game->compass)
 						game->compass->setVisible(true);
-					game->resumeGame();
 					if(game->inGameUI)
 						game->inGameUI->setVisible(true);
 	
 					game->loadMap(mapIndex);
 					game->save();
 					NotificationManager::getInstance()->showMessageNotification("Saved!", Vec2::ZERO, Color3B::GREEN, 16);
+					Node* temp = game->getChildByName("ovlay");
+					if (temp) {
+						temp->removeFromParentAndCleanup(true);
+					}
 
-					//if (mapIndex == 0 && game->gameMap != nullptr && game->getPlayer())
-					//	game->getPlayer()->setPosition(game->gameMap->getPrevPoint().getMidX(), game->gameMap->getPrevPoint().getMidY());
+					if (mapIndex == 0 && game->gameMap != nullptr && game->getPlayer())
+						game->getPlayer()->setPosition(game->gameMap->getPrevPoint().getMidX(), game->gameMap->getPrevPoint().getMidY());
 					});
 
 				
