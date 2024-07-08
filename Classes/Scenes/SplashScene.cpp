@@ -21,9 +21,9 @@ bool SplashScene::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 
-    UserDefault::getInstance()->setBoolForKey("SkeletonInCache", false);
-    //UserDefault::getInstance()->setBoolForKey("ShadowSentinelInCache", false);
-    UserDefault::getInstance()->setBoolForKey("FighterInCache", false);
+    UserDefault::getInstance()->setBoolForKey("SkeletonInCache", false); // SkeletonInCache
+    UserDefault::getInstance()->setBoolForKey("EffectInCache", false);
+    UserDefault::getInstance()->setBoolForKey("FighterInCache", false); // FighterInCache
     UserDefault::getInstance()->setBoolForKey("KnightInCache", false);
     UserDefault::getInstance()->setBoolForKey("BabySpiderInCache", false);
     UserDefault::getInstance()->setBoolForKey("HellBeastInCache", false);

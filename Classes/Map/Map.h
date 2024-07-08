@@ -28,6 +28,7 @@ public:
 	Rect getPrevPoint();
 	int getCurMap() const { return currentMap; };
 	int currentMap = 0;
+	void loadResource(int mapIndex);
 	virtual ~GameMap();
 private:
 	std::queue<int> previousMapQueue;
@@ -46,6 +47,7 @@ private:
 	Size _tileSize;
 	std::string _mapName;
 	int _mapIndex;
+	
 	void loadNPCFighterToCache();
 	void loadOkyanusToCache();
 	void loadParadisoToCache();
@@ -57,6 +59,7 @@ private:
 	void loadSkeletonToCache();
 	void loadKnightToCache();
 	void loadWarriorToCache();
+	void loadEffectToCache();
 };
 
 #endif // !_MAP_H_

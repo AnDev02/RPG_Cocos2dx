@@ -69,15 +69,6 @@ bool Game::init()
         schedule(CC_SCHEDULE_SELECTOR(Game::updateUserInterface), 0.0f);
         schedule(CC_SCHEDULE_SELECTOR(Game::updateCamera), 0.0f);
 
-        //test save game
-        auto keyboardListener = EventListenerKeyboard::create();
-        keyboardListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
-            if (keyCode == EventKeyboard::KeyCode::KEY_S) {
-                //Game::save();
-            }
-            };
-        auto dispatcher = Director::getInstance()->getEventDispatcher();
-        dispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 
         });
 
@@ -121,6 +112,11 @@ void Game::updatePlayer(float dt)
             if (playerRect.containsPoint(item->getPosition()))
             {
                 _player->pickUpItem(item->getItemName());
+                if(item->getItemName() != "Gold")
+                    UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/pickup_item_sound1.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
+                else
+                    UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/pickup_gold_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
+
                 listOfItems.erase(std::remove(listOfItems.begin(), listOfItems.end(), item), listOfItems.end());
                 item->removeFromParentAndCleanup(true);
                 break;
@@ -131,6 +127,7 @@ void Game::updatePlayer(float dt)
             auto playerRect = Rect(_player->getPositionX() - 18, _player->getPositionY() - 18, 36, 36);
             if (playerRect.containsPoint(item->getPosition()))
             {
+                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/pickup_item_sound1.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                 _player->pickUpEquipment(item->getEquipmentName(), item->getLevel());
                 listOfEquipment.erase(std::remove(listOfEquipment.begin(), listOfEquipment.end(), item), listOfEquipment.end());
                 item->removeFromParentAndCleanup(true);
@@ -301,26 +298,29 @@ bool Game::loadMap(int levelMap)
         }
     }
 
-    auto safeZone = gameMap->getTiledMap()->getObjectGroup("SafeZone");
+    if (levelMap != 0) {
+        auto safeZone = gameMap->getTiledMap()->getObjectGroup("SafeZone");
 
-    if (safeZone)
-    {
-        const auto& objects = safeZone->getObjects();
-        for (const auto& object : objects)
+        if (safeZone)
         {
-            ValueMap objectProps = object.asValueMap();
-            float x = objectProps["x"].asFloat();
-            float y = objectProps["y"].asFloat();
-            float width = objectProps["width"].asFloat();
-            float height = objectProps["height"].asFloat();
-            Node* node = Node::create();
-            node->setContentSize(Size(width, height));
-            node->setPosition(x, y);
-            listOfSafeZone.push_back(node);
-            this->addChild(node);
-        }
+            const auto& objects = safeZone->getObjects();
+            for (const auto& object : objects)
+            {
+                ValueMap objectProps = object.asValueMap();
+                float x = objectProps["x"].asFloat();
+                float y = objectProps["y"].asFloat();
+                float width = objectProps["width"].asFloat();
+                float height = objectProps["height"].asFloat();
+                Node* node = Node::create();
+                node->setContentSize(Size(width, height));
+                node->setPosition(x, y);
+                listOfSafeZone.push_back(node);
+                this->addChild(node);
+            }
 
+        }
     }
+    
     // Thien An
     // ValueMap ThienAnNPCPoint = NPCobjGroup->getObject("Thien An The First Slayer");
     // int thienAnX = ThienAnNPCPoint.at("x").asInt();

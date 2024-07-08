@@ -75,18 +75,25 @@ void NormalMonster::attack() {
 void NormalMonster::die() {
 
     if (this->getCurrentHP() <= 0 && this->currentState != deadState) {
-        if (this->getCurrentSprite()->getNumberOfRunningActions() > 0)this->getCurrentSprite()->stopAllActions();
+        if (this->getCurrentSprite() && this->getCurrentSprite()->getNumberOfRunningActions() > 0)this->getCurrentSprite()->stopAllActions();
         auto game = dynamic_cast<Game*>(Director::getInstance()->getRunningScene()->getChildByName("GameInstance"));
-        for (auto enemy : game->listOfMonster)
+        if (game)
         {
-            auto it = std::find(game->listOfMonster.begin(), game->listOfMonster.end(), this);
-            if (it != game->listOfMonster.end())
+            for (auto enemy : game->listOfMonster)
             {
-                game->listOfMonster.erase(it);
+                auto it = std::find(game->listOfMonster.begin(), game->listOfMonster.end(), this);
+                if (it != game->listOfMonster.end())
+                {
+                    game->listOfMonster.erase(it);
+                }
             }
         }
-        this->healthBar->setVisible(false);
+       
+        if(this->healthBar)
+            this->healthBar->setVisible(false);
+        if (this->backGroundBar)
         this->backGroundBar->setVisible(false);
+        if (this->monsterName)
         this->monsterName->setVisible(false);
         this->SwitchState(this->deadState);
         ItemManager::dropItem(this, "crystal");

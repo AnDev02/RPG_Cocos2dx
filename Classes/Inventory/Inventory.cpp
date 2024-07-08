@@ -163,6 +163,7 @@ bool Inventory::init(Player* _player)
                         isDraggingItem = true;
                         isPlayerUsing = true;
                         armorNode->getNodeSprite()->setTexture("res/inventory-node.png");
+
                     }
                     else if (itemNode1->getBoundingNode(0.6).containsPoint(startPoint) && itemNode1->getStatus() == "busy" && itemNode1->getBaseItem()->getItemType() == BaseItem::POTION_ITEM) {
                         item = ItemFactory::createItem(itemNode1->getBaseItem()->getItemName());
@@ -374,10 +375,10 @@ bool Inventory::init(Player* _player)
                         // 
                         //
 
-                        equipment->setPosition(this->convertToNodeSpace(touch->getLocation()) + Vec2(-15.6 * Director::getInstance()->getContentScaleFactor(), 15.6 * Director::getInstance()->getContentScaleFactor()));
+                        equipment->setPosition(movingPoint + Vec2(-15.6 * Director::getInstance()->getContentScaleFactor(), 15.6 * Director::getInstance()->getContentScaleFactor()));
                     }
                     else if (item) {
-                        item->setPosition(this->convertToNodeSpace(touch->getLocation()) + Vec2(-15.6 * Director::getInstance()->getContentScaleFactor(), 15.6 * Director::getInstance()->getContentScaleFactor()));
+                        item->setPosition(movingPoint + Vec2(-15.6 * Director::getInstance()->getContentScaleFactor(), 15.6 * Director::getInstance()->getContentScaleFactor()));
 
                     }
                 }
@@ -389,7 +390,7 @@ bool Inventory::init(Player* _player)
 
                 auto endPoint = this->convertToNodeSpace(touch->getLocation());
                 isSorting = false;
-                if ((equipment && currentNode->getBoundingNode().containsPoint(equipment->getPosition()) && currentNode->getBoundingNode().containsPoint(endPoint)) || (equipment && TutorialManager::getInstance()->currentTutorial == 3 && currentNode->getBoundingNode().containsPoint(endPoint))) {
+                if ((equipment && currentNode->getBoundingNode().containsPoint(endPoint)) || (equipment && TutorialManager::getInstance()->currentTutorial == 3 && currentNode->getBoundingNode().containsPoint(endPoint))) {
                     equipment->setGlobalZOrder(50);
                  /*   for (auto i : this->listItemNodes) {
                         if (i->getBaseItem() && i->getBaseItem()->getItemName() == "Mana Potion") {
@@ -398,7 +399,7 @@ bool Inventory::init(Player* _player)
                     }*/
                     showEquipmentDetails(equipment, isPlayerUsing);
                 }
-                else if (item && currentNode->getBoundingNode().containsPoint(item->getPosition()) && currentNode->getBoundingNode().containsPoint(endPoint) && TutorialManager::getInstance()->currentTutorial != 3) {
+                else if (item && currentNode->getBoundingNode().containsPoint(endPoint) && TutorialManager::getInstance()->currentTutorial != 3) {
                     if (currentNode == itemNode1 || currentNode == itemNode2 || currentNode == itemNode3 || currentNode == itemNode4) {
                         showItemDetails(item, true);
                     }
@@ -755,18 +756,22 @@ bool Inventory::init(Player* _player)
                             if (weaponNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::STANDARD)
                             {
                                 weaponNode->getNodeSprite()->setTexture("res/inventory-node-black.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (weaponNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::ENHANCED)
                             {
                                 weaponNode->getNodeSprite()->setTexture("res/inventory-node-green.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (weaponNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::RARE)
                             {
                                 weaponNode->getNodeSprite()->setTexture("res/inventory-node-purple.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (weaponNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::LEGENDARY)
                             {
                                 weaponNode->getNodeSprite()->setTexture("res/inventory-node-orange.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                         }
 
@@ -775,18 +780,22 @@ bool Inventory::init(Player* _player)
                             if (armorNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::STANDARD)
                             {
                                 armorNode->getNodeSprite()->setTexture("res/inventory-node-black.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (armorNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::ENHANCED)
                             {
                                 armorNode->getNodeSprite()->setTexture("res/inventory-node-green.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (armorNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::RARE)
                             {
                                 armorNode->getNodeSprite()->setTexture("res/inventory-node-purple.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (armorNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::LEGENDARY)
                             {
                                 armorNode->getNodeSprite()->setTexture("res/inventory-node-orange.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                         }
 
@@ -795,18 +804,22 @@ bool Inventory::init(Player* _player)
                             if (shieldNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::STANDARD)
                             {
                                 shieldNode->getNodeSprite()->setTexture("res/inventory-node-black.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (shieldNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::ENHANCED)
                             {
                                 shieldNode->getNodeSprite()->setTexture("res/inventory-node-green.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (shieldNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::RARE)
                             {
                                 shieldNode->getNodeSprite()->setTexture("res/inventory-node-purple.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (shieldNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::LEGENDARY)
                             {
                                 shieldNode->getNodeSprite()->setTexture("res/inventory-node-orange.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                         }
 
@@ -815,18 +828,22 @@ bool Inventory::init(Player* _player)
                             if (ringNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::STANDARD)
                             {
                                 ringNode->getNodeSprite()->setTexture("res/inventory-node-black.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (ringNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::ENHANCED)
                             {
                                 ringNode->getNodeSprite()->setTexture("res/inventory-node-green.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (ringNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::RARE)
                             {
                                 ringNode->getNodeSprite()->setTexture("res/inventory-node-purple.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (ringNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::LEGENDARY)
                             {
                                 ringNode->getNodeSprite()->setTexture("res/inventory-node-orange.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                         }
 
@@ -835,38 +852,47 @@ bool Inventory::init(Player* _player)
                             if (shoeNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::STANDARD)
                             {
                                 shoeNode->getNodeSprite()->setTexture("res/inventory-node-black.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (shoeNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::ENHANCED)
                             {
                                 shoeNode->getNodeSprite()->setTexture("res/inventory-node-green.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (shoeNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::RARE)
                             {
                                 shoeNode->getNodeSprite()->setTexture("res/inventory-node-purple.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (shoeNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::LEGENDARY)
                             {
                                 shoeNode->getNodeSprite()->setTexture("res/inventory-node-orange.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                         }
 
                         if(helmetNode->getBaseEquipment() == nullptr) helmetNode->getNodeSprite()->setTexture("res/inventory-node.png");
                         else {
+
                             if (helmetNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::STANDARD)
                             {
                                 helmetNode->getNodeSprite()->setTexture("res/inventory-node-black.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (helmetNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::ENHANCED)
                             {
                                 helmetNode->getNodeSprite()->setTexture("res/inventory-node-green.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (helmetNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::RARE)
                             {
                                 helmetNode->getNodeSprite()->setTexture("res/inventory-node-purple.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                             else if (helmetNode->getBaseEquipment()->getEquipmentType() == BaseEquipment::Type::LEGENDARY)
                             {
                                 helmetNode->getNodeSprite()->setTexture("res/inventory-node-orange.png");
+                                UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
                             }
                         }
 

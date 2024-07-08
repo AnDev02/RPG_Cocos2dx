@@ -7,6 +7,9 @@
 #include "TutorialManager/TutorialManager.h"
 #include "Game/Game.h"
 #include "TalentProgressBar.h"
+
+//int TalentCarousel::currentTree = 0;
+
 TalentCarousel* TalentCarousel::create(Player* player) {
     auto node = new TalentCarousel();
     if (node && node->init(player)) {
@@ -98,6 +101,7 @@ bool TalentCarousel::init(Player* player) {
     thunderTreeTabButton->setTexture("res/button_tab_push.png");
     listOfTrees[0]->setVisible(true);
     listOfTrees[1]->setVisible(false);
+    currentTree = 0;
     dynamic_cast<Label*>(thunderTreeTabButton->getChildByName("label"))->setColor(Color3B::BLACK);
     dynamic_cast<Label*>(fireTreeTabButton->getChildByName("label"))->setColor(Color3B::WHITE);
     return true;
@@ -112,6 +116,7 @@ bool TalentCarousel::onTouchBegan(Touch* touch, Event* event) {
             listOfTrees[0]->setVisible(true);
             listOfTrees[1]->setVisible(false);
             lastChoosedFirstTab = true;
+            currentTree = 0;
             fireTreeTabButton->setTexture("res/button_tab_push.png");
             dynamic_cast<Label*>(fireTreeTabButton->getChildByName("label"))->setColor(Color3B::BLACK);
             thunderTreeTabButton->setTexture("res/button_tab.png");
@@ -123,6 +128,7 @@ bool TalentCarousel::onTouchBegan(Touch* touch, Event* event) {
             UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/click_button_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
             listOfTrees[0]->setVisible(false);
             listOfTrees[1]->setVisible(true);
+            currentTree = 1;
             lastChoosedFirstTab = false;
             thunderTreeTabButton->setTexture("res/button_tab_push.png");
             dynamic_cast<Label*>(thunderTreeTabButton->getChildByName("label"))->setColor(Color3B::BLACK);
@@ -165,12 +171,12 @@ bool TalentCarousel::onTouchBegan(Touch* touch, Event* event) {
 }
 
 void TalentCarousel::resetUI() {
-    listOfTrees[1]->isVisible() == true ? listOfTrees[1]->setVisible(true) : listOfTrees[1]->setVisible(false);
-    listOfTrees[0]->isVisible() == true ? listOfTrees[0]->setVisible(true) : listOfTrees[0]->setVisible(false);
-    listOfTrees[1]->isVisible() == true ? thunderTreeTabButton->setTexture("res/button_tab_push.png") : thunderTreeTabButton->setTexture("res/button_tab.png");
-    listOfTrees[0]->isVisible() == true ? fireTreeTabButton->setTexture("res/button_tab_push.png") : fireTreeTabButton->setTexture("res/button_tab.png");
-    listOfTrees[1]->isVisible() == true ? dynamic_cast<Label*>(thunderTreeTabButton->getChildByName("label"))->setColor(Color3B::BLACK) : dynamic_cast<Label*>(thunderTreeTabButton->getChildByName("label"))->setColor(Color3B::WHITE);
-    listOfTrees[0]->isVisible() == true ? dynamic_cast<Label*>(fireTreeTabButton->getChildByName("label"))->setColor(Color3B::BLACK) : dynamic_cast<Label*>(fireTreeTabButton->getChildByName("label"))->setColor(Color3B::WHITE);
+    currentTree == 1 ? listOfTrees[1]->setVisible(true) : listOfTrees[1]->setVisible(false);
+    currentTree == 0 ? listOfTrees[0]->setVisible(true) : listOfTrees[0]->setVisible(false);
+    currentTree == 1 == true ? thunderTreeTabButton->setTexture("res/button_tab_push.png") : thunderTreeTabButton->setTexture("res/button_tab.png");
+    currentTree == 0 ? fireTreeTabButton->setTexture("res/button_tab_push.png") : fireTreeTabButton->setTexture("res/button_tab.png");
+    currentTree == 1 == true ? dynamic_cast<Label*>(thunderTreeTabButton->getChildByName("label"))->setColor(Color3B::BLACK) : dynamic_cast<Label*>(thunderTreeTabButton->getChildByName("label"))->setColor(Color3B::WHITE);
+    currentTree == 0 ? dynamic_cast<Label*>(fireTreeTabButton->getChildByName("label"))->setColor(Color3B::BLACK) : dynamic_cast<Label*>(fireTreeTabButton->getChildByName("label"))->setColor(Color3B::WHITE);
 }
 
 bool TalentCarousel::onTouchMoved(Touch* touch, Event* event)

@@ -171,25 +171,54 @@ bool SelectMapLayer::onTouchBegan(Touch* touch, Event* event) {
 			else if (map3Rect.containsPoint(startPoint)) {
 				mapIndex = 3;
 			}
-			if (mapIndex == -1) return true;
+			else return true;
 			if (game->gameMap->currentMap != mapIndex && mapIndex != -1) {
 				auto hideLayer = CallFunc::create([this, mapIndex]() {
-					hide();
 					game->showTeleportEffect();
-					game->pauseGame();
 					game->save();
-					//NotificationManager::getInstance()->showMessageNotification("Select map " + std::to_string(mapIndex) + " successfully\nResouces Loading...", Vec2::ZERO, Color3B::GREEN, 16);
+					hide();
+					game->inGameUI->setVisible(false);
+					game->compass->setVisible(false);
+					auto overlay = LayerColor::create(Color4B::BLACK);
+					overlay->setVisible(false);
+					overlay->setName("ovlay");
+					game->addChild(overlay);
+					//game->pauseGame();
+					});
+				auto loadRs = CallFunc::create([this, mapIndex]() {
+					game->gameMap->loadResource(mapIndex);
+					});
+				auto hideOvlay = CallFunc::create([this, mapIndex]() {
+					auto temp = game->getChildByName("ovlay");
+					if (temp) {
+						temp->setVisible(true);
+						overlay->setOpacity(0);
+						temp->runAction(FadeIn::create(1));
+					}
 					});
 				auto loadMapAction = CallFunc::create([this, mapIndex]() {
-					game->loadMap(mapIndex);
+					if(game->compass)
+						game->compass->setVisible(true);
 					game->resumeGame();
-					if (mapIndex == 0 && game->gameMap != nullptr)
-						game->getPlayer()->setPosition(game->gameMap->getPrevPoint().getMidX(), game->gameMap->getPrevPoint().getMidY());
+					if(game->inGameUI)
+						game->inGameUI->setVisible(true);
+	
+					game->loadMap(mapIndex);
+					game->save();
+					NotificationManager::getInstance()->showMessageNotification("Saved!", Vec2::ZERO, Color3B::GREEN, 16);
+
+					//if (mapIndex == 0 && game->gameMap != nullptr && game->getPlayer())
+					//	game->getPlayer()->setPosition(game->gameMap->getPrevPoint().getMidX(), game->gameMap->getPrevPoint().getMidY());
 					});
+				
 					
 				auto sequence = Sequence::create(
 					hideLayer,
-					DelayTime::create(0.2),
+					DelayTime::create(0.00000001),
+					loadRs,
+					DelayTime::create(3.9),
+					hideOvlay,
+					DelayTime::create(2.9),
 					loadMapAction,
 					nullptr
 				);

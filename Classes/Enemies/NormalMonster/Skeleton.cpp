@@ -25,7 +25,7 @@ bool Skeleton::init() {
      //AS
      attackSpeed = 1.0;
      //Exp gain
-     expGain = 60.45;
+     expGain = 560.45;
 
      //STATS BONUS
      HP_bonus = 45.7;

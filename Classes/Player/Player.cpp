@@ -583,20 +583,12 @@ void Player::usePotion(std::string potionName) {
 #pragma region Inventory
 
 void Player::pickUpEquipment(std::string equipmentName, int equipmentLv) {
-    UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/pickup_item_sound1.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
     inventory->addEquipment(equipmentName, equipmentLv, 1);
     upgradeInventory->addEquipment(equipmentName, equipmentLv, 1);
 }
 
 void Player::pickUpItem(std::string itemName) {
-
-    if (itemName != "Gold") {
-        inventory->addItem(itemName, 1);
-        UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/pickup_item_sound1.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
-    }
-    else {
-        UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/pickup_gold_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
-    }
+    if(itemName != "Gold") inventory->addItem(itemName, 1);
     setMessage(itemName);
     auto item = ItemFactory::createItem(itemName);
     if (item->getItemType() != BaseItem::Type::POTION_ITEM && item->getItemType() != BaseItem::Type::COMON) {
@@ -700,7 +692,6 @@ void Player::setEquipment(std::string equipmentName, int equipmentLevel, std::st
         this->equipmentMP += this->shield->getMP();
         _playerUsingEquipment.shieldNLevel = std::make_tuple(equipmentName, equipmentLevel, equipmentType);
     }
-    UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/equip_item_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
 }
 
 void Player::equipWeapon(std::string name, int level) {

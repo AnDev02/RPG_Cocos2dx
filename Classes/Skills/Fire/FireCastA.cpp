@@ -244,7 +244,7 @@ void FireCastA::update(float dt) {
 
                             auto monster = dynamic_cast<NormalMonster*>(enemy);
                             if (monster && monster->currentState != monster->deadState) {
-                                monster->takeDamage(skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage());
+                                monster->takeDamage(skillDamage/* + player->getEquipmentSkillDamage() + player->getAPDamage()*/);
                                 //Do effect
                                 if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
                                     if (!monster->getChildByName("FireEffect")) {
