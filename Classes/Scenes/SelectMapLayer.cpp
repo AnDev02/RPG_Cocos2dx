@@ -210,6 +210,7 @@ bool SelectMapLayer::onTouchBegan(Touch* touch, Event* event) {
 					//if (mapIndex == 0 && game->gameMap != nullptr && game->getPlayer())
 					//	game->getPlayer()->setPosition(game->gameMap->getPrevPoint().getMidX(), game->gameMap->getPrevPoint().getMidY());
 					});
+
 				
 					
 				auto sequence = Sequence::create(
