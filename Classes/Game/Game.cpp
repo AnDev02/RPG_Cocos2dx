@@ -51,6 +51,9 @@ bool Game::init()
 
     playerSavedData = JsonManager::getInstance()->getPlayerData();
     currentMap = playerSavedData.currentMap;
+    if (!(currentMap >= 0 && currentMap < 10)) {
+        currentMap = 0;
+    }
 
     IS_SAVING = (playerSavedData.positionX != 0 && playerSavedData.positionY != 0) ? true : false;
 
@@ -433,28 +436,7 @@ bool Game::loadMap(int levelMap)
     }
     else
     {
-        _player->pickUpEquipment("Chipped Sword", 1);
-        _player->pickUpEquipment("Long Sword", 1);
-        _player->pickUpEquipment("Chipped Armor", 1);
-        _player->pickUpEquipment("Chipped Ring", 1);
         _player->pickUpEquipment("Chipped Shoe", 1);
-        _player->pickUpEquipment("Chipped Shield", 1);
-        _player->pickUpEquipment("Chipped Helmet", 1);
-        _player->pickUpEquipment("Armor Of Knight", 1);
-        _player->pickUpEquipment("Hunter Armor", 1);
-        _player->pickUpEquipment("Soul Shield", 1);
-        _player->pickUpEquipment("Helmet Of Knight", 1);
-        _player->pickUpEquipment("Soul Ring", 1);
-        _player->pickUpEquipment("Sneaker", 1);
-        _player->pickUpEquipment("Sword Of Knight", 1);
-        _player->pickUpEquipment("Soul Slayer Sword", 1);
-        _player->pickUpEquipment("Hunter Sword", 1);
-        _player->pickUpEquipment("Hunter Ring", 1);
-        _player->pickUpEquipment("Soul Shoe", 1);
-        _player->pickUpEquipment("Knight Shield", 1);
-        _player->pickUpEquipment("Soul Helmet", 1);
-        _player->pickUpEquipment("Soul Shoe", 1);
-        _player->pickUpEquipment("Soul Armor", 1);
     }
 
     if (!inGameUI) {

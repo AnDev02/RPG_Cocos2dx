@@ -27,7 +27,7 @@ public:
 	Rect getEndPoint();
 	Rect getPrevPoint();
 	int getCurMap() const { return currentMap; };
-	int currentMap = 0;
+	int currentMap = -1;
 	void loadResource(int mapIndex);
 	virtual ~GameMap();
 private:
