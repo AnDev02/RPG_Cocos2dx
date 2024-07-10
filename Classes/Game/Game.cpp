@@ -60,7 +60,7 @@ bool Game::init()
         loadingSceneFirst->setPosition(Vec2());
         loadingSceneFirst->setScale(visibleSize.width / (loadingSceneFirst->getContentSize().width * zoomLevel), visibleSize.height / (loadingSceneFirst->getContentSize().height * zoomLevel));
         this->addChild(loadingSceneFirst, 1000);
-        });
+    });
 
     auto loadMapAction = CallFunc::create([this]() {
         Game::setup();
@@ -75,11 +75,10 @@ bool Game::init()
             if (keyCode == EventKeyboard::KeyCode::KEY_S) {
                 //Game::save();
             }
-            };
+        };
         auto dispatcher = Director::getInstance()->getEventDispatcher();
         dispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
-
-        });
+    });
 
     auto sequence = Sequence::create(
         addLoadingSceneAction,
@@ -738,7 +737,7 @@ void Game::pauseEnemies()
 void Game::resumeEnemies() {
     this->schedule(CC_SCHEDULE_SELECTOR(Game::updateEnemies), 0.06f);
     for (auto enemy : listOfMonster) {
-        enemy->schedule(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy), 0.0f);
+        enemy->schedule(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy), 0.5f);
     }
 
   /*  if (boss)
@@ -760,7 +759,7 @@ void Game::resumeGame()
     this->schedule(CC_SCHEDULE_SELECTOR(Game::updateCamera), 0.0f);
 
     for (auto enemy : listOfMonster) {
-        enemy->schedule(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy), 0.0f);
+        enemy->schedule(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy), 0.5f);
     }
 
   /*  if (boss)
@@ -786,25 +785,15 @@ void Game::resumeGame()
 
 void Game::updateEnemies(float dt)
 {
-    if (!listOfMonster.empty()) {
-        /*enemy->currentState->UpdateState();
-        enemy1->currentState->UpdateState();
-        enemy2->currentState->UpdateState();
-        boss->currentState->UpdateState();
-        okyanus->currentState->UpdateState();
-        paradiso->currentState->UpdateState();
-        spider1->currentState->UpdateState();
-        spider2->currentState->UpdateState();
-        spider3->currentState->UpdateState();*/
-        // thienAn->currentState->UpdateState();
-        // angel1->currentState->UpdateState();
-        // sentinel1->currentState->UpdateState();
-        if (!this->listOfMonster.empty()) {
-            for (auto enemy : this->listOfMonster) {
-                if(enemy)
-                    enemy->updateEnemy(dt);
-            }
+    std::vector<NormalMonster*> monstersRemove;
+    for (auto monster : listOfMonster) {
+        if (monster->getCurrentHP() <= 0 && monster->currentState != monster->deadState) {
+            monstersRemove.push_back(monster);
         }
+    }
+    for (auto monsterDie : monstersRemove) {
+            monsterDie->unschedule(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy));
+            monsterDie->die();
     }
 }
 
