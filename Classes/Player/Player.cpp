@@ -64,7 +64,7 @@ bool Player::init() {
     if (basePlayer.Max_level > 0) 
         maxLevel = basePlayer.Max_level;
     else 
-        maxLevel = 30;
+        maxLevel = 15;
     //STATS
     //HP
     if (basePlayer.HP > 0)
@@ -875,6 +875,12 @@ void Player::handleMove(float deltaTime) {
         if (isCanMove(newPos))
             this->setPosition(newPos);
 
+        if (isInHidePlayerZone(newPos)) {
+            this->setVisible(false);
+        }
+        else {
+            this->setVisible(true);
+        }
         
 
         float angleResult = calculateAngle(direction, Vec2(1, 0));
@@ -995,6 +1001,27 @@ bool Player::isHideObject(const Vec2& newPosition) {
     if (!listOfHideObject.empty()) {
         for (auto i : listOfHideObject) {
             if (i->getBoundingBox().containsPoint(newPosition)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Player::isInHidePlayerZone(const Vec2& newPosition)
+{
+    auto hidePlayerLayer = currentScene->gameMap->getTiledMap()->getObjectGroup("hideplayer");
+    if (hidePlayerLayer) {
+        auto& objects = hidePlayerLayer->getObjects();
+        for (const auto& obj : objects) {
+            auto dict = obj.asValueMap();
+            float x = dict["x"].asFloat();
+            float y = dict["y"].asFloat();
+            float width = dict["width"].asFloat();
+            float height = dict["height"].asFloat();
+
+            Rect boundingBox(x, y, width, height);
+            if (boundingBox.containsPoint(newPosition)) {
                 return true;
             }
         }
