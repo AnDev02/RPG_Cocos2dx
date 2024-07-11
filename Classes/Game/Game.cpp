@@ -991,6 +991,8 @@ void Game::setup()
 }
 
 void Game::showTeleportEffect() {
+
+    UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/teleport_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
     teleportEffect->setVisible(true);
     teleportEffect->setPosition(_player->getPosition() - Vec2(0, -teleportEffect->getContentSize().height * teleportEffect->getScale() / 4));
 }
