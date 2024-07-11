@@ -21,7 +21,7 @@ Scene *Game::createGame()
 {
     auto scene = Scene::createWithPhysics();
     scene->setName("GameSceneCheck");
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_NONE);
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     scene->getPhysicsWorld()->setGravity(Vec2(0, -98));
     scene->getPhysicsWorld()->setSubsteps(10);
 
@@ -172,6 +172,7 @@ bool Game::loadMap(int levelMap)
             compass = nullptr;
         }
         listOfMonster.clear();
+        //listOfBoss.clear();
         listNPC.clear();
         if (_player->observers.size() > 0) {
             _player->observers.clear();
@@ -337,6 +338,8 @@ bool Game::loadMap(int levelMap)
     playerSavedData = JsonManager::getInstance()->getPlayerData();
     if (gameMap->currentMap != JsonManager::getInstance()->getPlayerData().currentMap || JsonManager::getInstance()->getPlayerData().positionX == 0) {
         _player = Player::create();
+        _player->gainExp(1200);
+
         _player->addSkill("FireSear");
         for (auto skill : _player->skills) {
             if (skill->getSkillTalent()->skillName == "FireSear") skill->setSkillIndex(5);
@@ -347,6 +350,8 @@ bool Game::loadMap(int levelMap)
     }
     else {
         _player = Player::create();
+        _player->gainExp(1200);
+
         _player->addSkill("FireSear");
         for (auto skill : _player->skills) {
             if (skill->getSkillTalent()->skillName == "FireSear") skill->setSkillIndex(5);
@@ -357,6 +362,7 @@ bool Game::loadMap(int levelMap)
     }
     _player->gainExp(playerSavedData.exp);
     _player->setExpToConsume(playerSavedData.expToConsume);
+    _player->setExpToConsume(10000);
     _player->listOfCollision = this->listOfCollision;
     _player->listOfHideObject = this->listOfHideObject;
     _player->listOfShowObjectRoom = this->listOfShowObjectRoom;
@@ -519,6 +525,7 @@ bool Game::loadMap(int levelMap)
                     gameMap->getTiledMap()->addChild(boss, 9.5);
                     boss->currentState = boss->roarState;
                     boss->currentState->EnterState();
+                    //listOfBoss.push_back(boss);
                 }
                 /*else if (objectName == "ShadowSentinel")
                 {
@@ -768,16 +775,16 @@ void Game::resumeGame()
 
 void Game::updateEnemies(float dt)
 {
-    std::vector<NormalMonster*> monstersRemove;
-    for (auto monster : listOfMonster) {
-        if (monster->getCurrentHP() <= 0 && monster->currentState != monster->deadState) {
-            monstersRemove.push_back(monster);
+   /* for (auto it = listOfMonster.begin(); it != listOfMonster.end(); ) {
+        if ((*it)->isDead) {
+            (*it)->removeFromParentAndCleanup(true);
+            it = listOfMonster.erase(it);
         }
-    }
-    for (auto monsterDie : monstersRemove) {
-            monsterDie->unschedule(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy));
-            monsterDie->die();
-    }
+        else {
+            ++it;
+        }
+    }*/
+
 }
 
 void Game::updateCamera(float deltaT)
@@ -1122,6 +1129,12 @@ Game::~Game() {
         monster->removeFromParentAndCleanup(true);
     }
     listOfMonster.clear();
+
+    //// Xa danh sch cc qui vt
+    //for (auto boss : listOfBoss) {
+    //    boss->removeFromParentAndCleanup(true);
+    //}
+    //listOfBoss.clear();
 
     // Xa danh sch NPC
     for (auto npc : listNPC) {

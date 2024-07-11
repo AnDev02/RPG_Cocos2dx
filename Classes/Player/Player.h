@@ -334,7 +334,7 @@ public:
         if (currentHPResult >= HP + equipmentHP)currentHPResult = HP;
         currentHP = currentHPResult;
     }
-
+    void gainExp(float amountExp);
     //Observer props
     std::vector<Observer*> observers;
     std::string message;
