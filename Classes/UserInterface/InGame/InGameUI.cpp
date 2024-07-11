@@ -13,6 +13,7 @@
 #include "UserInterface/InGame/InventoryButton.h"
 #include "UserInterface/InGame/UpgradeInventoryButton.h"
 #include "UserInterface/InGame/QuestButton.h"
+#include "UserInterface/InGame/Dropdown.h"
 #include "SettingsManager/HamburgerMenu.h"
 #include "UserInterface/InGame/HamburgerMenuButton.h"
 #include "UserInterface/InGame/ExpBar.h"
@@ -66,6 +67,7 @@ void InGameUI::setTarget(Player* plr) {
     if (selectMapLayer != nullptr) selectMapLayer->removeFromParentAndCleanup(true);
     if (selectMapButton != nullptr) selectMapButton->removeFromParentAndCleanup(true);
     if (storyScene != nullptr) storyScene->removeFromParentAndCleanup(true);
+    if (dropdownButton != nullptr) dropdownButton->removeFromParentAndCleanup(true);
 
     if (this->getChildByName("SkillButton4")) {
         this->getChildByName("SkillButton4")->removeFromParentAndCleanup(true);
@@ -120,6 +122,11 @@ void InGameUI::setTarget(Player* plr) {
     upgradeInventory = player->getUpgradeInventory();
     this->addChild(upgradeInventory, 20);
 
+    dropdownButton = Dropdown::create();
+    dropdownButton->setPosition(visibleSize.width / 4 - 80, visibleSize.height / 5 - 5 - dropdownButton->bg->getContentSize().height * dropdownButton->bg->getScaleY() / 1.3);
+    this->addChild(dropdownButton, 20);
+    
+
     upgradeInventoryButton = UpgradeInventoryButton::create(upgradeInventory);
     upgradeInventoryButton->setPosition(Vec2(-visibleSize.width / 4 + 130, visibleSize.height / 5 - 5));
     upgradeInventoryButton->setScale(0.15 * Director::getInstance()->getContentScaleFactor());
@@ -164,11 +171,12 @@ void InGameUI::setTarget(Player* plr) {
     touchListener->setSwallowTouches(false);
     touchListener->onTouchBegan = [&](Touch* touch, Event* event) {
         auto startPoint = this->convertToNodeSpace(touch->getLocation());
-    
+        
         if (startPoint.x < talentButton->getPositionX() + 200) {
             _joystick->setPosition(startPoint);
             return true;
         }
+
         return false;
         };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
@@ -203,6 +211,10 @@ void InGameUI::setTarget(Player* plr) {
         this->addChild(storyScene, 50);
         storyScene->show();
     }
+}
+
+void InGameUI::update(float dt) {
+
 }
 
 void InGameUI::showLevelUpPopup() {

@@ -187,6 +187,7 @@ list(APPEND GAME_SOURCE
      Classes/UserInterface/InGame/LevelUpPopup.cpp
      Classes/UserInterface/InGame/SelectMapButton.cpp
      Classes/UserInterface/InGame/TeleportEffect.cpp
+     Classes/UserInterface/InGame/Dropdown.cpp
 
      
      # SettingsManager
@@ -427,6 +428,7 @@ list(APPEND GAME_HEADER
      Classes/UserInterface/InGame/LevelUpPopup.h
      Classes/UserInterface/InGame/SelectMapButton.h
      Classes/UserInterface/InGame/TeleportEffect.h
+     Classes/UserInterface/InGame/Dropdown.h
 
 
 	

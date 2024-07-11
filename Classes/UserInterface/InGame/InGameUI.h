@@ -30,6 +30,7 @@ class SkillButton;
 class SelectMapButton;
 class SelectMapLayer;
 class AnimaticScene;
+class Dropdown;
 
 class InGameUI : public cocos2d::Layer
 {
@@ -75,10 +76,12 @@ public:
     AnimaticScene* storyScene = nullptr;
     std::vector<NPC*> _listNPC;
     void showLevelUpPopup();
+    void update(float dt);
 private:
     InGameUI(BaseCharacter* player);
     static InGameUI* instance;
     BaseCharacter* _player = nullptr;
+    Dropdown* dropdownButton = nullptr;
 };
 
 #endif // __JOYSTICK_H__
