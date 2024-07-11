@@ -17,7 +17,7 @@ GameMap::GameMap(int mapIndex) : _mapIndex(mapIndex) {
 
 bool GameMap::loadMap(int mapIndex)
 {
-    if (_tileMap) { 
+    if (_tileMap) {
         delete _tileMap;
         _tileMap = nullptr;
         _tileMap = new TMXTiledMap();
@@ -25,6 +25,7 @@ bool GameMap::loadMap(int mapIndex)
     if (mapIndex > 3) {
         return false;
     }
+    if (currentMap == mapIndex) return true;
 	 _mapName = "map/tilemap0" + std::to_string(mapIndex) + ".tmx";
      currentMap = mapIndex;
 
@@ -32,69 +33,65 @@ bool GameMap::loadMap(int mapIndex)
 	if (_tileMap->initWithTMXFile(_mapName)) {
 		_mapSize = _tileMap->getMapSize();
 		_tileSize = _tileMap->getTileSize();
-        if (!UserDefault::getInstance()->getBoolForKey("KnightInCache")) {
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/BossSkill/HellBeastSkill/summon/summon.plist", "skill/SkillSprite/BossSkill/HellBeastSkill/summon/summon.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/effect/teleport_effect.plist", "sprites/effect/teleport_effect.png");
-            loadKnightToCache();
-            //Skills
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_ball/fire_ball.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_ball/fire_ball.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_cast_a/fire_cast_a.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_cast_a/fire_cast_a.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_cast_b/fire_cast_b.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_cast_b/fire_cast_b.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_combust/fire_combust.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_combust/fire_combust.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_conflagration/fire_conflagration.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_conflagration/fire_conflagration.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_flare/fire_flare.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_flare/fire_flare.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_scorch/fire_scorch.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_scorch/fire_scorch.png");
-
-
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_bolt/thunder_bolt.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_bolt/thunder_bolt.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_cast_a/thunder_cast_a.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_cast_a/thunder_cast_a.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_cast_b/thunder_cast_b.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_cast_b/thunder_cast_b.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_crackle/thunder_crackle.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_crackle/thunder_crackle.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_current/thunder_current.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_current/thunder_current.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_dynamo/thunder_dynamo.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_dynamo/thunder_dynamo.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_shock/thunder_shock.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_shock/thunder_shock.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_voltage/thunder_voltage_flying.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_voltage/thunder_voltage_flying.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_voltage/thunder_voltage_explode.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_voltage/thunder_voltage_explode.png");
-
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_sear/fire_sear.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_sear/fire_sear.png");
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_spark/thunder_spark.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_spark/thunder_spark.png");
-            //
-            UserDefault::getInstance()->setBoolForKey("KnightInCache", true);
-        }
-        if (!UserDefault::getInstance()->getBoolForKey("FighterInCache")) {
-            loadNPCFighterToCache();
-            UserDefault::getInstance()->setBoolForKey("FighterInCache", true);
-        }
-		if (mapIndex == 0) {
-            //if (!UserDefault::getInstance()->getBoolForKey("WarriorInCache")) {
-            //    loadWarriorToCache();
-            //    UserDefault::getInstance()->setBoolForKey("WarriorInCache", true);
-            //}
-		}
-        else if (mapIndex == 1) {
-            if (!UserDefault::getInstance()->getBoolForKey("SkeletonInCache")) {
-                loadSkeletonToCache();
-                UserDefault::getInstance()->setBoolForKey("SkeletonInCache", true);
-            }
-		}
-		else if (mapIndex == 2) {
-            if (!UserDefault::getInstance()->getBoolForKey("BabySpiderInCache")) {
-                loadBabySpiderToCache();
-                UserDefault::getInstance()->setBoolForKey("BabySpiderInCache", true);
-            }
-		}
-		else if (mapIndex == 3) {
-            if (!UserDefault::getInstance()->getBoolForKey("HellBeastInCache")) {
-                loadHellBeastToCache();
-                loadSkeletonToCache();
-                UserDefault::getInstance()->setBoolForKey("HellBeastInCache", true);
-            }
-		}
+        loadResource(mapIndex);
         UserDefault::getInstance()->setBoolForKey("IsLoadedGame", true);
 		return true;
 	 }
 
 	return false;
+}
+
+void GameMap::loadResource(int mapIndex)
+{
+    if (!UserDefault::getInstance()->getBoolForKey("KnightInCache", false)) {
+        loadKnightToCache();
+        UserDefault::getInstance()->setBoolForKey("KnightInCache", true);
+    }
+    if (!UserDefault::getInstance()->getBoolForKey("FighterInCache", false)) {
+        loadNPCFighterToCache();
+        UserDefault::getInstance()->setBoolForKey("FighterInCache", true);
+    }
+    if (!UserDefault::getInstance()->getBoolForKey("EffectInCache", false)) {
+        loadEffectToCache();
+        UserDefault::getInstance()->setBoolForKey("EffectInCache", true);
+    }
+    if (mapIndex == 0) {
+        //if (!UserDefault::getInstance()->getBoolForKey("WarriorInCache")) {
+        //    loadWarriorToCache();
+        //    UserDefault::getInstance()->setBoolForKey("WarriorInCache", true);
+        //}
+        if (!UserDefault::getInstance()->getBoolForKey("KnightInCache", false)) {
+            loadKnightToCache();
+            UserDefault::getInstance()->setBoolForKey("KnightInCache", true);
+        }
+        if (!UserDefault::getInstance()->getBoolForKey("FighterInCache", false)) {
+            loadNPCFighterToCache();
+            UserDefault::getInstance()->setBoolForKey("FighterInCache", true);
+        }
+        if (!UserDefault::getInstance()->getBoolForKey("EffectInCache", false)) {
+            loadEffectToCache();
+            UserDefault::getInstance()->setBoolForKey("EffectInCache", true);
+        }
+    }
+    else if (mapIndex == 1) {
+        if (!UserDefault::getInstance()->getBoolForKey("SkeletonInCache", false)) {
+            loadSkeletonToCache();
+            UserDefault::getInstance()->setBoolForKey("SkeletonInCache", true);
+        }
+    }
+    else if (mapIndex == 2) {
+        if (!UserDefault::getInstance()->getBoolForKey("BabySpiderInCache", false)) {
+            loadBabySpiderToCache();
+            UserDefault::getInstance()->setBoolForKey("BabySpiderInCache", true);
+        }
+    }
+    else if (mapIndex == 3) {
+        if (!UserDefault::getInstance()->getBoolForKey("HellBeastInCache", false)) {
+            loadHellBeastToCache();
+            //loadSkeletonToCache();
+            UserDefault::getInstance()->setBoolForKey("HellBeastInCache", true);
+        }
+    }
 }
 
 Rect GameMap::getEndPoint() {
@@ -136,6 +133,33 @@ GameMap::~GameMap() {
 	}
 
 	instance = nullptr;
+}
+
+void GameMap::loadEffectToCache() {
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/BossSkill/HellBeastSkill/summon/summon.plist", "skill/SkillSprite/BossSkill/HellBeastSkill/summon/summon.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/effect/teleport_effect.plist", "sprites/effect/teleport_effect.png");
+    //Skills
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_ball/fire_ball.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_ball/fire_ball.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_cast_a/fire_cast_a.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_cast_a/fire_cast_a.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_cast_b/fire_cast_b.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_cast_b/fire_cast_b.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_combust/fire_combust.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_combust/fire_combust.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_conflagration/fire_conflagration.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_conflagration/fire_conflagration.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_flare/fire_flare.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_flare/fire_flare.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_scorch/fire_scorch.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_scorch/fire_scorch.png");
+
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_bolt/thunder_bolt.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_bolt/thunder_bolt.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_cast_a/thunder_cast_a.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_cast_a/thunder_cast_a.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_cast_b/thunder_cast_b.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_cast_b/thunder_cast_b.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_crackle/thunder_crackle.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_crackle/thunder_crackle.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_current/thunder_current.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_current/thunder_current.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_dynamo/thunder_dynamo.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_dynamo/thunder_dynamo.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_shock/thunder_shock.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_shock/thunder_shock.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_voltage/thunder_voltage_flying.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_voltage/thunder_voltage_flying.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_voltage/thunder_voltage_explode.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_voltage/thunder_voltage_explode.png");
+
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Fire/fire_sear/fire_sear.plist", "skill/SkillSprite/PlayerCharacterSkill/Fire/fire_sear/fire_sear.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_spark/thunder_spark.plist", "skill/SkillSprite/PlayerCharacterSkill/Thunder/thunder_spark/thunder_spark.png");
+
 }
 
 void GameMap::loadKnightToCache()

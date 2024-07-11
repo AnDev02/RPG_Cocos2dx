@@ -88,6 +88,7 @@ void NormalMonster::die() {
         }*/
         this->healthBar->setVisible(false);
         this->backGroundBar->setVisible(false);
+        if (this->monsterName)
         this->monsterName->setVisible(false);
         ItemManager::dropItem(this, "crystal");
         ItemManager::dropEquipment(this, "");
