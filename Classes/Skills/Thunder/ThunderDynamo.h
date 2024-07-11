@@ -21,6 +21,8 @@ public:
 
     void update(float dt);
 
+    void updateCooldown(float dt);
+
     void updateEffect(float dt);
 
     CREATE_FUNC(ThunderDynamo);

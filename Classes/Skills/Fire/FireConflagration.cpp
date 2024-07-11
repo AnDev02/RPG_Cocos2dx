@@ -84,8 +84,7 @@ bool FireConflagration::init() {
     touchListener->onTouchEnded = CC_CALLBACK_2(FireConflagration::onTouchEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, _skillButton);
     _touchListener = touchListener;
-    schedule(CC_SCHEDULE_SELECTOR(FireConflagration::update), 0.05f);
-    schedule(CC_SCHEDULE_SELECTOR(FireConflagration::updateEffect), 1.0f);
+
     return true;
 }
 
@@ -101,7 +100,7 @@ bool FireConflagration::onTouchBegan(Touch* touch, Event* event)
             return false;
         }
 
-        if (currentSkillCoolDown < 0) {
+        if (currentSkillCoolDown <= 0) {
             _skillButton->isPressed = true;
             this->_aoeSprite->setVisible(true);
             _skillButton->cancelButton->setVisible(true);
@@ -182,8 +181,8 @@ void FireConflagration::onTouchEnded(Touch* touch, Event* event)
 }
 
 void FireConflagration::performSkill(Vec2 target) {
-    
-    if (currentSkillCoolDown < 0) {
+    //if () {
+    if (currentSkillCoolDown <= 0) {
 
         auto player = dynamic_cast<Player*>(this->getParent());
         if (player->getCurrentMP() < manaCost) {
@@ -203,6 +202,7 @@ void FireConflagration::performSkill(Vec2 target) {
 
         player->SwitchState(player->selectState);
         player->setCurrentMP(player->getCurrentMP() - manaCost);
+        schedule(CC_SCHEDULE_SELECTOR(FireConflagration::updateCooldown), 1.0f);
 
         Vec2 applyPosition = this->getParent()->getParent()->convertToNodeSpace(target);
         _skillSprite->setPosition(applyPosition);
@@ -212,49 +212,31 @@ void FireConflagration::performSkill(Vec2 target) {
         auto sqe = Sequence::create(_skillAnimate, RemoveSelf::create(), nullptr);
         _skillSprite->runAction(sqe);
 
-        // Ly scene chnh t Director  kim tra c enemy no trong phm vi skill ko
+
         Scene* currentScene = Director::getInstance()->getRunningScene();
         if (currentScene) {
             Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
             if (game) {
-                auto children = game->gameMap->getTiledMap()->getChildren();
+                //get Player
+                auto player = dynamic_cast<Player*>(this->getParent());
 
-                for (const auto& child : children) {
-                    auto enemy = dynamic_cast<Enemy*>(child);
-                    if (enemy) {
-                        //Kim tra xem enemy c nm trong vng nh hng ca skill hay khng
-                        if (applyPosition.distance(enemy->getPosition()) <= 60) {
-                            auto boss = dynamic_cast<Boss*>(enemy);
-                            if (boss && boss->currentState != boss->deadState) {
-                                boss->takeDamage(skillDamage + player->getDamage() * damageRaitoOfPlayer);
-                                if (boss->getCurrentHP() == 0)player->gainExp(boss->getExpGain());
-                            }
-
-                            auto monster = dynamic_cast<NormalMonster*>(enemy);
-                            if (monster && monster->currentState != monster->deadState) {
-                                monster->takeDamage(skillDamage + player->getDamage() * damageRaitoOfPlayer);
-                                //Do effect
-                                if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
-                                    if (!monster->getChildByName("FireEffect")) {
-                                        //Skill Effect Sprite
-                                        auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
-                                        effect->setName("FireEffect");
-                                        effect->setScale(0.2);
-
-                                        //Skill Effect Animate
-                                        auto animate = Animate::create(Engine::createAnimation2("fire_sear", 30, 0.05));
-                                        monster->addChild(effect);
-
-                                        //Effect to Monster
-                                        effect->setPosition(Vec2(0, 40));
-                                        effect->runAction(RepeatForever::create(animate));
-
-                                        effectTime = 5.0f;
-                                    }
-                                }
-                                if (monster->getCurrentHP() == 0)player->gainExp(monster->getExpGain());
-                            }
+                // Quai thuong
+                auto monsters = game->listOfMonster;
+                for (auto& monster : monsters) {
+                    if (monster && !monster->isDead && applyPosition.distance(monster->getPosition()) <= 60) {
+                        monster->takeDamage(skillDamage);
+                        if (monster->getCurrentHP() <= 0) {
+                            monster->die();
                         }
+                    }
+                }
+
+                //Boss
+                auto boss = game->boss;
+                if (boss && !boss->isDead && applyPosition.distance(boss->getPosition()) <= 60) {
+                    boss->takeDamage(skillDamage);
+                    if (boss->getCurrentHP() <= 0) {
+                        boss->die();
                     }
                 }
             }
@@ -267,13 +249,14 @@ void FireConflagration::performSkill(Vec2 target) {
     }
 }
 
-void FireConflagration::update(float dt) {
+void FireConflagration::updateCooldown(float dt) {
     if (currentSkillCoolDown >= 0) {
         currentSkillCoolDown -= dt;
         int coolDownToInt = std::floor(currentSkillCoolDown);
         if (coolDownToInt < 0 && coolDownCountLable->isVisible()) {
             _iconSprite->setOpacity(255);
             coolDownCountLable->setVisible(false);
+            unschedule(CC_SCHEDULE_SELECTOR(FireConflagration::updateCooldown));
         }
 
         coolDownCountLable->setString(StringUtils::format("%d", coolDownToInt));

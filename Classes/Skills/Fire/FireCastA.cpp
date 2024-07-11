@@ -195,6 +195,7 @@ void FireCastA::performSkill(Vec2 target) {
             }, this, 0, 0, 15.0f, false, "stop_flames_skill_sound");
 
         schedule(CC_SCHEDULE_SELECTOR(FireCastA::update), 0.5f);
+        schedule(CC_SCHEDULE_SELECTOR(FireCastA::updateCooldown), 1.0f);
 
         player->SwitchState(player->selectState);
         player->setCurrentMP(player->getCurrentMP() - manaCost);
@@ -218,25 +219,32 @@ void FireCastA::update(float dt) {
         if (!skillEffectiveIndicate->isVisible()) {
             skillEffectiveIndicate->setVisible(true);
         }
-        int timeEffectToInt = std::floor(activeTime);
-        timeEffectLabel->setString(std::to_string(timeEffectToInt));
+        //int timeEffectToInt = std::floor(activeTime);
+        //timeEffectLabel->setString(std::to_string(timeEffectToInt));
         activeTime -= dt;
         // Ly scene chnh t Director  kim tra c enemy no trong phm vi skill ko
         Scene* currentScene = Director::getInstance()->getRunningScene();
         if (currentScene) {
             Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
             if (game) {
-                auto children = game->listOfMonster;
+                auto monsters = game->listOfMonster;
                 //get Player
                 auto player = dynamic_cast<Player*>(this->getParent());
                 
-                for (auto& child : children) {
-                    auto monster = dynamic_cast<NormalMonster*>(child);
-                    if (monster && monster->currentState != monster->deadState && monster->getPosition().distance(player->getPosition()) <= 70) {
+                for (auto& monster : monsters) {
+                    if (monster && !monster->isDead && monster->getPosition().distance(player->getPosition()) <= 70) {
                         monster->takeDamage(skillDamage);
                         if (monster->getCurrentHP() <= 0) {
-                            player->gainExp(monster->getExpGain());
+                            monster->die();
                         }
+                    }
+                }
+
+                auto boss = game->boss;
+                if (boss && !boss->isDead && boss->getPosition().distance(player->getPosition()) <= 70) {
+                    boss->takeDamage(skillDamage);
+                    if (boss->getCurrentHP() <= 0) {
+                        boss->die();
                     }
                 }
             }
@@ -244,17 +252,23 @@ void FireCastA::update(float dt) {
 
         //Deactive Skill nu nh ht hiu lc 
         if (activeTime < 0) {
-            skillEffectiveIndicate->setVisible(false);
+            //skillEffectiveIndicate->setVisible(false);
             isActive = false;
             activeTime = 15;
+            unschedule(CC_SCHEDULE_SELECTOR(FireCastA::update));
         }
     }
+    
+}
+
+void FireCastA::updateCooldown(float dt) {
     if (currentSkillCoolDown >= 0) {
         currentSkillCoolDown -= dt;
         int coolDownToInt = std::floor(currentSkillCoolDown);
         if (coolDownToInt < 0 && coolDownCountLable->isVisible()) {
             _iconSprite->setOpacity(255);
             coolDownCountLable->setVisible(false);
+            unschedule(CC_SCHEDULE_SELECTOR(FireCastA::update));
         }
 
         coolDownCountLable->setString(StringUtils::format("%d", coolDownToInt));

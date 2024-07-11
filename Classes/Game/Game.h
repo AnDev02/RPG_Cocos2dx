@@ -40,6 +40,7 @@ public:
     std::vector<Node*> listOfHideObject;
     std::vector<Node*> listOfShowObjectRoom;
     std::vector<NormalMonster*> listOfMonster;
+    //std::vector<Boss*> listOfBoss;
     std::vector<BaseItem*> listOfItems;
     std::vector<BaseEquipment*> listOfEquipment;
     LoadingScene* loadingSceneFirst;
@@ -59,6 +60,7 @@ public:
     void resumeGame();
     void showDiedLayer();
     void showTeleportEffect();
+    Boss* boss = nullptr;
     InGameUI* inGameUI;
     ~Game();
     CREATE_FUNC(Game);
@@ -94,7 +96,7 @@ private:
     NormalMonster* angel1;
     NormalMonster* sentinel1;
     Size visibleSize;
-    Boss *boss = nullptr;
+
     Boss *okyanus = nullptr;
     Boss* paradiso = nullptr;
     NPC* robert = nullptr;

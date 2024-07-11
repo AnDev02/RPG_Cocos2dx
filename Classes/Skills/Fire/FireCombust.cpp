@@ -1,6 +1,7 @@
 ﻿#include "FireCombust.h"
 #include "HelloWorldScene.h"
-#include "Enemies/Enemy.h"
+#include "Enemies/NormalMonster/NormalMonster.h"
+#include "Enemies/Boss/Boss.h"
 #include "Game/Game.h"
 #include "Map/Map.h"
 
@@ -29,7 +30,7 @@ bool FireCombust::init() {
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
 
-    
+
     //Skill Sprite
     _skillSprite = Sprite::createWithSpriteFrameName("fire_combust (1).png");
     _skillSprite->setScale(0.1);
@@ -82,8 +83,8 @@ bool FireCombust::init() {
     touchListener->onTouchEnded = CC_CALLBACK_2(FireCombust::onTouchEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, _skillButton);
     _touchListener = touchListener;
-    schedule(CC_SCHEDULE_SELECTOR(FireCombust::update), 0.05);
-    schedule(CC_SCHEDULE_SELECTOR(FireCombust::updateEffect), 1.0f);
+
+
     return true;
 }
 
@@ -91,7 +92,9 @@ bool FireCombust::onTouchBegan(Touch* touch, Event* event)
 {
     Vec2 touchLocationInNode = _skillButton->convertToNodeSpace(touch->getLocation());
 
-    if (_skillButton->skillButtonBtn->getBoundingBox().containsPoint(touchLocationInNode))
+    auto player = dynamic_cast<Player*>(this->getParent());
+
+    if (_skillButton->skillButtonBtn->getBoundingBox().containsPoint(touchLocationInNode) && player->currentState != player->selectState)
     {
         auto player = dynamic_cast<Player*>(this->getParent());
         if (player->getCurrentMP() < manaCost) {
@@ -99,7 +102,7 @@ bool FireCombust::onTouchBegan(Touch* touch, Event* event)
             return false;
         }
 
-        if (currentSkillCoolDown < 0) {
+        if (currentSkillCoolDown <= 0) {
             schedule(CC_SCHEDULE_SELECTOR(FireCombust::updateEnemies), 0.00);
             _skillButton->isPressed = true;
             this->_aoeSprite->setVisible(true);
@@ -155,7 +158,7 @@ void FireCombust::onTouchMoved(Touch* touch, Event* event)
                 std::vector<Enemy*> enemiesRemove;
                 for (const auto& child : children) {
                     auto enemy = dynamic_cast<Enemy*>(child); //Tm nhng enemy c trong scene
-                    if (enemy) {
+                    if (enemy && enemy->getCurrentHP() > 0) {
                         Vec2 enemyInWorldCoor = enemy->getParent()->convertToWorldSpace(enemy->getPosition());
                         Vec2 enemyInSkillCoor = this->convertToNodeSpace(enemyInWorldCoor);
 
@@ -243,85 +246,90 @@ void FireCombust::performSkill(Vec2 target) {
         return;
     }
 
-    if (currentSkillCoolDown < 0 && enemies.size() > 0) {
+    if (currentSkillCoolDown <= 0 && enemies.size() > 0) {
         player->SwitchState(player->selectState);
         player->setCurrentMP(player->getCurrentMP() - manaCost);
+        schedule(CC_SCHEDULE_SELECTOR(FireCombust::update), 0.05);
         UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/flames_fire.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
     }
 
 
-        std::vector<Enemy*> NormalMonsterRemove;
-        CCLOG("Nums of Enemies: %d", enemies.size());
-        for (auto enemy : enemies) {
-            //CCLOG("LULE");
-            if (enemy) {
-                auto sprite = enemy->getChildByName("Target");
-                sprite->setVisible(false);
-                auto skillSprite = Sprite::createWithSpriteFrameName("fire_combust (1).png");
-                skillSprite->setAnchorPoint(Vec2(0.5, 0.5));
-                skillSprite->setScale(applyRange / skillSprite->getContentSize().width, applyRange / skillSprite->getContentSize().height);
-                skillSprite->setPosition(sprite->getPosition());
-                enemy->removeChild(sprite);
-                enemy->addChild(skillSprite);
+    std::vector<Enemy*> NormalMonsterRemove;
+    CCLOG("Nums of Enemies: %d", enemies.size());
+    for (auto enemy : enemies) {
+        //CCLOG("LULE");
+        if (enemy) {
+            auto sprite = enemy->getChildByName("Target");
+            sprite->setVisible(false);
+            auto skillSprite = Sprite::createWithSpriteFrameName("fire_combust (1).png");
+            skillSprite->setAnchorPoint(Vec2(0.5, 0.5));
+            skillSprite->setScale(applyRange / skillSprite->getContentSize().width, applyRange / skillSprite->getContentSize().height);
+            skillSprite->setPosition(sprite->getPosition());
+            enemy->removeChild(sprite);
+            enemy->addChild(skillSprite);
 
-                //DealDamage
-                if (currentSkillCoolDown < 0) {
-                    CCLOG("DEal Damage");
-                    enemy->takeDamage((skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()) / enemies.size());
-                    //Do effect
-                    if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
-                        if (!enemy->getChildByName("FireEffect")) {
-                            //Skill Effect Sprite
-                            auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
-                            effect->setName("FireEffect");
-                            effect->setScale(0.2);
+            //DealDamage
+            if (currentSkillCoolDown <= 0) {
+                CCLOG("DEal Damage");
+                enemy->takeDamage((skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()) / enemies.size());
+                ////Do effect
+                //if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
+                //    if (!enemy->getChildByName("FireEffect")) {
+                //        //Skill Effect Sprite
+                //        auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
+                //        effect->setName("FireEffect");
+                //        effect->setScale(0.2);
 
-                            //Skill Effect Animate
-                            auto animate = Animate::create(Engine::createAnimation2("fire_sear", 30, 0.05));
-                            enemy->addChild(effect);
+                //        //Skill Effect Animate
+                //        auto animate = Animate::create(Engine::createAnimation2("fire_sear", 30, 0.05));
+                //        enemy->addChild(effect);
 
-                            //Effect to Monster
-                            effect->setPosition(Vec2(0, 40));
-                            effect->runAction(RepeatForever::create(animate));
+                //        //Effect to Monster
+                //        effect->setPosition(Vec2(0, 40));
+                //        effect->runAction(RepeatForever::create(animate));
+                //        schedule(CC_SCHEDULE_SELECTOR(FireCombust::updateEffect), 1.0f);
+                //        effectTime = 5.0f;
+                //    }
+                //}
+            }
+            //Skill Animate
+            Animate* skillAnimate = Animate::create(Engine::createAnimation2("fire_combust", 60, 0.025));
 
-                            effectTime = 5.0f;
-                        }
-                    }
+            auto sqe = Sequence::create(skillAnimate, RemoveSelf::create(), nullptr);
+
+            if (currentSkillCoolDown <= 0)skillSprite->runAction(sqe);
+            NormalMonsterRemove.push_back(enemy);
+
+            auto boss = dynamic_cast<Boss*>(enemy);
+            if (boss && boss->currentState != boss->deadState) {
+                if (boss->getCurrentHP() == 0) {
+                    boss->die();
                 }
-                //Skill Animate
-                Animate* skillAnimate = Animate::create(Engine::createAnimation2("fire_combust", 60, 0.025));
+            }
 
-                auto sqe = Sequence::create(skillAnimate, RemoveSelf::create(), nullptr);
-
-                if (currentSkillCoolDown < 0)skillSprite->runAction(sqe);
-                NormalMonsterRemove.push_back(enemy);
-
-                auto boss = dynamic_cast<Boss*>(enemy);
-                if (boss && boss->currentState != boss->deadState) {
-                    if (boss->getCurrentHP() == 0)player->gainExp(boss->getExpGain());
-                }
-
-                auto monster = dynamic_cast<NormalMonster*>(enemy);
-                if (monster && monster->currentState != monster->deadState) {
-                    if (monster->getCurrentHP() == 0)player->gainExp(monster->getExpGain());
+            auto monster = dynamic_cast<NormalMonster*>(enemy);
+            if (monster && monster->currentState != monster->deadState) {
+                if (monster->getCurrentHP() == 0) {
+                    monster->die();
                 }
             }
         }
-        for (auto enemyRemove : NormalMonsterRemove) {
-            //Remove from NormalMonster
-            auto it = std::find(enemies.begin(), enemies.end(), enemyRemove);
-            // If found, erase it
-            if (it != enemies.end()) {
-                enemies.erase(it);
-            }
+    }
+    for (auto enemyRemove : NormalMonsterRemove) {
+        //Remove from NormalMonster
+        auto it = std::find(enemies.begin(), enemies.end(), enemyRemove);
+        // If found, erase it
+        if (it != enemies.end()) {
+            enemies.erase(it);
         }
-        if (currentSkillCoolDown < 0) {
-            currentSkillCoolDown = skillCooldown*player->getCDR();
+    }
+    if (currentSkillCoolDown <= 0) {
+        currentSkillCoolDown = skillCooldown * player->getCDR();
 
-            _iconSprite->setOpacity(70);
+        _iconSprite->setOpacity(70);
 
-            coolDownCountLable->setVisible(true);
-        }
+        coolDownCountLable->setVisible(true);
+    }
 
 
 }
@@ -333,6 +341,7 @@ void FireCombust::update(float dt) {
         if (coolDownToInt < 0 && coolDownCountLable->isVisible()) {
             _iconSprite->setOpacity(255);
             coolDownCountLable->setVisible(false);
+            unschedule(CC_SCHEDULE_SELECTOR(FireCombust::update));
         }
 
         coolDownCountLable->setString(StringUtils::format("%d", coolDownToInt));
@@ -353,31 +362,46 @@ void FireCombust::updateEnemies(float dt) {
     }
 }
 
-void FireCombust::updateEffect(float dt) {
-    if (effectTime >= 0) {
-        auto player = dynamic_cast<Player*>(this->getParent());
-
-        effectTime -= dt;
-        //Check every monster in map
-        Scene* currentScene = Director::getInstance()->getRunningScene();
-        if (currentScene) {
-            Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
-            if (game) {
-                auto children = game->gameMap->getTiledMap()->getChildren();
-                for (const auto& child : children) {
-                    auto monster = dynamic_cast<NormalMonster*>(child);
-                    if (monster) {
-                        //Delete effect sprite when no longer effect
-                        if (effectTime < 0) {
-                            if (monster->getChildByName("FireEffect"))monster->removeChildByName("FireEffect");
-                        }
-                        else {
-                            if (monster->getChildByName("FireEffect"))monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-}
+//void FireCombust::updateEffect(float dt) {
+//    if (effectTime >= 0) {
+//        auto player = dynamic_cast<Player*>(this->getParent());
+//
+//        effectTime -= dt;
+//        //Check every monster in map
+//        Scene* currentScene = Director::getInstance()->getRunningScene();
+//        if (currentScene) {
+//            Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
+//            if (game) {
+//                auto children = game->gameMap->getTiledMap()->getChildren();
+//                for (const auto& child : children) {
+//                    auto monster = dynamic_cast<NormalMonster*>(child);
+//                    auto boss = dynamic_cast<Boss*>(child);
+//                    if (monster) {
+//                        //Delete effect sprite when no longer effect
+//                        if (effectTime < 0) {
+//                            if (monster->getChildByName("FireEffect"))monster->removeChildByName("FireEffect");
+//                        }
+//                        else {
+//                            if (monster->getChildByName("FireEffect"))monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+//                        }
+//                        if (monster->getCurrentHP() == 0 && monster->getChildByName("FireEffect"))monster->removeChildByName("FireEffect");
+//                    }
+//                    if (boss) {
+//                        //Delete effect sprite when no longer effect
+//                        if (effectTime < 0) {
+//                            if (boss->getChildByName("FireEffect"))boss->removeChildByName("FireEffect");
+//                        }
+//                        else {
+//                            if (boss->getChildByName("FireEffect"))boss->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+//                        }
+//                        if (boss->getCurrentHP() == 0 && boss->getChildByName("FireEffect"))boss->removeChildByName("FireEffect");
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    else {
+//        unschedule(CC_SCHEDULE_SELECTOR(FireCombust::updateEffect));
+//    }
+//
+//}

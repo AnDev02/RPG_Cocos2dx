@@ -38,7 +38,7 @@ void Boss::detectPlayer() {
             }
         }
     }
-    setTarget(nullptr);
+    //setTarget(nullptr);
 
 }
 
@@ -115,15 +115,16 @@ void Boss::update(float dt) {
     //If distance closed, stop Boss
     Boss::stopRunAndWalk();
     attack();
-    die();
     this->currentState->UpdateState();
 }
 void Boss::die() {
     if (this->getCurrentHP() <= 0 && this->currentState != deadState) {
         if (this->getCurrentSprite()->getNumberOfRunningActions() > 0)this->getCurrentSprite()->stopAllActions();
-        this->SwitchState(this->deadState);
+        isDead = true;
+        target->gainExp(this->getExpGain());
         if (QuestManager::getInstance()->currentQuest && QuestManager::getInstance()->currentQuest->questStatus == QuestManager::getInstance()->currentQuest->RECEIVED)
             notifyObservers();
+        this->SwitchState(this->deadState);
     }
 }
 

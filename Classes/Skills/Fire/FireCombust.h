@@ -21,7 +21,7 @@ public:
 
     void update(float dt);
 
-    void updateEffect(float dt);
+    //void updateEffect(float dt);
 
     void updateEnemies(float dt);
     CREATE_FUNC(FireCombust);

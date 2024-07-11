@@ -96,7 +96,6 @@ bool FireCastB::init() {
     touchListener->onTouchEnded = CC_CALLBACK_2(FireCastB::onTouchEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, _skillButton);
     _touchListener = touchListener;
-    schedule(CC_SCHEDULE_SELECTOR(FireCastB::update), 0.05f);
 
     return true;
 }
@@ -113,7 +112,7 @@ bool FireCastB::onTouchBegan(Touch* touch, Event* event)
             return false;
         }
 
-        if (currentSkillCoolDown < 0) {
+        if (currentSkillCoolDown <= 0) {
             _skillButton->isPressed = true;
             _skillButton->cancelButton->setVisible(true);
 
@@ -180,7 +179,7 @@ void FireCastB::onTouchEnded(Touch* touch, Event* event)
 
 void FireCastB::performSkill(Vec2 target) {
     
-    if (currentSkillCoolDown < 0) {
+    if (currentSkillCoolDown <= 0) {
 
         auto player = dynamic_cast<Player*>(this->getParent());
         if (player->getCurrentMP() < manaCost) {
@@ -195,6 +194,8 @@ void FireCastB::performSkill(Vec2 target) {
             cocos2d::AudioEngine::stop(this->flamesSkillOnId);
             }, this, 0, 0, 15.0f, false, "stop_flames_skill_sound");
 
+        schedule(CC_SCHEDULE_SELECTOR(FireCastB::update), 1.0f);
+        schedule(CC_SCHEDULE_SELECTOR(FireCastB::updateCooldown), 1.0f);
 
         player->SwitchState(player->selectState);
         player->setCurrentMP(player->getCurrentMP() - manaCost);
@@ -242,12 +243,20 @@ void FireCastB::update(float dt) {
             }
         }
     }
+    else {
+        unschedule(CC_SCHEDULE_SELECTOR(FireCastB::update));
+    }
+    
+}
+
+void FireCastB::updateCooldown(float dt) {
     if (currentSkillCoolDown >= 0) {
         currentSkillCoolDown -= dt;
         int coolDownToInt = std::floor(currentSkillCoolDown);
         if (coolDownToInt < 0 && coolDownCountLable->isVisible()) {
             _iconSprite->setOpacity(255);
             coolDownCountLable->setVisible(false);
+            unschedule(CC_SCHEDULE_SELECTOR(FireCastB::updateCooldown));
         }
 
         coolDownCountLable->setString(StringUtils::format("%d", coolDownToInt));

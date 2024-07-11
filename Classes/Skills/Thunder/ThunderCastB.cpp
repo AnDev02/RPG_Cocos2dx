@@ -95,7 +95,7 @@ bool ThunderCastB::init() {
     touchListener->onTouchEnded = CC_CALLBACK_2(ThunderCastB::onTouchEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, _skillButton);
     _touchListener = touchListener;
-    schedule(CC_SCHEDULE_SELECTOR(ThunderCastB::update), 0.05f);
+
 
     return true;
 }
@@ -112,7 +112,7 @@ bool ThunderCastB::onTouchBegan(Touch* touch, Event* event)
             player->noManaAlert();
             return false;
         }
-        if (currentSkillCoolDown < 0) {
+        if (currentSkillCoolDown <= 0) {
             _skillButton->isPressed = true;
             _skillButton->cancelButton->setVisible(true);
 
@@ -179,7 +179,7 @@ void ThunderCastB::onTouchEnded(Touch* touch, Event* event)
 
 void ThunderCastB::performSkill(Vec2 target) {
     
-    if (currentSkillCoolDown < 0) {
+    if (currentSkillCoolDown <= 0) {
 
         auto player = dynamic_cast<Player*>(this->getParent());
         if (player->getCurrentMP() < manaCost) {
@@ -192,7 +192,8 @@ void ThunderCastB::performSkill(Vec2 target) {
         cocos2d::Director::getInstance()->getScheduler()->schedule([this](float dt) {
             cocos2d::AudioEngine::stop(this->lightningSkillOnId);
             }, this, 0, 0, 15.0f, false, "stop_lightning_skill_sound");
-
+        schedule(CC_SCHEDULE_SELECTOR(ThunderCastB::update), 1.0f);
+        schedule(CC_SCHEDULE_SELECTOR(ThunderCastB::updateCooldown), 1.0f);
         player->SwitchState(player->selectState);
         player->setCurrentMP(player->getCurrentMP() - manaCost);
 
@@ -220,11 +221,11 @@ void ThunderCastB::performSkill(Vec2 target) {
 }
 void ThunderCastB::update(float dt) {
     if (isActive) {
-        //if (!skillEffectiveIndicate->isVisible()) {
-        //    skillEffectiveIndicate->setVisible(false);
-        //}
-        //int timeEffectToInt = std::floor(activeTime);
-        //timeEffectLabel->setString(std::to_string(timeEffectToInt));
+        if (!skillEffectiveIndicate->isVisible()) {
+            skillEffectiveIndicate->setVisible(false);
+        }
+        int timeEffectToInt = std::floor(activeTime);
+        timeEffectLabel->setString(std::to_string(timeEffectToInt));
         activeTime -= dt;
         CCLOG("Active Time = %f", activeTime);
         if (activeTime < 0) {
@@ -242,12 +243,18 @@ void ThunderCastB::update(float dt) {
             }
         }
     }
+    else  unschedule(CC_SCHEDULE_SELECTOR(ThunderCastB::update));
+
+}
+
+void ThunderCastB::updateCooldown(float dt) {
     if (currentSkillCoolDown >= 0) {
         currentSkillCoolDown -= dt;
         int coolDownToInt = std::floor(currentSkillCoolDown);
         if (coolDownToInt < 0 && coolDownCountLable->isVisible()) {
             _iconSprite->setOpacity(255);
             coolDownCountLable->setVisible(false);
+            unschedule(CC_SCHEDULE_SELECTOR(ThunderCastB::updateCooldown));
         }
 
         coolDownCountLable->setString(StringUtils::format("%d", coolDownToInt));

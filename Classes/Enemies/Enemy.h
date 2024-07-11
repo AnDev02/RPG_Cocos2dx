@@ -65,6 +65,8 @@ public:
         message = newMessage;
         notifyObservers();
     }
+
+    bool isDead = false;
     CREATE_FUNC(Enemy);
 
 protected:

@@ -21,6 +21,8 @@ public:
 
     void update(float dt);
 
+    void updateCooldown(float dt);
+
     CREATE_FUNC(ThunderCastB);
 private:
     bool isActive = false;

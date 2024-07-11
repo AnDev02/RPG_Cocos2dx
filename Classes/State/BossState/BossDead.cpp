@@ -36,11 +36,7 @@ void BossDead::EnterState() {
 		animateResult = ((boss->death_SE));
 	}
 
-	boss->getCurrentSprite()->runAction(Sequence::create(animateResult, FadeOut::create(1.0),
-		cocos2d::CallFunc::create([this]() {
-			boss->runAction(RemoveSelf::create());
-			boss = nullptr;
-			}), nullptr));
+	boss->getCurrentSprite()->runAction(Sequence::create(animateResult, FadeOut::create(1.0), nullptr));
 }
 
 void BossDead::ExitState() {

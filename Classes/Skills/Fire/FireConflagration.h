@@ -19,7 +19,7 @@ public:
 
     void performSkill(Vec2 target); 
 
-    void update(float dt);
+    void updateCooldown(float dt);
 
     void updateEffect(float dt);
 

@@ -21,6 +21,8 @@ public:
 
     void update(float dt);
 
+    void updateCooldown(float dt);
+
     CREATE_FUNC(FireCastB);
 private:
     bool isActive = false;

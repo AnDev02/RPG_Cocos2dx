@@ -15,10 +15,11 @@ void NormalMonster::detectPlayer() {
 
 void NormalMonster::chase() {
     if (UserDefault::getInstance()->getBoolForKey("is_pause", false) == true) {
-        this->characterCurrentSprite->resume();
-        if(!this->isScheduled(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy)))
-        this->schedule(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy), 0.0f);
-    }
+            this->characterCurrentSprite->resume();
+            if (!this->isScheduled(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy)))
+                this->schedule(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy), 0.0f);
+        }
+
     if (target && this->currentState!=deadState && this->currentState!=attackState) {
         Vec2 direction = (target->getPosition() - this->getPosition()).getNormalized();
 
@@ -48,8 +49,10 @@ void NormalMonster::stopSprite() {
 }
 
 void NormalMonster::stopChase() {
-    if(this->currentState != deadState)
-    this->getPhysicsBody()->setVelocity(Vec2::ZERO);
+    if (this->currentState != deadState) {
+        this->SwitchState(idleState);
+        this->getPhysicsBody()->setVelocity(Vec2::ZERO);
+    }
 }
 
 float NormalMonster::calculateAngle(const Vec2& vectorA, const Vec2& vectorB) {
@@ -76,7 +79,6 @@ void NormalMonster::attack() {
 void NormalMonster::die() {
 
     //if (this->getCurrentHP() <= 0 && this->currentState != deadState) {
-        if (this->getCurrentSprite()->getNumberOfRunningActions() > 0)this->getCurrentSprite()->stopAllActions();
         /*auto game = dynamic_cast<Game*>(Director::getInstance()->getRunningScene()->getChildByName("GameInstance"));
         for (auto enemy : game->listOfMonster)
         {
@@ -88,15 +90,20 @@ void NormalMonster::die() {
         }*/
         this->healthBar->setVisible(false);
         this->backGroundBar->setVisible(false);
-        if (this->monsterName)
         this->monsterName->setVisible(false);
+        isDead = true;
+        target->gainExp(this->getExpGain());
+
         ItemManager::dropItem(this, "crystal");
         ItemManager::dropEquipment(this, "");
         if (QuestManager::getInstance()->currentQuest && QuestManager::getInstance()->currentQuest->questStatus == QuestManager::getInstance()->currentQuest->RECEIVED)
             notifyObservers();
+        this->unschedule(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy));
         this->SwitchState(this->deadState);
 
     //}
+
+
 }
 
 bool NormalMonster::rayCast(const Vec2& start, const Vec2& end) {
@@ -145,7 +152,6 @@ void NormalMonster::updateEnemy(float dt) {
             }
         }
         attack();
-        //die();
         currentState->UpdateState();
     }
 }

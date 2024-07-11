@@ -200,46 +200,7 @@ public:
         }
     }
     bool _isGainExp = false;
-    void gainExp(float amountExp) {
-        CCLOG("Exp gain: %f", amountExp);
-        currentExp += amountExp;
-        expToConsume += amountExp;
-        auto expGainLable = Label::createWithTTF("0", "fonts/Diablo Light.ttf", 10);
-        expGainLable->setColor(Color3B::YELLOW);
-        this->addChild(expGainLable);
-        int expGainToInt = std::floor(amountExp);
-        expGainLable->setString(StringUtils::format("+%d EXP", expGainToInt));
-        
-        Vec2 pos = Vec2(0, characterCurrentSprite->getBoundingBox().size.height / 2);
-        auto moveTo = MoveTo::create(1.0f, pos);
-        auto fadeOut = FadeOut::create(1.0f);
-        auto spawn = Spawn::create(fadeOut, moveTo, nullptr);
-        auto sqe = Sequence::create(spawn, RemoveSelf::create(), nullptr);
-        expGainLable->runAction(sqe);
-
-        if (_isGainExp == false) {
-            expGainLable->setVisible(false);
-        }
-        else {
-            expGainLable->setVisible(true);
-        }
-        
-
-        _isGainExp == true;
-
-        if (currentExp >= expRequiredToLevelUp) {
-            //So snh expRemain vi cc expRequired ca cc level sau, 
-            // nu cn ln hn th tr n bao gi nh hn th thi
-            // v s ln phi tr s tng ng vi s ln ln level dm
-            while (true) {
-                expRemain = currentExp - expRequiredToLevelUp;
-                levelUp();
-                currentExp = expRemain;
-                if (currentExp < expRequiredToLevelUp)break;
-            }
-        }
-        InGameUI::getInstance(this)->expBar->updateExpBar(currentExp, expRequiredToLevelUp);
-    }
+    
     void setExpRequiredToLevelUp() {
         expRequiredToLevelUp *= 1.5;
     }

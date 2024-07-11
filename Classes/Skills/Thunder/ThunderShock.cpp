@@ -30,7 +30,7 @@ bool ThunderShock::init() {
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
 
-    
+
     //Skill Sprite
     _skillSprite = Sprite::createWithSpriteFrameName("thunder_shock (1).png");
     _skillSprite->setScale(0.1);
@@ -83,8 +83,7 @@ bool ThunderShock::init() {
     touchListener->onTouchEnded = CC_CALLBACK_2(ThunderShock::onTouchEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, _skillButton);
     _touchListener = touchListener;
-    schedule(CC_SCHEDULE_SELECTOR(ThunderShock::update), 0.05f);
-    schedule(CC_SCHEDULE_SELECTOR(ThunderShock::updateEffect), 1.0f);
+
     return true;
 }
 
@@ -100,7 +99,7 @@ bool ThunderShock::onTouchBegan(Touch* touch, Event* event)
             return false;
         }
 
-        if (currentSkillCoolDown < 0) {
+        if (currentSkillCoolDown <= 0) {
             schedule(CC_SCHEDULE_SELECTOR(ThunderShock::updateEnemies), 0.00);
             _skillButton->isPressed = true;
             this->_aoeSprite->setVisible(true);
@@ -156,7 +155,7 @@ void ThunderShock::onTouchMoved(Touch* touch, Event* event)
                 std::vector<Enemy*> enemiesRemove;
                 for (const auto& child : children) {
                     auto enemy = dynamic_cast<Enemy*>(child); //Tm nhng enemy c trong scene
-                    if (enemy) {
+                    if (enemy && enemy->getCurrentHP() > 0) {
                         Vec2 enemyInWorldCoor = enemy->getParent()->convertToWorldSpace(enemy->getPosition());
                         Vec2 enemyInSkillCoor = this->convertToNodeSpace(enemyInWorldCoor);
 
@@ -238,7 +237,7 @@ void ThunderShock::onTouchEnded(Touch* touch, Event* event)
 }
 
 void ThunderShock::performSkill(Vec2 target) {
-    
+
     if (enemies.size() == 0)return;
     auto player = dynamic_cast<Player*>(this->getParent());
     if (player->getCurrentMP() < manaCost) {
@@ -246,10 +245,11 @@ void ThunderShock::performSkill(Vec2 target) {
         return;
     }
 
-    if (currentSkillCoolDown < 0){
+    if (currentSkillCoolDown <= 0) {
         if (enemies.size() > 0) {
             player->SwitchState(player->selectState);
             player->setCurrentMP(player->getCurrentMP() - manaCost);
+            schedule(CC_SCHEDULE_SELECTOR(ThunderShock::update), 1.0f);
             UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/lightning_fire.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
         }
     }
@@ -264,45 +264,44 @@ void ThunderShock::performSkill(Vec2 target) {
         enemy->addChild(skillSprite);
 
         //DealDamage
-        if (currentSkillCoolDown < 0) {
+        if (currentSkillCoolDown <= 0) {
             enemy->takeDamage((skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()) / enemies.size());
-            //Do effect
-            if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->THUNDER) {
-                if (!enemy->getChildByName("ThunderEffect")) {
-                    //Skill Effect Sprite
-                    auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
-                    effect->setName("ThunderEffect");
-                    effect->setScale(0.2);
+            ////Do effect
+            //if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->THUNDER) {
+            //    if (!enemy->getChildByName("ThunderEffect")) {
+            //        //Skill Effect Sprite
+            //        auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
+            //        effect->setName("ThunderEffect");
+            //        effect->setScale(0.2);
 
-                    //Skill Effect Animate
-                    auto animate = Animate::create(Engine::createAnimation2("thunder_spark", 30, 0.05));
-                    enemy->addChild(effect);
+            //        //Skill Effect Animate
+            //        auto animate = Animate::create(Engine::createAnimation2("thunder_spark", 30, 0.05));
+            //        enemy->addChild(effect);
 
-                    //Effect to Monster
-                    effect->setPosition(Vec2(0, 40));
-                    effect->runAction(RepeatForever::create(animate));
-
-                    effectTime = 5.0f;
-                }
-            }
+            //        //Effect to Monster
+            //        effect->setPosition(Vec2(0, 40));
+            //        effect->runAction(RepeatForever::create(animate));
+            //        schedule(CC_SCHEDULE_SELECTOR(ThunderShock::updateEffect), 1.0f);
+            //        effectTime = 5.0f;
+            //    }
+            //}
         }
         //Skill Animate
         Animate* skillAnimate = Animate::create(Engine::createAnimation2("thunder_shock", 60, 0.025));
 
         auto sqe = Sequence::create(skillAnimate, RemoveSelf::create(), nullptr);
 
-        if (currentSkillCoolDown < 0)skillSprite->runAction(sqe);
+        if (currentSkillCoolDown <= 0)skillSprite->runAction(sqe);
         NormalMonsterRemove.push_back(enemy);
 
         auto boss = dynamic_cast<Boss*>(enemy);
         if (boss && boss->currentState != boss->deadState) {
- 
-            if (boss->getCurrentHP() == 0)player->gainExp(boss->getExpGain());
+            if (boss->getCurrentHP() == 0)boss->die();
         }
 
         auto monster = dynamic_cast<NormalMonster*>(enemy);
         if (monster && monster->currentState != monster->deadState) {
-            if (monster->getCurrentHP() == 0)player->gainExp(monster->getExpGain());
+            if (monster->getCurrentHP() == 0)monster->die();
         }
     }
     for (auto enemyRemove : NormalMonsterRemove) {
@@ -314,7 +313,7 @@ void ThunderShock::performSkill(Vec2 target) {
         }
     }
 
-    if (currentSkillCoolDown < 0)
+    if (currentSkillCoolDown <= 0)
         currentSkillCoolDown = skillCooldown;
 
     _iconSprite->setOpacity(70);
@@ -329,6 +328,7 @@ void ThunderShock::update(float dt) {
         if (coolDownToInt < 0 && coolDownCountLable->isVisible()) {
             _iconSprite->setOpacity(255);
             coolDownCountLable->setVisible(false);
+            unschedule(CC_SCHEDULE_SELECTOR(ThunderShock::update));
         }
 
         coolDownCountLable->setString(StringUtils::format("%d", coolDownToInt));
@@ -349,31 +349,46 @@ void ThunderShock::updateEnemies(float dt) {
     }
 }
 
-void ThunderShock::updateEffect(float dt) {
-    if (effectTime >= 0) {
-        auto player = dynamic_cast<Player*>(this->getParent());
-
-        effectTime -= dt;
-        //Check every monster in map
-        Scene* currentScene = Director::getInstance()->getRunningScene();
-        if (currentScene) {
-            Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
-            if (game) {
-                auto children = game->gameMap->getTiledMap()->getChildren();
-                for (const auto& child : children) {
-                    auto monster = dynamic_cast<NormalMonster*>(child);
-                    if (monster) {
-                        //Delete effect sprite when no longer effect
-                        if (effectTime < 0) {
-                            if (monster->getChildByName("ThunderEffect"))monster->removeChildByName("ThunderEffect");
-                        }
-                        else {
-                            if (monster->getChildByName("ThunderEffect"))monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-}
+//void ThunderShock::updateEffect(float dt) {
+//    if (effectTime >= 0) {
+//        auto player = dynamic_cast<Player*>(this->getParent());
+//
+//        effectTime -= dt;
+//        //Check every monster in map
+//        Scene* currentScene = Director::getInstance()->getRunningScene();
+//        if (currentScene) {
+//            Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
+//            if (game) {
+//                auto children = game->gameMap->getTiledMap()->getChildren();
+//                for (const auto& child : children) {
+//                    auto monster = dynamic_cast<NormalMonster*>(child);
+//                    auto boss = dynamic_cast<Boss*>(child);
+//                    if (monster) {
+//                        //Delete effect sprite when no longer effect
+//                        if (effectTime < 0) {
+//                            if (monster->getChildByName("ThunderEffect"))monster->removeChildByName("ThunderEffect");
+//                        }
+//                        else {
+//                            if (monster->getChildByName("ThunderEffect"))monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+//                        }
+//                        if (monster->getCurrentHP() == 0 && monster->getChildByName("ThunderEffect"))monster->removeChildByName("ThunderEffect");
+//                    }
+//                    if (boss) {
+//                        //Delete effect sprite when no longer effect
+//                        if (effectTime < 0) {
+//                            if (boss->getChildByName("ThunderEffect"))boss->removeChildByName("ThunderEffect");
+//                        }
+//                        else {
+//                            if (boss->getChildByName("ThunderEffect"))boss->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+//                        }
+//                        if (boss->getCurrentHP() == 0 && boss->getChildByName("ThunderEffect"))boss->removeChildByName("ThunderEffect");
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    else {
+//        unschedule(CC_SCHEDULE_SELECTOR(ThunderShock::updateEffect));
+//    }
+//
+//}
