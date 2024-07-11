@@ -10,6 +10,7 @@ public:
 	virtual bool init() override;
 	virtual void performSkill(Vec2 target) override;
 	virtual void castRangeIndicator(Vec2 target) override;
+	void update(float);
 	CREATE_FUNC(MultiFireBall);
 private:
 	std::vector<Sprite*> _skillSprites;

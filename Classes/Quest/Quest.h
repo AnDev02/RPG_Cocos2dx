@@ -91,7 +91,7 @@ public:
     NPC* npc;
     std::vector<Item*> items;
     std::vector<Enemy*> enemies;
-//protected:
+
     //Common Props
 
     int questType;

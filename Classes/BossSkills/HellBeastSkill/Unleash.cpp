@@ -49,25 +49,25 @@ void Unleash::performSkill(Vec2 target) {
 			dir = Vec2(1, 0);
 		}
 		else if (i == 1) {
-			dir = Vec2(sqrt(2)/2, sqrt(2)/2);
+			dir = Vec2(sqrt(2) / 2, sqrt(2) / 2);
 		}
 		else if (i == 2) {
 			dir = Vec2(0, 1);
 		}
 		else if (i == 3) {
-			dir = Vec2(-sqrt(2)/2, sqrt(2)/2);
+			dir = Vec2(-sqrt(2) / 2, sqrt(2) / 2);
 		}
 		else if (i == 4) {
 			dir = Vec2(-1, 0);
 		}
 		else if (i == 5) {
-			dir = Vec2(-sqrt(2)/2, -sqrt(2)/2);
+			dir = Vec2(-sqrt(2) / 2, -sqrt(2) / 2);
 		}
 		else if (i == 6) {
 			dir = Vec2(0, -1);
 		}
 		else if (i == 7) {
-			dir = Vec2(sqrt(2)/2, -sqrt(2)/2);
+			dir = Vec2(sqrt(2) / 2, -sqrt(2) / 2);
 		}
 		dir.normalize();
 		Vec2 tar = _skillSprites[i]->getPosition() + dir * _rangeIndicators[i]->getBoundingBox().size.width;
@@ -80,29 +80,28 @@ void Unleash::performSkill(Vec2 target) {
 		rangeIndicator->runAction(RemoveSelf::create());
 	}
 
-	//skillSprite->runAction(Sequence::create(_skillAnimate, RemoveSelf::create(), nullptr));
 
-	//// Lấy scene chính từ Director để kiểm tra có enemy nào trong phạm vi skill ko
-	//Scene* currentScene = Director::getInstance()->getRunningScene();
-	//if (currentScene) {
-	//	Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
-	//	if (game) {
-	//		auto children = game->gameMap->getTiledMap()->getChildren();
+	// Lấy scene chính từ Director để kiểm tra có enemy nào trong phạm vi skill ko
+	Scene* currentScene = Director::getInstance()->getRunningScene();
+	if (currentScene) {
+		Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
+		if (game) {
+			auto children = game->gameMap->getTiledMap()->getChildren();
 
-	//		for (const auto& child : children) {
-	//			auto player = dynamic_cast<Player*>(child);
-	//			if (player) {
-	//				//Kiểm tra xem enemy có nằm trong vùng ảnh hưởng của skill hay không
-	//				if (target.distance(player->getPosition()) <= 80) {
-	//					player->takeDamage(skillDamage);
-	//					if (player->getCurrentHP() == 0) {
+			for (const auto& child : children) {
+				auto player = dynamic_cast<Player*>(child);
+				if (player) {
+					//Kiểm tra xem enemy có nằm trong vùng ảnh hưởng của skill hay không
+					if (target.distance(player->getPosition()) <= 80) {
+						player->takeDamage(skillDamage);
+						if (player->getCurrentHP() == 0) {
 
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
+						}
+					}
+				}
+			}
+		}
+	}
 
 }
 
@@ -117,25 +116,25 @@ void Unleash::castRangeIndicator(Vec2 target) {
 			dir = Vec2(1, 0);
 		}
 		else if (i == 1) {
-			dir = Vec2(sqrt(2)/2, sqrt(2)/2);
+			dir = Vec2(sqrt(2) / 2, sqrt(2) / 2);
 		}
 		else if (i == 2) {
 			dir = Vec2(0, 1);
 		}
 		else if (i == 3) {
-			dir = Vec2(-sqrt(2)/2, sqrt(2)/2);
+			dir = Vec2(-sqrt(2) / 2, sqrt(2) / 2);
 		}
 		else if (i == 4) {
 			dir = Vec2(-1, 0);
 		}
 		else if (i == 5) {
-			dir = Vec2(-sqrt(2)/2, -sqrt(2)/2);
+			dir = Vec2(-sqrt(2) / 2, -sqrt(2) / 2);
 		}
 		else if (i == 6) {
 			dir = Vec2(0, -1);
 		}
 		else if (i == 7) {
-			dir = Vec2(sqrt(2)/2, -sqrt(2)/2);
+			dir = Vec2(sqrt(2) / 2, -sqrt(2) / 2);
 		}
 		dir.normalize();
 		Vec2 tar = _skillSprites[i]->getPosition() + dir * _rangeIndicators[i]->getBoundingBox().size.width;

@@ -154,7 +154,6 @@ void FireBall::onTouchMoved(Touch* touch, Event* event)
                 _skillButton->skillButtonBtn->setPosition(touchLocationInNode);
                 _skillButton->currentPos = touchLocationInNode;
             }
-
             Vec2 lastTouchLocationInNode = _skillButton->convertToNodeSpace(touch->getLocation());
             if (_skillButton->cancelButton->getBoundingBox().containsPoint(lastTouchLocationInNode)) {
                 _skillButton->cancelButton->setOpacity(200);
@@ -254,7 +253,6 @@ void FireBall::performSkill(Vec2 target) {
 }
 
 void FireBall::update(float dt) {
-    //if (enemy->getPosition().distance(_skillSprite->getPosition()) <= 60) {
 
     if (_skillSprite->getParent()) {
         // Lấy scene chính từ Director để kiểm tra có enemy nào trong phạm vi skill ko

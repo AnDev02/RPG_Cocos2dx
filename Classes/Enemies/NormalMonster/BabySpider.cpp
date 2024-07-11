@@ -96,6 +96,7 @@ bool BabySpider::init() {
      this->walkState = new NormalMonsterWalk(this);
      this->deadState = new NormalMonsterDead(this);
 
+     schedule(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy), 0.00f);
 	return true;
 }
 
