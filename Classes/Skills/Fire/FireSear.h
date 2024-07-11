@@ -5,6 +5,7 @@
 #include "Fire.h"
 USING_NS_CC;
 
+class NormalMonster;
 class FireSear : public Fire
 {
 public:
@@ -20,6 +21,12 @@ public:
     void performSkill(Vec2 target);
 
     CREATE_FUNC(FireSear);
+
+    std::vector<NormalMonster*> monstersRemove;
+
+    void deleteEnemies(float);
+
+    bool isDeleteEnemiesScheduled = false;
 };
 
 #endif 

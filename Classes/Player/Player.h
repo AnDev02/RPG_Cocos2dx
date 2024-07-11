@@ -281,6 +281,7 @@ public:
     void setMoving(bool isMove) { moving = isMove; };
     bool isCanMove(const Vec2& newPosition);
     bool isHideObject(const Vec2& newPosition);
+    bool isInHidePlayerZone(const Vec2& newPosition);
     void setTiledMap(GameMap* newMap) { map = newMap; };
     void upgradeEquipment(std::string);
     void increaseStat(float amount, std::string statName);
@@ -334,7 +335,7 @@ public:
         if (currentHPResult >= HP + equipmentHP)currentHPResult = HP;
         currentHP = currentHPResult;
     }
-
+    void gainExp(float amountExp);
     //Observer props
     std::vector<Observer*> observers;
     std::string message;

@@ -101,119 +101,11 @@ bool FireBall::init() {
     touchListener->onTouchEnded = CC_CALLBACK_2(FireBall::onTouchEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, _skillButton);
     _touchListener = touchListener;
-    schedule(CC_SCHEDULE_SELECTOR(FireBall::update), 0.05f);
-    schedule(CC_SCHEDULE_SELECTOR(FireBall::updateEffect), 1.0f);
 
-    //// To b lng nghe s kin va chm
-    //auto contactListener = EventListenerPhysicsContact::create();
-    //contactListener->onContactBegin = CC_CALLBACK_1(FireBall::onContactBegin, this);
-    //_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
     return true;
 }
 
-//bool FireBall::onContactBegin(PhysicsContact& contact) {
-//    auto spriteA = contact.getShapeA()->getBody()->getNode();
-//    auto spriteB = contact.getShapeB()->getBody()->getNode();
-//
-//    // Kim tra va chm gia spriteA v spriteB
-//    if ((spriteA == _skillSprite && dynamic_cast<Enemy*>(spriteB)) ||
-//        (spriteB == _skillSprite && dynamic_cast<Enemy*>(spriteA))) {
-//
-//        auto enemyA = dynamic_cast<Enemy*>(spriteA);
-//        auto enemyB = dynamic_cast<Enemy*>(spriteB);
-//        
-//        auto player = dynamic_cast<Player*>(this->getParent());
-//        UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/flames_explosion.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
-//        if (enemyA) {
-//            auto boss = dynamic_cast<Boss*>(enemyA);
-//            if (boss && boss->currentState != boss->deadState) {
-//                boss->takeDamage(skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage());
-//                if (boss->getCurrentHP() == 0) {
-//                    player->gainExp(boss->getExpGain());
-//                    boss->die();
-//                    return true;
-//                }
-//            }
-//
-//            auto monster = dynamic_cast<NormalMonster*>(enemyA);
-//            if (monster && monster->currentState != monster->deadState) {
-//                monster->takeDamage(skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage());
-//                //Do effect
-//                if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
-//                    if (!monster->getChildByName("FireEffect")) {
-//                        //Skill Effect Sprite
-//                        auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
-//                        effect->setName("FireEffect");
-//                        effect->setScale(0.2);
-//
-//                        //Skill Effect Animate
-//                        auto animate = Animate::create(Engine::createAnimation2("fire_sear", 30, 0.05));
-//                        monster->addChild(effect);
-//
-//                        //Effect to Monster
-//                        effect->setPosition(Vec2(0, 40));
-//                        effect->runAction(RepeatForever::create(animate));
-//
-//                        effectTime = 5.0f;
-//                    }
-//                }
-//                if (monster->getCurrentHP() == 0) {
-//                    player->gainExp(monster->getExpGain());
-//                    monster->die();
-//                    return true;
-//                }
-//            }
-//
-//        }
-//        if (enemyB) {
-//            auto boss = dynamic_cast<Boss*>(enemyB);
-//            if (boss && boss->currentState != boss->deadState) {
-//                boss->takeDamage(skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage());
-//                if (boss->getCurrentHP() == 0) {
-//                    player->gainExp(boss->getExpGain());
-//                    boss->die();
-//                    return true;
-//                }
-//            }
-//
-//            auto monster = dynamic_cast<NormalMonster*>(enemyB);
-//            if (monster && monster->currentState != monster->deadState) {
-//                monster->takeDamage(skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage());
-//                //Do effect
-//                if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
-//
-//                    if (!monster->getChildByName("FireEffect")) {
-//                        //Skill Effect Sprite
-//                        auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
-//                        effect->setName("FireEffect");
-//                        effect->setScale(0.2);
-//
-//                        //Skill Effect Animate
-//                        auto animate = Animate::create(Engine::createAnimation2("fire_sear", 30, 0.05));
-//                        monster->addChild(effect);
-//
-//                        //Effect to Monster
-//                        effect->setPosition(Vec2(0, 40));
-//                        effect->runAction(RepeatForever::create(animate));
-//
-//                        effectTime = 5.0f;
-//                    }
-//
-//                }
-//                if (monster->getCurrentHP() == 0) {
-//                    player->gainExp(monster->getExpGain());
-//                    monster->die();
-//                    return true;
-//                }
-//            }
-//        }
-//     
-//
-//    }
-//
-//    return false;
-//}
 bool FireBall::onTouchBegan(Touch* touch, Event* event)
 {
     Vec2 touchLocationInNode = _skillButton->convertToNodeSpace(touch->getLocation());
@@ -226,7 +118,7 @@ bool FireBall::onTouchBegan(Touch* touch, Event* event)
             return false;
         }
 
-        if (currentSkillCoolDown < 0) {
+        if (currentSkillCoolDown <= 0) {
             _skillButton->isPressed = true;
             this->_aoeSprite->setVisible(true);
             _skillButton->cancelButton->setVisible(true);
@@ -262,7 +154,6 @@ void FireBall::onTouchMoved(Touch* touch, Event* event)
                 _skillButton->skillButtonBtn->setPosition(touchLocationInNode);
                 _skillButton->currentPos = touchLocationInNode;
             }
-
             Vec2 lastTouchLocationInNode = _skillButton->convertToNodeSpace(touch->getLocation());
             if (_skillButton->cancelButton->getBoundingBox().containsPoint(lastTouchLocationInNode)) {
                 _skillButton->cancelButton->setOpacity(200);
@@ -305,7 +196,7 @@ void FireBall::onTouchEnded(Touch* touch, Event* event)
 }
 
 void FireBall::performSkill(Vec2 target) {
-    if (currentSkillCoolDown < 0) {
+    if (currentSkillCoolDown <= 0) {
        
         auto player = dynamic_cast<Player*>(this->getParent());
 
@@ -315,6 +206,9 @@ void FireBall::performSkill(Vec2 target) {
         }
         _skillSprite->setPhysicsBody(physicsBody);
         UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/flames_fire.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
+
+        schedule(CC_SCHEDULE_SELECTOR(FireBall::update), 0.05f);
+        schedule(CC_SCHEDULE_SELECTOR(FireBall::updateCooldown), 1.0f);
 
         player->setCurrentMP(player->getCurrentMP() - manaCost);
 
@@ -360,117 +254,79 @@ void FireBall::performSkill(Vec2 target) {
 
 void FireBall::update(float dt) {
 
-
     if (_skillSprite->getParent()) {
         // Lấy scene chính từ Director để kiểm tra có enemy nào trong phạm vi skill ko
         Scene* currentScene = Director::getInstance()->getRunningScene();
         if (currentScene) {
             Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
             if (game) {
-                auto children = game->gameMap->getTiledMap()->getChildren();
+                auto monsters = game->listOfMonster;
                 //get Player
                 auto player = dynamic_cast<Player*>(this->getParent());
 
-                for (const auto& child : children) {
-                    auto enemy = dynamic_cast<Enemy*>(child);
-                    if (enemy) {
-                        if (enemy->getPosition().distance(_skillSprite->getPosition()) <= 60) {
-                            auto boss = dynamic_cast<Boss*>(enemy);
-                            if (boss && boss->currentState != boss->deadState) {
-                                boss->takeDamage(skillDamage);
-
-
-                                if (!boss->getChildByName("FireEffect")) {
-                                    //Skill Effect Sprite
-                                    auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
-                                    effect->setName("FireEffect");
-                                    effect->setScale(0.2);
-
-                                    //Skill Effect Animate
-                                    auto animate = Animate::create(Engine::createAnimation2("fire_sear", 30, 0.05));
-                                    boss->addChild(effect);
-
-                                    //Effect to Monster
-                                    effect->setPosition(Vec2(0, 40));
-                                    effect->runAction(RepeatForever::create(animate));
-
-                                    effectTime = 5.0f;
-
-                                }
-                                _skillSprite->runAction(RemoveSelf::create());
-
-                                if (boss->getCurrentHP() == 0)player->gainExp(boss->getExpGain());
-                            }
-
-                            auto monster = dynamic_cast<NormalMonster*>(enemy);
-                            if (monster && monster->currentState != monster->deadState) {
-                                monster->takeDamage(skillDamage);
-
-
-                                if (!monster->getChildByName("FireEffect")) {
-                                    //Skill Effect Sprite
-                                    auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
-                                    effect->setName("FireEffect");
-                                    effect->setScale(0.2);
-
-                                    //Skill Effect Animate
-                                    auto animate = Animate::create(Engine::createAnimation2("fire_sear", 30, 0.05));
-                                    monster->addChild(effect);
-
-                                    //Effect to Monster
-                                    effect->setPosition(Vec2(0, 40));
-                                    effect->runAction(RepeatForever::create(animate));
-
-                                    effectTime = 5.0f;
-
-                                }
-                                _skillSprite->runAction(RemoveSelf::create());
-                                if (monster->getCurrentHP() == 0)player->gainExp(monster->getExpGain());
-                            }
+                for (auto& monster : monsters) {
+                    if (monster && !monster->isDead && monster->getPosition().distance(_skillSprite->getPosition()) <= 60) {
+                        _skillSprite->runAction(RemoveSelf::create());
+                        monster->takeDamage(skillDamage);
+                        if (monster->getCurrentHP() <= 0) {
+                            monster->die();
                         }
+                    }
+                }
+
+                auto boss = game->boss;
+                if (boss && !boss->isDead && boss->getPosition().distance(_skillSprite->getPosition()) <= 60) {
+                    _skillSprite->runAction(RemoveSelf::create());
+                    boss->takeDamage(skillDamage);
+                    if (boss->getCurrentHP() <= 0) {
+                        boss->die();
                     }
                 }
             }
         }
     }
+    else unschedule(CC_SCHEDULE_SELECTOR(FireBall::update));
+}
 
-
+void FireBall::updateCooldown(float dt) {
     if (currentSkillCoolDown >= 0) {
         currentSkillCoolDown -= dt;
         int coolDownToInt = std::floor(currentSkillCoolDown);
-        if (coolDownToInt <= 0 && coolDownCountLable->isVisible()) {
+        if (coolDownToInt < 0 && coolDownCountLable->isVisible()) {
             _iconSprite->setOpacity(255);
             coolDownCountLable->setVisible(false);
+            unschedule(CC_SCHEDULE_SELECTOR(FireBall::updateCooldown));
         }
+
         coolDownCountLable->setString(StringUtils::format("%d", coolDownToInt));
     }
 }
 
 void FireBall::updateEffect(float dt) {
-    if (effectTime >= 0) {
-        auto player = dynamic_cast<Player*>(this->getParent());
+    //if (effectTime >= 0) {
+    //    auto player = dynamic_cast<Player*>(this->getParent());
 
-        effectTime -= dt;
-        //Check every monster in map
-        Scene* currentScene = Director::getInstance()->getRunningScene();
-        if (currentScene) {
-            Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
-            if (game) {
-                auto children = game->gameMap->getTiledMap()->getChildren();
-                for (const auto& child : children) {
-                    auto monster = dynamic_cast<NormalMonster*>(child);
-                    if (monster) {
-                        //Delete effect sprite when no longer effect
-                        if (effectTime < 0) {
-                            if (monster->getChildByName("FireEffect"))monster->removeChildByName("FireEffect");
-                        }
-                        else {
-                            if (monster->getChildByName("FireEffect"))monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
-                        }
-                    }
-                }
-            }
-        }
-    }
+    //    effectTime -= dt;
+    //    //Check every monster in map
+    //    Scene* currentScene = Director::getInstance()->getRunningScene();
+    //    if (currentScene) {
+    //        Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
+    //        if (game) {
+    //            auto children = game->gameMap->getTiledMap()->getChildren();
+    //            for (const auto& child : children) {
+    //                auto monster = dynamic_cast<NormalMonster*>(child);
+    //                if (monster) {
+    //                    //Delete effect sprite when no longer effect
+    //                    if (effectTime < 0) {
+    //                        if (monster->getChildByName("FireEffect"))monster->removeChildByName("FireEffect");
+    //                    }
+    //                    else {
+    //                        if (monster->getChildByName("FireEffect"))monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
 }

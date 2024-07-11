@@ -1,5 +1,8 @@
 ﻿#include "FireSear.h"
 #include "Player/Player.h"
+#include "Enemies/Enemy.h"
+#include "HelloWorldScene.h"
+#include "Map/Map.h"
 #include "TutorialManager/TutorialManager.h"
 #include <string>
 bool FireSear::init() {
@@ -102,6 +105,36 @@ void FireSear::performSkill(Vec2 target) {
         player->addChild(_skillSprite);
         if (_skillSprite->getNumberOfRunningActions() > 0)_skillSprite->stopAllActions();
         _skillSprite->runAction(Sequence::create(_skillAnimate, RemoveSelf::create(), nullptr));
+
+        Scene* currentScene = Director::getInstance()->getRunningScene();
+
+        if (currentScene) {
+            Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
+            if (game) {
+                auto children = game->listOfMonster;
+
+                for (auto& monster : children) {
+                        if (player->getPosition().distance(monster->getPosition()) <= player->getAttackRange()) {
+                            if (monster && !monster->isDead) {
+                                monster->takeDamage(player->getDamage() + player->getEquipmentSkillDamage());
+                                if (monster->getCurrentHP() <= 0) {
+                                    monster->die();
+                                }
+                            }
+                        }
+                    
+                }
+                //Boss
+                auto boss = game->boss;
+                if (boss && !boss->isDead && player->getPosition().distance(boss->getPosition()) <= player->getAttackRange()) {
+                    boss->takeDamage(skillDamage);
+                    if (boss->getCurrentHP() <= 0) {
+                        boss->die();
+                    }
+                }
+            }
+        }
+
     }
     // tutorial
     int currentTutorial = UserDefault::getInstance()->getIntegerForKey("current_tutorial", 0);
@@ -109,3 +142,20 @@ void FireSear::performSkill(Vec2 target) {
         TutorialManager::getInstance()->nextTutorial();
     }
 }
+
+//void FireSear::deleteEnemies(float dt) {
+//    if (!monstersRemove.empty()) {
+//        for (auto monster : monstersRemove) {
+//            if (monster->getCurrentSprite()->getOpacity() == 0) {
+//                monster->removeFromParentAndCleanup(true);
+//            }
+//
+//        }
+//    }
+//    else {
+//        if (isDeleteEnemiesScheduled) {
+//            this->unschedule(CC_SCHEDULE_SELECTOR(FireSear::deleteEnemies));
+//            isDeleteEnemiesScheduled = false;
+//        }
+//    }
+//}

@@ -28,7 +28,7 @@ bool ThunderVoltage::init() {
     _iconSprite->setScale(0.1);
     _iconSprite->retain();
 
-    
+
     //Skill Sprite
     _skillSprite = Sprite::createWithSpriteFrameName("thunder_voltage_flying (1).png");
     _skillSprite->setAnchorPoint(Vec2(0.5, 0.5));
@@ -95,8 +95,7 @@ bool ThunderVoltage::init() {
     touchListener->onTouchEnded = CC_CALLBACK_2(ThunderVoltage::onTouchEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, _skillButton);
     _touchListener = touchListener;
-    schedule(CC_SCHEDULE_SELECTOR(ThunderVoltage::update), 0.05f);
-    schedule(CC_SCHEDULE_SELECTOR(ThunderVoltage::updateEffect), 1.0f);
+
     // To b lng nghe s kin va chm
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(ThunderVoltage::onContactBegin, this);
@@ -173,8 +172,27 @@ bool ThunderVoltage::onContactBegin(PhysicsContact& contact) {
                             auto boss = dynamic_cast<Boss*>(enemy);
                             if (boss && boss->currentState != boss->deadState) {
                                 boss->takeDamage(skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage());
+                                ////Do effect
+                                //if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->THUNDER) {
+                                //    if (!boss->getChildByName("ThunderEffect")) {
+                                //        //Skill Effect Sprite
+                                //        auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
+                                //        effect->setName("ThunderEffect");
+                                //        effect->setScale(0.2);
+
+                                //        //Skill Effect Animate
+                                //        auto animate = Animate::create(Engine::createAnimation2("thunder_spark", 30, 0.05));
+                                //        boss->addChild(effect);
+
+                                //        //Effect to Monster
+                                //        effect->setPosition(Vec2(0, 40));
+                                //        effect->runAction(RepeatForever::create(animate));
+
+                                //        schedule(CC_SCHEDULE_SELECTOR(ThunderVoltage::updateEffect), 1.0f);
+                                //        effectTime = 5.0f;
+                                //    }
+                                //}
                                 if (boss->getCurrentHP() == 0) {
-                                    player->gainExp(boss->getExpGain());
                                     boss->die();
                                 }
                             }
@@ -182,27 +200,27 @@ bool ThunderVoltage::onContactBegin(PhysicsContact& contact) {
                             auto monster = dynamic_cast<NormalMonster*>(enemy);
                             if (monster && monster->currentState != monster->deadState) {
                                 monster->takeDamage(skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage());
-                                //Do effect
-                                if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->THUNDER) {
-                                    if (!monster->getChildByName("ThunderEffect")) {
-                                        //Skill Effect Sprite
-                                        auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
-                                        effect->setName("ThunderEffect");
-                                        effect->setScale(0.2);
+                                ////Do effect
+                                //if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->THUNDER) {
+                                //    if (!monster->getChildByName("ThunderEffect")) {
+                                //        //Skill Effect Sprite
+                                //        auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
+                                //        effect->setName("ThunderEffect");
+                                //        effect->setScale(0.2);
 
-                                        //Skill Effect Animate
-                                        auto animate = Animate::create(Engine::createAnimation2("thunder_spark", 30, 0.05));
-                                        monster->addChild(effect);
+                                //        //Skill Effect Animate
+                                //        auto animate = Animate::create(Engine::createAnimation2("thunder_spark", 30, 0.05));
+                                //        monster->addChild(effect);
 
-                                        //Effect to Monster
-                                        effect->setPosition(Vec2(0, 40));
-                                        effect->runAction(RepeatForever::create(animate));
+                                //        //Effect to Monster
+                                //        effect->setPosition(Vec2(0, 40));
+                                //        effect->runAction(RepeatForever::create(animate));
 
-                                        effectTime = 5.0f;
-                                    }
-                                }
+                                //        schedule(CC_SCHEDULE_SELECTOR(ThunderVoltage::updateEffect), 1.0f);
+                                //        effectTime = 5.0f;
+                                //    }
+                                //}
                                 if (monster->getCurrentHP() == 0) {
-                                    player->gainExp(monster->getExpGain());
                                     monster->die();
                                 }
                             }
@@ -229,7 +247,7 @@ bool ThunderVoltage::onTouchBegan(Touch* touch, Event* event)
             return false;
         }
 
-        if (currentSkillCoolDown < 0) {
+        if (currentSkillCoolDown <= 0) {
             _skillButton->isPressed = true;
             this->_aoeSprite->setVisible(true);
             _skillButton->cancelButton->setVisible(true);
@@ -306,8 +324,8 @@ void ThunderVoltage::onTouchEnded(Touch* touch, Event* event)
 }
 
 void ThunderVoltage::performSkill(Vec2 target) {
-    
-    if (currentSkillCoolDown < 0) {
+
+    if (currentSkillCoolDown <= 0) {
 
         auto player = dynamic_cast<Player*>(this->getParent());
         if (player->getCurrentMP() < manaCost) {
@@ -327,6 +345,7 @@ void ThunderVoltage::performSkill(Vec2 target) {
 
         player->SwitchState(player->selectState);
         player->setCurrentMP(player->getCurrentMP() - manaCost);
+        schedule(CC_SCHEDULE_SELECTOR(ThunderVoltage::update), 1.0f);
 
         Vec2 applyPosition = this->getParent()->getParent()->convertToNodeSpace(target);
         _skillSprite->setPosition(applyPosition);
@@ -344,7 +363,7 @@ void ThunderVoltage::performSkill(Vec2 target) {
 
         _skillSprite->runAction(Sequence::create(spawn, RemoveSelf::create(), nullptr));
 
-            currentSkillCoolDown = skillCooldown;
+        currentSkillCoolDown = skillCooldown;
 
         _iconSprite->setOpacity(70);
 
@@ -356,42 +375,59 @@ void ThunderVoltage::performSkill(Vec2 target) {
 }
 
 void ThunderVoltage::update(float dt) {
-    currentSkillCoolDown -= dt;
-    int coolDownToInt = std::floor(currentSkillCoolDown);
-    if (coolDownToInt < 0 && coolDownCountLable->isVisible()) {
-        _iconSprite->setOpacity(255);
-        coolDownCountLable->setVisible(false);
-    }
-
-    coolDownCountLable->setString(StringUtils::format("%d", coolDownToInt));
-
-}
-
-void ThunderVoltage::updateEffect(float dt) {
-    if (effectTime >= 0) {
-        auto player = dynamic_cast<Player*>(this->getParent());
-
-        effectTime -= dt;
-        //Check every monster in map
-        Scene* currentScene = Director::getInstance()->getRunningScene();
-        if (currentScene) {
-            Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
-            if (game) {
-                auto children = game->gameMap->getTiledMap()->getChildren();
-                for (const auto& child : children) {
-                    auto monster = dynamic_cast<NormalMonster*>(child);
-                    if (monster) {
-                        //Delete effect sprite when no longer effect
-                        if (effectTime < 0) {
-                            if (monster->getChildByName("ThunderEffect"))monster->removeChildByName("ThunderEffect");
-                        }
-                        else {
-                            if (monster->getChildByName("ThunderEffect"))monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
-                        }
-                    }
-                }
-            }
+    if (currentSkillCoolDown >= 0) {
+        currentSkillCoolDown -= dt;
+        int coolDownToInt = std::floor(currentSkillCoolDown);
+        if (coolDownToInt < 0 && coolDownCountLable->isVisible()) {
+            _iconSprite->setOpacity(255);
+            coolDownCountLable->setVisible(false);
+            unschedule(CC_SCHEDULE_SELECTOR(ThunderVoltage::update));
         }
-    }
 
+        coolDownCountLable->setString(StringUtils::format("%d", coolDownToInt));
+    }
 }
+
+//void ThunderVoltage::updateEffect(float dt) {
+//    if (effectTime >= 0) {
+//        auto player = dynamic_cast<Player*>(this->getParent());
+//
+//        effectTime -= dt;
+//        //Check every monster in map
+//        Scene* currentScene = Director::getInstance()->getRunningScene();
+//        if (currentScene) {
+//            Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
+//            if (game) {
+//                auto children = game->gameMap->getTiledMap()->getChildren();
+//                for (const auto& child : children) {
+//                    auto monster = dynamic_cast<NormalMonster*>(child);
+//                    auto boss = dynamic_cast<Boss*>(child);
+//                    if (monster) {
+//                        //Delete effect sprite when no longer effect
+//                        if (effectTime < 0) {
+//                            if (monster->getChildByName("ThunderEffect"))monster->removeChildByName("ThunderEffect");
+//                        }
+//                        else {
+//                            if (monster->getChildByName("ThunderEffect"))monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+//                        }
+//                        if (monster->getCurrentHP() == 0 && monster->getChildByName("ThunderEffect"))monster->removeChildByName("ThunderEffect");
+//                    }
+//                    if (boss) {
+//                        //Delete effect sprite when no longer effect
+//                        if (effectTime < 0) {
+//                            if (boss->getChildByName("ThunderEffect"))boss->removeChildByName("ThunderEffect");
+//                        }
+//                        else {
+//                            if (boss->getChildByName("ThunderEffect"))boss->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+//                        }
+//                        if (boss->getCurrentHP() == 0 && boss->getChildByName("ThunderEffect"))boss->removeChildByName("ThunderEffect");
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    else {
+//        unschedule(CC_SCHEDULE_SELECTOR(ThunderVoltage::updateEffect));
+//    }
+//
+//}

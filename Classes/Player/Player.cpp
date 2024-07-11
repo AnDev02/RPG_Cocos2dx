@@ -64,7 +64,7 @@ bool Player::init() {
     if (basePlayer.Max_level > 0) 
         maxLevel = basePlayer.Max_level;
     else 
-        maxLevel = 30;
+        maxLevel = 15;
     //STATS
     //HP
     if (basePlayer.HP > 0)
@@ -76,7 +76,7 @@ bool Player::init() {
     if(basePlayer.MP > 0) 
         MP = basePlayer.MP;
     else 
-        MP = 100;
+        MP = 10000;
     //HP regen
 
     if(basePlayer.HP_regen > 0)
@@ -321,7 +321,6 @@ Player::~Player() {
     armAttack_S->release(); //13
     armAttack_SE->release(); //15
 }
-
 
 #pragma region Animate
 void Player::setAttackSpeed(float attackSpeed) {
@@ -875,6 +874,12 @@ void Player::handleMove(float deltaTime) {
         if (isCanMove(newPos))
             this->setPosition(newPos);
 
+        if (isInHidePlayerZone(newPos)) {
+            this->setVisible(false);
+        }
+        else {
+            this->setVisible(true);
+        }
         
 
         float angleResult = calculateAngle(direction, Vec2(1, 0));
@@ -918,6 +923,25 @@ void Player::setSkill(SkillBase* skill) {
     this->addChild(skill);
     resetSkillSlotOrder();
 }
+
+void Player::gainExp(float amountExp) {
+    currentExp += amountExp;
+    expToConsume += amountExp;
+
+    if (currentExp >= expRequiredToLevelUp) {
+        //So snh expRemain vi cc expRequired ca cc level sau, 
+        // nu cn ln hn th tr n bao gi nh hn th thi
+        // v s ln phi tr s tng ng vi s ln ln level dm
+        while (true) {
+            expRemain = currentExp - expRequiredToLevelUp;
+            this->levelUp();
+            currentExp = expRemain;
+            if (currentExp < expRequiredToLevelUp)break;
+        }
+    }
+    //InGameUI::getInstance(this)->expBar->updateExpBar(currentExp, expRequiredToLevelUp);
+}
+
 //Level Manager
 void Player::levelUp() {
     if (level < maxLevel) {
@@ -925,10 +949,9 @@ void Player::levelUp() {
         //Gain Stats and Recover Full HP and MP
         gainAllStats();
         backToFullHealthAndMana();
-        InGameUI::getInstance(this)->healthBar->updateHealthBar(this->currentHP, this->currentMP, this->HP, this->MP);
         //Gain Exp Required To Level Up
         setExpRequiredToLevelUp();
-        InGameUI::getInstance(this)->levelUpPopup->show(this->level);
+        //InGameUI::getInstance(this)->levelUpPopup->show(this->level);
     }
 }
 void Player::regenStats(float dt) {
@@ -995,6 +1018,27 @@ bool Player::isHideObject(const Vec2& newPosition) {
     if (!listOfHideObject.empty()) {
         for (auto i : listOfHideObject) {
             if (i->getBoundingBox().containsPoint(newPosition)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Player::isInHidePlayerZone(const Vec2& newPosition)
+{
+    auto hidePlayerLayer = currentScene->gameMap->getTiledMap()->getObjectGroup("hideplayer");
+    if (hidePlayerLayer) {
+        auto& objects = hidePlayerLayer->getObjects();
+        for (const auto& obj : objects) {
+            auto dict = obj.asValueMap();
+            float x = dict["x"].asFloat();
+            float y = dict["y"].asFloat();
+            float width = dict["width"].asFloat();
+            float height = dict["height"].asFloat();
+
+            Rect boundingBox(x, y, width, height);
+            if (boundingBox.containsPoint(newPosition)) {
                 return true;
             }
         }

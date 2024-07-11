@@ -25,7 +25,7 @@ bool Skeleton::init() {
      //AS
      attackSpeed = 1.0;
      //Exp gain
-     expGain = 560.45;
+     expGain = 1200;
 
      //STATS BONUS
      HP_bonus = 45.7;
@@ -89,13 +89,17 @@ bool Skeleton::init() {
      physicsBody->setContactTestBitmask(0x01); // Kiểm tra va chạm với FireBall
 
      physicsBody->setPositionOffset(Vec2(0, 300));
+
      this->setPhysicsBody(physicsBody);
+
      this->addChild(characterCurrentSprite);
 
      this->idleState = new NormalMonsterIdle(this);
      this->attackState = new NormalMonsterAttack(this);
      this->walkState = new NormalMonsterWalk(this);
      this->deadState = new NormalMonsterDead(this);
+
+     schedule(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy), 0.00f);
 
 	return true;
 }

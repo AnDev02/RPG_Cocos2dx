@@ -23,7 +23,7 @@ public:
 
     void updateEnemies(float dt);
 
-    void updateEffect(float dt);
+    //void updateEffect(float dt);
 
 
     CREATE_FUNC(FireScorch);

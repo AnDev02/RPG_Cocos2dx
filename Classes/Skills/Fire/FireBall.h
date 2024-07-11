@@ -22,6 +22,8 @@ public:
 
     void update(float dt);
 
+    void updateCooldown(float dt);
+
     void updateEffect(float dt);
 
     //bool onContactBegin(PhysicsContact& contact);
