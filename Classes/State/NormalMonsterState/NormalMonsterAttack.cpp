@@ -7,28 +7,28 @@ void NormalMonsterAttack::EnterState() {
 		if (normalMonster->getCurrentDirection() == 1) {
 			animateResult = ((normalMonster->defaultAttack_E));
 		}
-		if (normalMonster->getCurrentDirection() == 2) {
+		else if (normalMonster->getCurrentDirection() == 2) {
 			animateResult = ((normalMonster->defaultAttack_NE));
 		}
-		if (normalMonster->getCurrentDirection() == 3) {
+		else if (normalMonster->getCurrentDirection() == 3) {
 			animateResult = ((normalMonster->defaultAttack_N));
 		}
-		if (normalMonster->getCurrentDirection() == 4) {
+		else if (normalMonster->getCurrentDirection() == 4) {
 			animateResult = ((normalMonster->defaultAttack_NW));
 		}
-		if (normalMonster->getCurrentDirection() == 5) {
+		else if (normalMonster->getCurrentDirection() == 5) {
 			animateResult = ((normalMonster->defaultAttack_W));
 		}
 
-		if (normalMonster->getCurrentDirection() == 6) {
+		else if (normalMonster->getCurrentDirection() == 6) {
 			animateResult = ((normalMonster->defaultAttack_SW));
 		}
 
-		if (normalMonster->getCurrentDirection() == 7) {
+		else if (normalMonster->getCurrentDirection() == 7) {
 			animateResult = ((normalMonster->defaultAttack_S));
 		}
 
-		if (normalMonster->getCurrentDirection() == 8) {
+		else if (normalMonster->getCurrentDirection() == 8) {
 			animateResult = ((normalMonster->defaultAttack_SE));
 		}
 

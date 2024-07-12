@@ -7,25 +7,25 @@ void BossAngry::EnterState() {
 	if (boss->getCurrentDirection() == 1) {
 		animateResult = boss->angry_E;
 	}
-	if (boss->getCurrentDirection() == 2) {
+	else if (boss->getCurrentDirection() == 2) {
 		animateResult = boss->angry_NE;
 	}
-	if (boss->getCurrentDirection() == 3) {
+	else if (boss->getCurrentDirection() == 3) {
 		animateResult = boss->angry_N;
 	}
-	if (boss->getCurrentDirection() == 4) {
+	else if (boss->getCurrentDirection() == 4) {
 		animateResult = boss->angry_NW;
 	}
-	if (boss->getCurrentDirection() == 5) {
+	else if (boss->getCurrentDirection() == 5) {
 		animateResult = boss->angry_W;
 	}
-	if (boss->getCurrentDirection() == 6) {
+	else if (boss->getCurrentDirection() == 6) {
 		animateResult = boss->angry_SW;
 	}
-	if (boss->getCurrentDirection() == 7) {
+	else if (boss->getCurrentDirection() == 7) {
 		animateResult = boss->angry_S;
 	}
-	if (boss->getCurrentDirection() == 8) {
+	else if (boss->getCurrentDirection() == 8) {
 		animateResult = boss->angry_SE;
 	}
 	lastDir = boss->getCurrentDirection();

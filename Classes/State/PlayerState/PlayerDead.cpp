@@ -12,31 +12,31 @@ void PlayerDead::EnterState() {
 		animateResult = ((player->specialDeath_E));
 	}
 
-	if (player->getCurrentDirection() == 2) {
+	else if (player->getCurrentDirection() == 2) {
 		animateResult = ((player->specialDeath_NE));
 	}
 
-	if (player->getCurrentDirection() == 3) {
+	else if (player->getCurrentDirection() == 3) {
 		animateResult = ((player->specialDeath_N));
 	}
 
-	if (player->getCurrentDirection() == 4) {
+	else if (player->getCurrentDirection() == 4) {
 		animateResult = ((player->specialDeath_NW));
 	}
 
-	if (player->getCurrentDirection() == 5) {
+	else if (player->getCurrentDirection() == 5) {
 		animateResult = ((player->specialDeath_W));
 	}
 
-	if (player->getCurrentDirection() == 6) {
+	else if (player->getCurrentDirection() == 6) {
 		animateResult = ((player->specialDeath_SW));
 	}
 
-	if (player->getCurrentDirection() == 7) {
+	else if (player->getCurrentDirection() == 7) {
 		animateResult = ((player->specialDeath_S));
 	}
 
-	if (player->getCurrentDirection() == 8) {
+	else if (player->getCurrentDirection() == 8) {
 		animateResult = ((player->specialDeath_SE));
 	}
 

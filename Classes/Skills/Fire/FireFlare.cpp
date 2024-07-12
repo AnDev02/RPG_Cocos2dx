@@ -246,26 +246,26 @@ void FireFlare::update(float dt) {
                 for (auto& monster : monsters) {
                     if (monster && !monster->isDead && monster->getPosition().distance(_skillSprite->getPosition()) <= 60) {
                         monster->takeDamage((skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
-                        //Do effect
-                        if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
-                            if (!monster->getChildByName("FireEffect")) {
-                                //Skill Effect Sprite
-                                auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
-                                effect->setName("FireEffect");
-                                effect->setScale(0.2);
+                        ////Do effect
+                        //if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
+                        //    if (!monster->getChildByName("FireEffect")) {
+                        //        //Skill Effect Sprite
+                        //        auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
+                        //        effect->setName("FireEffect");
+                        //        effect->setScale(0.2);
 
-                                //Skill Effect Animate
-                                auto animate = Animate::create(Engine::createAnimation2("fire_sear", 30, 0.05));
-                                monster->addChild(effect);
+                        //        //Skill Effect Animate
+                        //        auto animate = Animate::create(Engine::createAnimation2("fire_sear", 30, 0.05));
+                        //        monster->addChild(effect);
 
-                                //Effect to Monster
-                                effect->setPosition(Vec2(0, 40));
-                                effect->runAction(RepeatForever::create(animate));
+                        //        //Effect to Monster
+                        //        effect->setPosition(Vec2(0, 40));
+                        //        effect->runAction(RepeatForever::create(animate));
 
-                                schedule(CC_SCHEDULE_SELECTOR(FireBall::updateEffect), 1.0f);
-                                effectTime = 5.0f;
-                            }
-                        }
+                        //        schedule(CC_SCHEDULE_SELECTOR(FireBall::updateEffect), 1.0f);
+                        //        effectTime = 5.0f;
+                        //    }
+                        //}
                         if (monster->getCurrentHP() <= 0) {
                             monster->die();
                         }
@@ -276,26 +276,26 @@ void FireFlare::update(float dt) {
                 auto boss = game->boss;
                 if (boss && !boss->isDead && boss->getPosition().distance(_skillSprite->getPosition()) <= 60) {
                     boss->takeDamage((skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
-                    //Do effect
-                    if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
-                        if (!boss->getChildByName("FireEffect")) {
-                            //Skill Effect Sprite
-                            auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
-                            effect->setName("FireEffect");
-                            effect->setScale(0.2);
+                    ////Do effect
+                    //if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
+                    //    if (!boss->getChildByName("FireEffect")) {
+                    //        //Skill Effect Sprite
+                    //        auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
+                    //        effect->setName("FireEffect");
+                    //        effect->setScale(0.2);
 
-                            //Skill Effect Animate
-                            auto animate = Animate::create(Engine::createAnimation2("fire_sear", 30, 0.05));
-                            boss->addChild(effect);
+                    //        //Skill Effect Animate
+                    //        auto animate = Animate::create(Engine::createAnimation2("fire_sear", 30, 0.05));
+                    //        boss->addChild(effect);
 
-                            //Effect to Monster
-                            effect->setPosition(Vec2(0, 40));
-                            effect->runAction(RepeatForever::create(animate));
+                    //        //Effect to Monster
+                    //        effect->setPosition(Vec2(0, 40));
+                    //        effect->runAction(RepeatForever::create(animate));
 
-                            schedule(CC_SCHEDULE_SELECTOR(FireFlare::updateEffect), 1.0f);
-                            effectTime = 5.0f;
-                        }
-                    }
+                    //        schedule(CC_SCHEDULE_SELECTOR(FireFlare::updateEffect), 1.0f);
+                    //        effectTime = 5.0f;
+                    //    }
+                    //}
                     if (boss->getCurrentHP() <= 0) {
                         boss->die();
                     }
@@ -321,54 +321,54 @@ void FireFlare::updateCooldown(float dt) {
 }
 
 void FireFlare::updateEffect(float dt) {
-    if (effectTime >= 0) {
-        auto player = dynamic_cast<Player*>(this->getParent());
+    //if (effectTime >= 0) {
+    //    auto player = dynamic_cast<Player*>(this->getParent());
 
-        effectTime -= dt;
-        //Check every monster in map
-        Scene* currentScene = Director::getInstance()->getRunningScene();
-        if (currentScene) {
-            Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
-            if (game) {
-                auto monsters = game->listOfMonster;
-                for (auto& monster : monsters) {
-                    if (monster) {
-                        //Delete effect sprite when no longer effect
-                        if (effectTime < 0) {
-                            if (monster->getChildByName("FireEffect"))monster->removeChildByName("FireEffect");
-                        }
-                        else {
-                            if (monster->getChildByName("FireEffect")) {
-                                monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
-                                if (monster->getCurrentHP() <= 0) {
-                                    if (monster->getChildByName("FireEffect"))monster->removeChildByName("FireEffect");
-                                }
-                            }
-                        }
-                    }
-                }
-
-
-                auto boss = game->boss;
-                if (boss) {
-                    //Delete effect sprite when no longer effect
-                    if (effectTime < 0) {
-                        if (boss->getChildByName("FireEffect"))boss->removeChildByName("FireEffect");
-                    }
-                    else {
-                        if (boss->getChildByName("FireEffect")) {
-                            boss->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
-                            if (boss->getCurrentHP() <= 0) {
-                                if (boss->getChildByName("FireEffect"))boss->removeChildByName("FireEffect");
-                            }
-                        }
-                    }
-                }
+    //    effectTime -= dt;
+    //    //Check every monster in map
+    //    Scene* currentScene = Director::getInstance()->getRunningScene();
+    //    if (currentScene) {
+    //        Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
+    //        if (game) {
+    //            auto monsters = game->listOfMonster;
+    //            for (auto& monster : monsters) {
+    //                if (monster) {
+    //                    //Delete effect sprite when no longer effect
+    //                    if (effectTime < 0) {
+    //                        if (monster->getChildByName("FireEffect"))monster->removeChildByName("FireEffect");
+    //                    }
+    //                    else {
+    //                        if (monster->getChildByName("FireEffect")) {
+    //                            monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+    //                            if (monster->getCurrentHP() <= 0) {
+    //                                if (monster->getChildByName("FireEffect"))monster->removeChildByName("FireEffect");
+    //                            }
+    //                        }
+    //                    }
+    //                }
+    //            }
 
 
-            }
-        }
-    }
-    else unschedule(CC_SCHEDULE_SELECTOR(FireFlare::updateEffect));
+    //            auto boss = game->boss;
+    //            if (boss) {
+    //                //Delete effect sprite when no longer effect
+    //                if (effectTime < 0) {
+    //                    if (boss->getChildByName("FireEffect"))boss->removeChildByName("FireEffect");
+    //                }
+    //                else {
+    //                    if (boss->getChildByName("FireEffect")) {
+    //                        boss->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+    //                        if (boss->getCurrentHP() <= 0) {
+    //                            if (boss->getChildByName("FireEffect"))boss->removeChildByName("FireEffect");
+    //                        }
+    //                    }
+    //                }
+    //            }
+
+
+    //        }
+    //    }
+    //}
+    //else unschedule(CC_SCHEDULE_SELECTOR(FireFlare::updateEffect));
 
 }
