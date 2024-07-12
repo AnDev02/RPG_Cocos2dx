@@ -251,7 +251,27 @@ void ThunderDynamo::update(float dt) {
 
                 for (auto& monster : monsters) {
                     if (monster && !monster->isDead && monster->getPosition().distance(_skillSprite->getPosition()) <= 60) {
-                        monster->takeDamage(skillDamage);
+                        monster->takeDamage((skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+                        //Do effect
+                        if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->THUNDER) {
+                            if (!monster->getChildByName("ThunderEffect")) {
+                                //Skill Effect Sprite
+                                auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
+                                effect->setName("ThunderEffect");
+                                effect->setScale(0.2);
+
+                                //Skill Effect Animate
+                                auto animate = Animate::create(Engine::createAnimation2("thunder_spark", 30, 0.05));
+                                monster->addChild(effect);
+
+                                //Effect to Monster
+                                effect->setPosition(Vec2(0, 40));
+                                effect->runAction(RepeatForever::create(animate));
+
+                                schedule(CC_SCHEDULE_SELECTOR(ThunderDynamo::updateEffect), 1.0f);
+                                effectTime = 5.0f;
+                            }
+                        }
                         if (monster->getCurrentHP() <= 0) {
                             monster->die();
                         }
@@ -260,7 +280,27 @@ void ThunderDynamo::update(float dt) {
                 //Boss
                 auto boss = game->boss;
                 if (boss && !boss->isDead && boss->getPosition().distance(_skillSprite->getPosition()) <= 60) {
-                    boss->takeDamage(skillDamage);
+                    boss->takeDamage((skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+                    //Do effect
+                    if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->THUNDER) {
+                        if (!boss->getChildByName("ThunderEffect")) {
+                            //Skill Effect Sprite
+                            auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
+                            effect->setName("ThunderEffect");
+                            effect->setScale(0.2);
+
+                            //Skill Effect Animate
+                            auto animate = Animate::create(Engine::createAnimation2("thunder_spark", 30, 0.05));
+                            boss->addChild(effect);
+
+                            //Effect to Monster
+                            effect->setPosition(Vec2(0, 40));
+                            effect->runAction(RepeatForever::create(animate));
+
+                            schedule(CC_SCHEDULE_SELECTOR(ThunderDynamo::updateEffect), 1.0f);
+                            effectTime = 5.0f;
+                        }
+                    }
                     if (boss->getCurrentHP() <= 0) {
                         boss->die();
                     }
@@ -294,21 +334,45 @@ void ThunderDynamo::updateEffect(float dt) {
         if (currentScene) {
             Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
             if (game) {
-                auto children = game->gameMap->getTiledMap()->getChildren();
-                for (const auto& child : children) {
-                    auto monster = dynamic_cast<NormalMonster*>(child);
+                auto monsters = game->listOfMonster;
+                for (auto& monster : monsters) {
                     if (monster) {
                         //Delete effect sprite when no longer effect
                         if (effectTime < 0) {
                             if (monster->getChildByName("ThunderEffect"))monster->removeChildByName("ThunderEffect");
                         }
                         else {
-                            if (monster->getChildByName("ThunderEffect"))monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+                            if (monster->getChildByName("ThunderEffect")) {
+                                monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+                                if (monster->getCurrentHP() <= 0) {
+                                    if (monster->getChildByName("ThunderEffect"))monster->removeChildByName("ThunderEffect");
+                                }
+                            }
                         }
                     }
                 }
+
+
+                auto boss = game->boss;
+                if (boss) {
+                    //Delete effect sprite when no longer effect
+                    if (effectTime < 0) {
+                        if (boss->getChildByName("ThunderEffect"))boss->removeChildByName("ThunderEffect");
+                    }
+                    else {
+                        if (boss->getChildByName("ThunderEffect")) {
+                            boss->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+                            if (boss->getCurrentHP() <= 0) {
+                                if (boss->getChildByName("ThunderEffect"))boss->removeChildByName("ThunderEffect");
+                            }
+                        }
+                    }
+                }
+
+
             }
         }
     }
+    else unschedule(CC_SCHEDULE_SELECTOR(ThunderDynamo::updateEffect));
 
 }

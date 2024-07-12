@@ -37,13 +37,14 @@ void NormalMonsterDead::EnterState() {
 			animateResult = ((normalMonster->specialDeath_SE));
 		}
 
-		normalMonster->getCurrentSprite()->runAction(Sequence::create(animateResult, FadeOut::create(1.0), nullptr));
+		normalMonster->getCurrentSprite()->runAction(Sequence::create(animateResult, FadeOut::create(1.0),
+			cocos2d::CallFunc::create([this]() {
+				normalMonster->setVisible(false);
+				}),nullptr));
 
 
 		//normalMonster->getCurrentSprite()->runAction(
-		//	cocos2d::CallFunc::create([this]() {
-		//		normalMonster->runAction(RemoveSelf::create());
-		//		}));
+		//	);
 }
 
 void NormalMonsterDead::ExitState() {

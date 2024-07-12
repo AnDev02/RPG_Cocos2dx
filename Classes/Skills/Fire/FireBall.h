@@ -5,6 +5,9 @@
 #include "Fire.h"
 USING_NS_CC;
 
+class NormalMonster;
+class Boss;
+
 class FireBall : public Fire
 {
 public:

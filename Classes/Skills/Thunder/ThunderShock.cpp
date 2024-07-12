@@ -266,25 +266,25 @@ void ThunderShock::performSkill(Vec2 target) {
         //DealDamage
         if (currentSkillCoolDown <= 0) {
             enemy->takeDamage((skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()) / enemies.size());
-            ////Do effect
-            //if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->THUNDER) {
-            //    if (!enemy->getChildByName("ThunderEffect")) {
-            //        //Skill Effect Sprite
-            //        auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
-            //        effect->setName("ThunderEffect");
-            //        effect->setScale(0.2);
+            //Do effect
+            if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->THUNDER) {
+                if (!enemy->getChildByName("ThunderEffect")) {
+                    //Skill Effect Sprite
+                    auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
+                    effect->setName("ThunderEffect");
+                    effect->setScale(0.2);
 
-            //        //Skill Effect Animate
-            //        auto animate = Animate::create(Engine::createAnimation2("thunder_spark", 30, 0.05));
-            //        enemy->addChild(effect);
+                    //Skill Effect Animate
+                    auto animate = Animate::create(Engine::createAnimation2("thunder_spark", 30, 0.05));
+                    enemy->addChild(effect);
 
-            //        //Effect to Monster
-            //        effect->setPosition(Vec2(0, 40));
-            //        effect->runAction(RepeatForever::create(animate));
-            //        schedule(CC_SCHEDULE_SELECTOR(ThunderShock::updateEffect), 1.0f);
-            //        effectTime = 5.0f;
-            //    }
-            //}
+                    //Effect to Monster
+                    effect->setPosition(Vec2(0, 40));
+                    effect->runAction(RepeatForever::create(animate));
+                    schedule(CC_SCHEDULE_SELECTOR(ThunderShock::updateEffect), 1.0f);
+                    effectTime = 5.0f;
+                }
+            }
         }
         //Skill Animate
         Animate* skillAnimate = Animate::create(Engine::createAnimation2("thunder_shock", 60, 0.025));
@@ -348,47 +348,55 @@ void ThunderShock::updateEnemies(float dt) {
         }
     }
 }
+void ThunderShock::updateEffect(float dt) {
+    if (effectTime >= 0) {
+        auto player = dynamic_cast<Player*>(this->getParent());
 
-//void ThunderShock::updateEffect(float dt) {
-//    if (effectTime >= 0) {
-//        auto player = dynamic_cast<Player*>(this->getParent());
-//
-//        effectTime -= dt;
-//        //Check every monster in map
-//        Scene* currentScene = Director::getInstance()->getRunningScene();
-//        if (currentScene) {
-//            Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
-//            if (game) {
-//                auto children = game->gameMap->getTiledMap()->getChildren();
-//                for (const auto& child : children) {
-//                    auto monster = dynamic_cast<NormalMonster*>(child);
-//                    auto boss = dynamic_cast<Boss*>(child);
-//                    if (monster) {
-//                        //Delete effect sprite when no longer effect
-//                        if (effectTime < 0) {
-//                            if (monster->getChildByName("ThunderEffect"))monster->removeChildByName("ThunderEffect");
-//                        }
-//                        else {
-//                            if (monster->getChildByName("ThunderEffect"))monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
-//                        }
-//                        if (monster->getCurrentHP() == 0 && monster->getChildByName("ThunderEffect"))monster->removeChildByName("ThunderEffect");
-//                    }
-//                    if (boss) {
-//                        //Delete effect sprite when no longer effect
-//                        if (effectTime < 0) {
-//                            if (boss->getChildByName("ThunderEffect"))boss->removeChildByName("ThunderEffect");
-//                        }
-//                        else {
-//                            if (boss->getChildByName("ThunderEffect"))boss->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
-//                        }
-//                        if (boss->getCurrentHP() == 0 && boss->getChildByName("ThunderEffect"))boss->removeChildByName("ThunderEffect");
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    else {
-//        unschedule(CC_SCHEDULE_SELECTOR(ThunderShock::updateEffect));
-//    }
-//
-//}
+        effectTime -= dt;
+        //Check every monster in map
+        Scene* currentScene = Director::getInstance()->getRunningScene();
+        if (currentScene) {
+            Game* game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
+            if (game) {
+                auto monsters = game->listOfMonster;
+                for (auto& monster : monsters) {
+                    if (monster) {
+                        //Delete effect sprite when no longer effect
+                        if (effectTime < 0) {
+                            if (monster->getChildByName("ThunderEffect"))monster->removeChildByName("ThunderEffect");
+                        }
+                        else {
+                            if (monster->getChildByName("ThunderEffect")) {
+                                monster->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+                                if (monster->getCurrentHP() <= 0) {
+                                    if (monster->getChildByName("ThunderEffect"))monster->removeChildByName("ThunderEffect");
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                auto boss = game->boss;
+                if (boss) {
+                    //Delete effect sprite when no longer effect
+                    if (effectTime < 0) {
+                        if (boss->getChildByName("ThunderEffect"))boss->removeChildByName("ThunderEffect");
+                    }
+                    else {
+                        if (boss->getChildByName("ThunderEffect")) {
+                            boss->takeDamage(0.05 * (skillDamage + player->getEquipmentSkillDamage() + player->getAPDamage()));
+                            if (boss->getCurrentHP() <= 0) {
+                                if (boss->getChildByName("ThunderEffect"))boss->removeChildByName("ThunderEffect");
+                            }
+                        }
+                    }
+                }
+
+
+            }
+        }
+    }
+    else unschedule(CC_SCHEDULE_SELECTOR(ThunderShock::updateEffect));
+
+}

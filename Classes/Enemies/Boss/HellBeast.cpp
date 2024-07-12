@@ -98,7 +98,7 @@ bool HellBeast::init() {
     this->addChild(healthBar, 2);
 
     //Lable Name
-    auto monsterName = Label::createWithTTF("0", "fonts/Diablo Light.ttf", 10);
+    monsterName = Label::createWithTTF("0", "fonts/Diablo Light.ttf", 10);
     monsterName->setColor(Color3B::RED);
     monsterName->setPosition(Vec2(0, 70));
     this->addChild(monsterName);

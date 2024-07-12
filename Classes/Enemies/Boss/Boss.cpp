@@ -122,6 +122,11 @@ void Boss::die() {
         if (this->getCurrentSprite()->getNumberOfRunningActions() > 0)this->getCurrentSprite()->stopAllActions();
         isDead = true;
         target->gainExp(this->getExpGain());
+
+        this->healthBar->setVisible(false);
+        this->backGroundBar->setVisible(false);
+        this->monsterName->setVisible(false);
+
         if (QuestManager::getInstance()->currentQuest && QuestManager::getInstance()->currentQuest->questStatus == QuestManager::getInstance()->currentQuest->RECEIVED)
             notifyObservers();
         this->SwitchState(this->deadState);
