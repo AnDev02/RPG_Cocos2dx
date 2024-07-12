@@ -10,12 +10,15 @@
 #include "UserInterface/InGame/ItemDetails.h"
 USING_NS_CC;
 class Player;
+class Scrollview;
 class UpgradeInventory : public Node
 {
 public:
     static UpgradeInventory* createUpgradeInventory(Player* _player);
     virtual bool init(Player* _player);
     void addEquipment(std::string equipmentName, int equipmentLv, int quantity);
+    void onAddEquipment();
+    Scrollview* scrollview;
     void addItem(std::string itemName, int quantity);
     void dropItem(std::string itemName);
     void dropEquipment(std::string itemName);
@@ -28,6 +31,7 @@ public:
     void nextInventoryPage();
     void prevInventoryPage();
     void onPageChange();
+    bool onTouchBegan(Touch* touch, Event* event);
     float widthSize;
     InventoryNode* weaponNode;
     InventoryNode* materialItem1;
@@ -47,6 +51,7 @@ public:
     std::vector<InventoryNode*> materialNodes;
     std::vector<InventoryNode*> inventoryNodes;
 private:
+    std::vector<BaseEquipment::EquipmentData> equipmentsData;
     const int totalInventoryPage = 3;
     const int numRows = 5;
     const int numCols = 5;
@@ -65,7 +70,7 @@ private:
     bool compareUpgradeItem(const std::vector<std::tuple<std::string, int>>& tuples1, const std::vector<std::tuple<std::string, int>>& tuples2);
     Label* updateButton;
     Node* inventoryBorder;
-    Player* player;
+    Player* _player = nullptr;
     bool isDraggingItem = false;
     bool isSo = false;
     bool isInUpgrade = false;

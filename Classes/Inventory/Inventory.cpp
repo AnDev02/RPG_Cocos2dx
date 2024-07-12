@@ -1757,6 +1757,7 @@ std::vector<BaseEquipment::EquipmentData> Inventory::getAllEquipment() {
             BaseEquipment::EquipmentData equipmentData;
             equipmentData.name = i->getBaseEquipment()->getEquipmentName();
             equipmentData.level = i->getBaseEquipment()->getLevel();
+            equipmentData.iconPath = i->getBaseEquipment()->getTexture()->getPath();
             result.push_back(equipmentData);
         }
     }

@@ -31,6 +31,7 @@ public:
     struct EquipmentData {
         std::string name;
         int level;
+        std::string iconPath;
     };
     EquipmentDetails* equipmentDetails = nullptr;
     Element getElement() const;
