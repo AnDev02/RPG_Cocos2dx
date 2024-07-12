@@ -9,31 +9,31 @@ void NormalMonsterDead::EnterState() {
 			animateResult = ((normalMonster->specialDeath_E));
 		}
 
-		if (normalMonster->getCurrentDirection() == 2) {
+		else if (normalMonster->getCurrentDirection() == 2) {
 			animateResult = ((normalMonster->specialDeath_NE));
 		}
 
-		if (normalMonster->getCurrentDirection() == 3) {
+		else if (normalMonster->getCurrentDirection() == 3) {
 			animateResult = ((normalMonster->specialDeath_N));
 		}
 
-		if (normalMonster->getCurrentDirection() == 4) {
+		else if (normalMonster->getCurrentDirection() == 4) {
 			animateResult = ((normalMonster->specialDeath_NW));
 		}
 
-		if (normalMonster->getCurrentDirection() == 5) {
+		else if (normalMonster->getCurrentDirection() == 5) {
 			animateResult = ((normalMonster->specialDeath_W));
 		}
 
-		if (normalMonster->getCurrentDirection() == 6) {
+		else if (normalMonster->getCurrentDirection() == 6) {
 			animateResult = ((normalMonster->specialDeath_SW));
 		}
 
-		if (normalMonster->getCurrentDirection() == 7) {
+		else if (normalMonster->getCurrentDirection() == 7) {
 			animateResult = ((normalMonster->specialDeath_S));
 		}
 
-		if (normalMonster->getCurrentDirection() == 8) {
+		else if (normalMonster->getCurrentDirection() == 8) {
 			animateResult = ((normalMonster->specialDeath_SE));
 		}
 

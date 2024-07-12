@@ -690,6 +690,7 @@ bool Game::loadMap(int levelMap)
 
 void Game::pauseGame()
 {
+    _player->SwitchState(_player->idleState);
      //duyệt qua các skills mà player đang sử dụng trong 4 slot 
     if (_player) {
         auto playerSkills = _player->getPlayerSkills();
@@ -707,7 +708,6 @@ void Game::pauseGame()
             }
         }
     }
-    //  Unschedule các hàm update trong game scene
 
 
     this->unschedule(CC_SCHEDULE_SELECTOR(Game::updatePlayer));
@@ -718,7 +718,6 @@ void Game::pauseGame()
                 enemy->stopSprite();
         }
     }
-
 
     //if(boss && boss->getCurrentSprite())
     //    boss->getCurrentSprite()->pause();
@@ -773,10 +772,11 @@ void Game::resumeGame()
     this->schedule(CC_SCHEDULE_SELECTOR(Game::updateUserInterface), 0.0f);
     this->schedule(CC_SCHEDULE_SELECTOR(Game::updateCamera), 0.0f);
 
+    _player->SwitchState(_player->idleState);
+
     for (auto enemy : listOfMonster) {
         enemy->schedule(CC_SCHEDULE_SELECTOR(NormalMonster::updateEnemy), 0.5f);
     }
-
   /*  if (boss)
         boss->getCurrentSprite()->resume();
     if (okyanus)

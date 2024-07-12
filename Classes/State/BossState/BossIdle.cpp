@@ -6,31 +6,31 @@ void BossIdle::EnterState() {
 	if (boss->getCurrentDirection() == 1) {
 		boss->getCurrentSprite()->runAction(RepeatForever::create(boss->idle_E));
 	}
-	if (boss->getCurrentDirection() == 2) {
+	else if (boss->getCurrentDirection() == 2) {
 		boss->getCurrentSprite()->runAction(RepeatForever::create(boss->idle_NE));
 	}
 
-	if (boss->getCurrentDirection() == 3) {
+	else if (boss->getCurrentDirection() == 3) {
 		boss->getCurrentSprite()->runAction(RepeatForever::create(boss->idle_N));
 	}
 
-	if (boss->getCurrentDirection() == 4) {
+	else if (boss->getCurrentDirection() == 4) {
 		boss->getCurrentSprite()->runAction(RepeatForever::create(boss->idle_NW));
 	}
 
-	if (boss->getCurrentDirection() == 5) {
+	else if (boss->getCurrentDirection() == 5) {
 		boss->getCurrentSprite()->runAction(RepeatForever::create(boss->idle_W));
 	}
 
-	if (boss->getCurrentDirection() == 6) {
+	else if (boss->getCurrentDirection() == 6) {
 		boss->getCurrentSprite()->runAction(RepeatForever::create(boss->idle_SW));
 	}
 
-	if (boss->getCurrentDirection() == 7) {
+	else if (boss->getCurrentDirection() == 7) {
 		boss->getCurrentSprite()->runAction(RepeatForever::create(boss->idle_S));
 	}
 
-	if (boss->getCurrentDirection() == 8) {
+	else if (boss->getCurrentDirection() == 8) {
 		boss->getCurrentSprite()->runAction(RepeatForever::create(boss->idle_SE));
 	}
 

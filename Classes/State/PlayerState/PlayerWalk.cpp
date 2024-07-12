@@ -8,31 +8,31 @@ void PlayerWalk::EnterState() {
 		player->getCurrentSprite()->runAction(RepeatForever::create(player->armWalk_E));
 	}
 
-	if (player->getCurrentDirection() == 2) {
+	else if (player->getCurrentDirection() == 2) {
 		player->getCurrentSprite()->runAction(RepeatForever::create(player->armWalk_NE));
 	}
 
-	if (player->getCurrentDirection() == 3) {
+	else if (player->getCurrentDirection() == 3) {
 		player->getCurrentSprite()->runAction(RepeatForever::create(player->armWalk_N));
 	}
 
-	if (player->getCurrentDirection() == 4) {
+	else if (player->getCurrentDirection() == 4) {
 		player->getCurrentSprite()->runAction(RepeatForever::create(player->armWalk_NW));
 	}
 
-	if (player->getCurrentDirection() == 5) {
+	else if (player->getCurrentDirection() == 5) {
 		player->getCurrentSprite()->runAction(RepeatForever::create(player->armWalk_W));
 	}
 
-	if (player->getCurrentDirection() == 6) {
+	else if (player->getCurrentDirection() == 6) {
 		player->getCurrentSprite()->runAction(RepeatForever::create(player->armWalk_SW));
 	}
 
-	if (player->getCurrentDirection() == 7) {
+	else if (player->getCurrentDirection() == 7) {
 		player->getCurrentSprite()->runAction(RepeatForever::create(player->armWalk_S));
 	}
 
-	if (player->getCurrentDirection() == 8) {
+	else if (player->getCurrentDirection() == 8) {
 		player->getCurrentSprite()->runAction(RepeatForever::create(player->armWalk_SE));
 	}
 	//float soundVolume = SettingsData::getInstance()->getSoundSlider() / 100.0f;
