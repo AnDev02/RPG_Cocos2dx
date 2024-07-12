@@ -126,7 +126,7 @@ void InGameUI::setTarget(Player* plr) {
     this->addChild(upgradeInventory, 20);
 
     dropdownButton = Dropdown::create(this);
-    dropdownButton->setPosition(visibleSize.width / 4 - 80, visibleSize.height / 5 - 5 - dropdownButton->bg->getContentSize().height * dropdownButton->bg->getScaleY() / 1.3);
+    dropdownButton->setPosition(visibleSize.width / 4 - 80, visibleSize.height / 5 - 5 - dropdownButton->bg->getContentSize().height * dropdownButton->bg->getScaleY() / 1.6);
     this->addChild(dropdownButton, 3);
     
 
@@ -137,14 +137,14 @@ void InGameUI::setTarget(Player* plr) {
     this->addChild(upgradeInventoryButton, 6);
 
     questBtn = QuestBtn::create();
-    questBtn->setPosition(dropdownButton->getPosition() - Vec2(dropdownButton->bg->getContentSize().width * dropdownButton->bg->getScaleX() / 2 - 5, -questBtn->btnSprite->getContentSize().height / 4));
-    questBtn->setScale(0.25 * Director::getInstance()->getContentScaleFactor());
+    questBtn->setPosition(dropdownButton->getPosition() - Vec2(dropdownButton->bg->getContentSize().width * dropdownButton->bg->getScaleX() / 2, -questBtn->btnSprite->getContentSize().height / 4 - 8));
+    questBtn->setScale(0.35 * Director::getInstance()->getContentScaleFactor());
     this->addChild(questBtn, 6);
 
 
     inventoryButton = InventoryButton::create(inventory);
-    inventoryButton->setPosition(questBtn->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 3, 0));
-    inventoryButton->setScale(0.25 * Director::getInstance()->getContentScaleFactor());
+    inventoryButton->setPosition(questBtn->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 3,0));
+    inventoryButton->setScale(0.35 * Director::getInstance()->getContentScaleFactor());
     this->addChild(inventoryButton, 6);
     inventoryButton->retain();
 
@@ -200,7 +200,7 @@ void InGameUI::setTarget(Player* plr) {
 
     talentButton = TalentButton::create(talentCarousel);
     talentButton->setPosition(inventoryButton->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 3, 0));
-    talentButton->setScale(0.25 * Director::getInstance()->getContentScaleFactor());
+    talentButton->setScale(0.35 * Director::getInstance()->getContentScaleFactor());
     this->addChild(talentButton, 5);
 
     DialogueManager::getInstance()->init();

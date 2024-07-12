@@ -8,6 +8,7 @@ public:
 	virtual bool init();
 	void loadAnimate();
 
+	bool onTouchBeganToInteract(Touch* touch, Event* event);
 	bool onTouchBeganToTalk(Touch* touch, Event* event);
 	bool onTouchBeganToQuest(Touch* touch, Event* event);
 	bool onTouchBeganToShop(Touch* touch, Event* event);

@@ -25,6 +25,7 @@ bool SplashScene::init()
     UserDefault::getInstance()->setBoolForKey("EffectInCache", false);
     UserDefault::getInstance()->setBoolForKey("FighterInCache", false); // FighterInCache
     UserDefault::getInstance()->setBoolForKey("KnightInCache", false);
+    UserDefault::getInstance()->setBoolForKey("WarriorInCache", false);
     UserDefault::getInstance()->setBoolForKey("BabySpiderInCache", false);
     UserDefault::getInstance()->setBoolForKey("HellBeastInCache", false);
     UserDefault::getInstance()->setBoolForKey("IsLoadedGame", false);

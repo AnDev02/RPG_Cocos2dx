@@ -24,7 +24,7 @@ bool HamburgerMenuButton::init(HamburgerMenu* hamburgerMenu)
     }
     this->hamburgerMenu = hamburgerMenu;
     btnSprite = Sprite::create("res/pause-button.png");
-    btnSprite->setScale(0.4);
+    btnSprite->setScale(0.65);
     this->addChild(btnSprite);
 
     auto touchListener = EventListenerTouchOneByOne::create();

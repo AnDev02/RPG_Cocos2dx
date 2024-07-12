@@ -20,9 +20,9 @@ bool Dropdown::init(InGameUI* inGameUI) {
     }
     this->inGameUI = inGameUI;
     bg = Sprite::create("res/dropdown_btn.png");
-    bg->setScale(3, 1.8);
+    bg->setScale(3, 3);
     iconSprite = Sprite::create("res/left-arr-ui2.png");
-    iconSprite->setScale(1.2);
+    iconSprite->setScale(1.9);
     this->addChild(bg);
     this->addChild(iconSprite);
     isOpen = false;
@@ -87,5 +87,5 @@ bool Dropdown::onTouchBegan(Touch* touch, Event* event) {
 
 void Dropdown::updateIconSpritePosition() {
     float bgWidth = bg->getContentSize().width * bg->getScaleX();
-    iconSprite->setPosition(Vec2(bg->getPositionX() - bgWidth + (iconSprite->getContentSize().width * iconSprite->getScale() * 0.75), bg->getPositionY() + bg->getContentSize().height * bg->getScaleY() / 2));
+    iconSprite->setPosition(Vec2(bg->getPositionX() - bgWidth + (iconSprite->getContentSize().width * iconSprite->getScale()) - 20, bg->getPositionY() + bg->getContentSize().height * bg->getScaleY() / 2));
 }
