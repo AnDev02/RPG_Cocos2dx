@@ -10,31 +10,31 @@ void BossRoar::EnterState() {
 		animateResult = boss->roar_E;
 	}
 
-	if (boss->getCurrentDirection() == 2) {
+	else if (boss->getCurrentDirection() == 2) {
 		animateResult = boss->roar_NE;
 	}
 
-	if (boss->getCurrentDirection() == 3) {
+	else if (boss->getCurrentDirection() == 3) {
 		animateResult = boss->roar_N;
 	}
 
-	if (boss->getCurrentDirection() == 4) {
+	else if (boss->getCurrentDirection() == 4) {
 		animateResult = boss->roar_NW;
 	}
 
-	if (boss->getCurrentDirection() == 5) {
+	else if (boss->getCurrentDirection() == 5) {
 		animateResult = boss->roar_W;
 	}
 
-	if (boss->getCurrentDirection() == 6) {
+	else if (boss->getCurrentDirection() == 6) {
 		animateResult = boss->roar_SW;
 	}
 
-	if (boss->getCurrentDirection() == 7) {
+	else if (boss->getCurrentDirection() == 7) {
 		animateResult = boss->roar_S;
 	}
 
-	if (boss->getCurrentDirection() == 8) {
+	else if (boss->getCurrentDirection() == 8) {
 		animateResult = boss->roar_SE;
 	}
 

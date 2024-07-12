@@ -6,31 +6,31 @@ void NormalMonsterWalk::EnterState() {
 		if (normalMonster->getCurrentDirection() == 1) {
 			normalMonster->getCurrentSprite()->runAction((normalMonster->defaultWalk_E));
 		}
-		if (normalMonster->getCurrentDirection() == 2) {
+		else if (normalMonster->getCurrentDirection() == 2) {
 			normalMonster->getCurrentSprite()->runAction((normalMonster->defaultWalk_NE));
 		}
 
-		if (normalMonster->getCurrentDirection() == 3) {
+		else if (normalMonster->getCurrentDirection() == 3) {
 			normalMonster->getCurrentSprite()->runAction((normalMonster->defaultWalk_N));
 		}
 
-		if (normalMonster->getCurrentDirection() == 4) {
+		else if (normalMonster->getCurrentDirection() == 4) {
 			normalMonster->getCurrentSprite()->runAction((normalMonster->defaultWalk_NW));
 		}
 
-		if (normalMonster->getCurrentDirection() == 5) {
+		else if (normalMonster->getCurrentDirection() == 5) {
 			normalMonster->getCurrentSprite()->runAction((normalMonster->defaultWalk_W));
 		}
 
-		if (normalMonster->getCurrentDirection() == 6) {
+		else if (normalMonster->getCurrentDirection() == 6) {
 			normalMonster->getCurrentSprite()->runAction((normalMonster->defaultWalk_SW));
 		}
 
-		if (normalMonster->getCurrentDirection() == 7) {
+		else if (normalMonster->getCurrentDirection() == 7) {
 			normalMonster->getCurrentSprite()->runAction((normalMonster->defaultWalk_S));
 		}
 
-		if (normalMonster->getCurrentDirection() == 8) {
+		else if (normalMonster->getCurrentDirection() == 8) {
 			normalMonster->getCurrentSprite()->runAction((normalMonster->defaultWalk_SE));
 		}
 

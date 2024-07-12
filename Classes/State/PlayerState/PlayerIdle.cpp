@@ -6,31 +6,31 @@ void PlayerIdle::EnterState() {
 	if (player->getCurrentDirection() == 1) {
 		player->getCurrentSprite()->runAction((player->armIdle_E));
 	}
-	if (player->getCurrentDirection() == 2) {
+	else if (player->getCurrentDirection() == 2) {
 		player->getCurrentSprite()->runAction((player->armIdle_NE));
 	}
 
-	if (player->getCurrentDirection() == 3) {
+	else if (player->getCurrentDirection() == 3) {
 		player->getCurrentSprite()->runAction((player->armIdle_N));
 	}
 
-	if (player->getCurrentDirection() == 4) {
+	else if (player->getCurrentDirection() == 4) {
 		player->getCurrentSprite()->runAction((player->armIdle_NW));
 	}
 
-	if (player->getCurrentDirection() == 5) {
+	else if (player->getCurrentDirection() == 5) {
 		player->getCurrentSprite()->runAction((player->armIdle_W));
 	}
 
-	if (player->getCurrentDirection() == 6) {
+	else if (player->getCurrentDirection() == 6) {
 		player->getCurrentSprite()->runAction((player->armIdle_SW));
 	}
 
-	if (player->getCurrentDirection() == 7) {
+	else if (player->getCurrentDirection() == 7) {
 		player->getCurrentSprite()->runAction((player->armIdle_S));	
 	}
 
-	if (player->getCurrentDirection() == 8) {
+	else if (player->getCurrentDirection() == 8) {
 		player->getCurrentSprite()->runAction((player->armIdle_SE));
 	}
 

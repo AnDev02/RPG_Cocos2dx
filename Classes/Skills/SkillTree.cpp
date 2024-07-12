@@ -117,9 +117,32 @@ void SkillTree::drawTree(Player* player, SkillBase::SkillTalent* node, Vec2 posi
 
     parentNode->addChild(skillSpr, 5);
     parentNode->setPosition(position);
-    if (node->unlockPoint != 0)
+    if (!isUnlock)
     {
-        auto scoreToUnlock = Label::createWithTTF(std::to_string(node->unlockPoint), "fonts/Diablo Light.ttf", 19);
+        auto scoreToUnlock = Label::createWithTTF("Locked", "fonts/Diablo Light.ttf", 25);
+        scoreToUnlock->setName(node->skillName + " LevelSkill");
+        scoreToUnlock->setPosition(skillSpr->getContentSize().width * 0.2 / 2, skillSpr->getContentSize().height * 0.2 / 2);
+        parentNode->addChild(scoreToUnlock, 20);
+        hideLabels.push_back(scoreToUnlock);
+    }
+    else {
+        int currentLevel = 0;
+        for (auto skill : player->getPlayerSkills()) {
+            if (skill->getSkillName() == node->skillName) {
+                currentLevel = skill->getCurrentLevelSkill();
+                break;
+            }
+        }
+        
+        auto scoreToUnlock = Label::createWithTTF("Lv"+std::to_string(currentLevel), "fonts/Diablo Light.ttf", 25);
+        if(currentLevel == 5) {
+            scoreToUnlock->setBMFontSize(25);
+            scoreToUnlock->setString("Max");
+        }
+        else {
+            scoreToUnlock->setString("Lv" + std::to_string(currentLevel));
+        }
+        scoreToUnlock->setName(node->skillName + " LevelSkill");
         scoreToUnlock->setPosition(skillSpr->getContentSize().width * 0.2 / 2, skillSpr->getContentSize().height * 0.2 / 2);
         parentNode->addChild(scoreToUnlock, 20);
         hideLabels.push_back(scoreToUnlock);
@@ -1317,7 +1340,17 @@ void SkillTree::showSkillDetail(SkillBase* skill, Player* player)
                             this->showAlert("Unlock completed!", true);
                             _progressBar->updateProgress(player->getExpToConsume(), player->getAllExp());
                             this->getChildByName(skillname + " Node")->getChildByName(skillname + " Sprite")->removeChildByName("Black Node");
+                            auto levelLabel = this->getChildByName(skillname + " Node")->getChildByName(skillname + " LevelSkill");
+                            if (levelLabel)
+                            {
+                                auto label = dynamic_cast<Label*>(levelLabel);
+                                if (label)
+                                {
+                                    label->setString("Lv1");
+                                }
+                            }
                             this->showSkillDetail(skill, player);
+
                         }
                         else
                         {
@@ -1377,6 +1410,22 @@ void SkillTree::showSkillDetail(SkillBase* skill, Player* player)
                                         moneyLabel->setString(StringUtils::format("Skill Point: %d", player->getSkillPoint()));
                                         _progressBar->updateProgress(player->getExpToConsume(), player->getAllExp());
                                         this->showAlert("Upgrade completed!", true);
+
+                                        auto levelLabel = this->getChildByName(skillname + " Node")->getChildByName(skillname + " LevelSkill");
+                                        if (levelLabel)
+                                        {
+                                            
+                                            auto label = dynamic_cast<Label*>(levelLabel);
+                                            if (label)
+                                            {
+                                                if (skill->getCurrentLevelSkill() == 5) {
+                                                    label->setBMFontSize(25);
+                                                    label->setString("Max");
+                                                }
+                                                else
+                                                label->setString("Lv"+std::to_string(skill->getCurrentLevelSkill()));
+                                            }
+                                        }
                                         this->showSkillDetail(skill, player);
                                     }
                                 }

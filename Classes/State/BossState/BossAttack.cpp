@@ -13,49 +13,49 @@ void BossAttack::EnterState() {
         animateResult = boss->attack1_W;
     if (boss->getCurrentDirection() == 1) {
         if(boss->currentCombo == ATTACK1)animateResult = boss->attack1_E;
-        if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_E;
-        if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_E;
+        else if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_E;
+        else if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_E;
     }
-    if (boss->getCurrentDirection() == 2) {
+    else if (boss->getCurrentDirection() == 2) {
         if (boss->currentCombo == ATTACK1)animateResult = boss->attack1_NE;
-        if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_NE;
-        if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_NE;
+        else if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_NE;
+        else if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_NE;
     }
 
-    if (boss->getCurrentDirection() == 3) {
+    else if (boss->getCurrentDirection() == 3) {
         if (boss->currentCombo == ATTACK1)animateResult = boss->attack1_N;
-        if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_N;
-        if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_N;
+        else if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_N;
+        else if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_N;
     }
 
-    if (boss->getCurrentDirection() == 4) {
+    else if (boss->getCurrentDirection() == 4) {
         if (boss->currentCombo == ATTACK1)animateResult = boss->attack1_NW;
-        if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_NW;
-        if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_NW;
+        else if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_NW;
+        else if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_NW;
     }
 
-    if (boss->getCurrentDirection() == 5) {
+    else if (boss->getCurrentDirection() == 5) {
         if (boss->currentCombo == ATTACK1)animateResult = boss->attack1_W;
-        if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_W;
-        if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_W;
+        else if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_W;
+        else if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_W;
     }
 
-    if (boss->getCurrentDirection() == 6) {
+    else if (boss->getCurrentDirection() == 6) {
         if (boss->currentCombo == ATTACK1)animateResult = boss->attack1_SW;
-        if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_SW;
-        if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_SW;
+        else if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_SW;
+        else if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_SW;
     }
 
-    if (boss->getCurrentDirection() == 7) {
+    else if (boss->getCurrentDirection() == 7) {
         if (boss->currentCombo == ATTACK1)animateResult = boss->attack1_S;
-        if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_S;
-        if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_S;
+        else if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_S;
+        else if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_S;
     }
 
-    if (boss->getCurrentDirection() == 8) {
+    else if (boss->getCurrentDirection() == 8) {
         if (boss->currentCombo == ATTACK1)animateResult = boss->attack1_SE;
-        if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_SE;
-        if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_SE;
+        else if (boss->currentCombo == ATTACK2)animateResult = boss->attack2_SE;
+        else if (boss->currentCombo == ATTACK3)animateResult = boss->attack3_SE;
     }
 
     lastDir = boss->getCurrentDirection();

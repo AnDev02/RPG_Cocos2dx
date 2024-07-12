@@ -8,31 +8,31 @@ void BossDead::EnterState() {
 		animateResult = ((boss->death_E));
 	}
 
-	if (boss->getCurrentDirection() == 2) {
+	else if (boss->getCurrentDirection() == 2) {
 		animateResult = ((boss->death_NE));
 	}
 
-	if (boss->getCurrentDirection() == 3) {
+	else if (boss->getCurrentDirection() == 3) {
 		animateResult = ((boss->death_N));
 	}
 
-	if (boss->getCurrentDirection() == 4) {
+	else if (boss->getCurrentDirection() == 4) {
 		animateResult = ((boss->death_NW));
 	}
 
-	if (boss->getCurrentDirection() == 5) {
+	else if (boss->getCurrentDirection() == 5) {
 		animateResult = ((boss->death_W));
 	}
 
-	if (boss->getCurrentDirection() == 6) {
+	else if (boss->getCurrentDirection() == 6) {
 		animateResult = ((boss->death_SW));
 	}
 
-	if (boss->getCurrentDirection() == 7) {
+	else if (boss->getCurrentDirection() == 7) {
 		animateResult = ((boss->death_S));
 	}
 
-	if (boss->getCurrentDirection() == 8) {
+	else if (boss->getCurrentDirection() == 8) {
 		animateResult = ((boss->death_SE));
 	}
 

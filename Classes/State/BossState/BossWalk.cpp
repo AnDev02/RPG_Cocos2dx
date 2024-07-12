@@ -6,25 +6,25 @@ void BossWalk::EnterState() {
 	if (boss->getCurrentDirection() == 1) {
 		boss->getCurrentSprite()->runAction((boss->walk_E));
 	}
-	if (boss->getCurrentDirection() == 2) {
+	else if (boss->getCurrentDirection() == 2) {
 		boss->getCurrentSprite()->runAction((boss->walk_NE));
 	}
-	if (boss->getCurrentDirection() == 3) {
+	else if (boss->getCurrentDirection() == 3) {
 		boss->getCurrentSprite()->runAction((boss->walk_N));
 	}
-	if (boss->getCurrentDirection() == 4) {
+	else if (boss->getCurrentDirection() == 4) {
 		boss->getCurrentSprite()->runAction((boss->walk_NW));
 	}
-	if (boss->getCurrentDirection() == 5) {
+	else if (boss->getCurrentDirection() == 5) {
 		boss->getCurrentSprite()->runAction((boss->walk_W));
 	}
-	if (boss->getCurrentDirection() == 6) {
+	else if (boss->getCurrentDirection() == 6) {
 		boss->getCurrentSprite()->runAction((boss->walk_SW));
 	}
-	if (boss->getCurrentDirection() == 7) {
+	else if (boss->getCurrentDirection() == 7) {
 		boss->getCurrentSprite()->runAction((boss->walk_S));
 	}
-	if (boss->getCurrentDirection() == 8) {
+	else if (boss->getCurrentDirection() == 8) {
 		boss->getCurrentSprite()->runAction((boss->walk_SE));
 	}
 	lastDir = boss->getCurrentDirection();
