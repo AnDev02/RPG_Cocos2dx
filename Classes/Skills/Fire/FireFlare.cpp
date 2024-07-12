@@ -250,7 +250,7 @@ void FireFlare::update(float dt) {
                         if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
                             if (!monster->getChildByName("FireEffect")) {
                                 //Skill Effect Sprite
-                                auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
+                                auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
                                 effect->setName("FireEffect");
                                 effect->setScale(0.2);
 
@@ -280,7 +280,7 @@ void FireFlare::update(float dt) {
                     if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
                         if (!boss->getChildByName("FireEffect")) {
                             //Skill Effect Sprite
-                            auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
+                            auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
                             effect->setName("FireEffect");
                             effect->setScale(0.2);
 

@@ -287,8 +287,9 @@ void FireCombust::performSkill(Vec2 target) {
                         //Effect to Monster
                         effect->setPosition(Vec2(0, 40));
                         effect->runAction(RepeatForever::create(animate));
-                        schedule(CC_SCHEDULE_SELECTOR(FireCombust::updateEffect), 1.0f);
+
                         effectTime = 5.0f;
+                        schedule(CC_SCHEDULE_SELECTOR(FireCombust::updateEffect), 1.0f);
                     }
                 }
             }

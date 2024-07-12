@@ -272,7 +272,7 @@ void FireBall::update(float dt) {
                          if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
                              if (!monster->getChildByName("FireEffect")) {
                                  //Skill Effect Sprite
-                                 auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
+                                 auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
                                  effect->setName("FireEffect");
                                  effect->setScale(0.2);
 
@@ -284,8 +284,9 @@ void FireBall::update(float dt) {
                                  effect->setPosition(Vec2(0, 40));
                                  effect->runAction(RepeatForever::create(animate));
 
-                                 schedule(CC_SCHEDULE_SELECTOR(FireBall::updateEffect), 1.0f);
                                  effectTime = 5.0f;
+                                 schedule(CC_SCHEDULE_SELECTOR(FireBall::updateEffect), 1.0f);
+
                              }
                          }
                         if (monster->getCurrentHP() <= 0) {
@@ -302,7 +303,7 @@ void FireBall::update(float dt) {
                     if (player->getEquipment("Weapon")->getElement() == player->getEquipment("Weapon")->FIRE) {
                         if (!boss->getChildByName("FireEffect")) {
                             //Skill Effect Sprite
-                            auto effect = Sprite::createWithSpriteFrameName("thunder_spark (1).png");
+                            auto effect = Sprite::createWithSpriteFrameName("fire_sear (1).png");
                             effect->setName("FireEffect");
                             effect->setScale(0.2);
 
@@ -314,8 +315,9 @@ void FireBall::update(float dt) {
                             effect->setPosition(Vec2(0, 40));
                             effect->runAction(RepeatForever::create(animate));
 
-                            schedule(CC_SCHEDULE_SELECTOR(FireBall::updateEffect), 1.0f);
+                            
                             effectTime = 5.0f;
+                            schedule(CC_SCHEDULE_SELECTOR(FireBall::updateEffect), 1.0f);
                         }
                     }
                     if (boss->getCurrentHP() <= 0) {
