@@ -56,10 +56,10 @@ void GameMap::loadResource(int mapIndex)
         UserDefault::getInstance()->setBoolForKey("EffectInCache", true);
     }
     if (mapIndex == 0) {
-        //if (!UserDefault::getInstance()->getBoolForKey("WarriorInCache")) {
-        //    loadWarriorToCache();
-        //    UserDefault::getInstance()->setBoolForKey("WarriorInCache", true);
-        //}
+        if (!UserDefault::getInstance()->getBoolForKey("WarriorInCache", false)) {
+            loadWarriorToCache();
+            UserDefault::getInstance()->setBoolForKey("WarriorInCache", true);
+        }
         if (!UserDefault::getInstance()->getBoolForKey("KnightInCache", false)) {
             loadKnightToCache();
             UserDefault::getInstance()->setBoolForKey("KnightInCache", true);
@@ -673,22 +673,22 @@ void GameMap::loadNPCFighterToCache()
 }
 void GameMap::loadWarriorToCache()
 {
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/E/warrior_armed_idle_E.plist", "playable character/warrior/warrior_armed_idle/E/warrior_armed_idle_E.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/N/warrior_armed_idle_N.plist", "playable character/warrior/warrior_armed_idle/N/warrior_armed_idle_N.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/NE/warrior_armed_idle_NE.plist", "playable character/warrior/warrior_armed_idle/NE/warrior_armed_idle_NE.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/NW/warrior_armed_idle_NW.plist", "playable character/warrior/warrior_armed_idle/NW/warrior_armed_idle_NW.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/S/warrior_armed_idle_S.plist", "playable character/warrior/warrior_armed_idle/S/warrior_armed_idle_S.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/SE/warrior_armed_idle_SE.plist", "playable character/warrior/warrior_armed_idle/SE/warrior_armed_idle_SE.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/SW/warrior_armed_idle_SW.plist", "playable character/warrior/warrior_armed_idle/SW/warrior_armed_idle_SW.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/W/warrior_armed_idle_W.plist", "playable character/warrior/warrior_armed_idle/W/warrior_armed_idle_W.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/E/warrior_armed_idle_E.plist", "playable character/warrior/warrior_armed_idle/E/warrior_armed_idle_E.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/N/warrior_armed_idle_N.plist", "playable character/warrior/warrior_armed_idle/N/warrior_armed_idle_N.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/NE/warrior_armed_idle_NE.plist", "playable character/warrior/warrior_armed_idle/NE/warrior_armed_idle_NE.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/NW/warrior_armed_idle_NW.plist", "playable character/warrior/warrior_armed_idle/NW/warrior_armed_idle_NW.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/S/warrior_armed_idle_S.plist", "playable character/warrior/warrior_armed_idle/S/warrior_armed_idle_S.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/SE/warrior_armed_idle_SE.plist", "playable character/warrior/warrior_armed_idle/SE/warrior_armed_idle_SE.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/SW/warrior_armed_idle_SW.plist", "playable character/warrior/warrior_armed_idle/SW/warrior_armed_idle_SW.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_armed_idle/W/warrior_armed_idle_W.plist", "playable character/warrior/warrior_armed_idle/W/warrior_armed_idle_W.png");
 
-    //// SELECT
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/E/warrior_special_select_E.plist", "playable character/warrior/warrior_special_select/E/warrior_special_select_E.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/N/warrior_special_select_N.plist", "playable character/warrior/warrior_special_select/N/warrior_special_select_N.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/NE/warrior_special_select_NE.plist", "playable character/warrior/warrior_special_select/NE/warrior_special_select_NE.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/NW/warrior_special_select_NW.plist", "playable character/warrior/warrior_special_select/NW/warrior_special_select_NW.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/S/warrior_special_select_S.plist", "playable character/warrior/warrior_special_select/S/warrior_special_select_S.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/SE/warrior_special_select_SE.plist", "playable character/warrior/warrior_special_select/SE/warrior_special_select_SE.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/SW/warrior_special_select_SW.plist", "playable character/warrior/warrior_special_select/SW/warrior_special_select_SW.png");
-    //SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/W/warrior_special_select_W.plist", "playable character/warrior/warrior_special_select/W/warrior_special_select_W.png");
+    // SELECT
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/E/warrior_special_select_E.plist", "playable character/warrior/warrior_special_select/E/warrior_special_select_E.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/N/warrior_special_select_N.plist", "playable character/warrior/warrior_special_select/N/warrior_special_select_N.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/NE/warrior_special_select_NE.plist", "playable character/warrior/warrior_special_select/NE/warrior_special_select_NE.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/NW/warrior_special_select_NW.plist", "playable character/warrior/warrior_special_select/NW/warrior_special_select_NW.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/S/warrior_special_select_S.plist", "playable character/warrior/warrior_special_select/S/warrior_special_select_S.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/SE/warrior_special_select_SE.plist", "playable character/warrior/warrior_special_select/SE/warrior_special_select_SE.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/SW/warrior_special_select_SW.plist", "playable character/warrior/warrior_special_select/SW/warrior_special_select_SW.png");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("playable character/warrior/warrior_special_select/W/warrior_special_select_W.plist", "playable character/warrior/warrior_special_select/W/warrior_special_select_W.png");
 }

@@ -443,6 +443,20 @@ bool Game::loadMap(int levelMap)
     else
     {
         _player->pickUpEquipment("Chipped Shoe", 1);
+        _player->pickUpEquipment("Chipped Shoe", 1);
+        _player->pickUpEquipment("Chipped Shoe", 1);
+        _player->pickUpEquipment("Chipped Shoe", 1);
+        _player->pickUpEquipment("Chipped Shoe", 1);
+        _player->pickUpEquipment("Chipped Shoe", 1);
+        _player->pickUpEquipment("Chipped Shoe", 1);
+        _player->pickUpEquipment("Chipped Shoe", 1);
+        _player->pickUpEquipment("Chipped Shoe", 1);
+        _player->pickUpEquipment("Chipped Shoe", 1);
+        _player->pickUpEquipment("Chipped Shoe", 1);
+        _player->pickUpEquipment("Chipped Shoe", 1);
+
+
+        
     }
 
     if (!inGameUI) {
@@ -479,24 +493,24 @@ bool Game::loadMap(int levelMap)
                     //DialogueManager::getInstance()->setNPC(durin);
                 }
             }
-            else if (objectName == "Robert The Fallen Slayer") {
-                // robert
-                ValueMap robertNPCPoint = NPCobjGroup->getObject("Robert The Fallen Slayer");
-                if (!robertNPCPoint.empty()) {
-                    int robertX = robertNPCPoint.at("x").asInt();
-                    int robertY = robertNPCPoint.at("y").asInt();
-                    if (robert != nullptr)
-                        robert->removeFromParentAndCleanup(true);
-                    robert = NPCFactory::createNPC("Robert The Fallen Slayer");
-                    robert->setPosition(Vec2(robertX, robertY));
-                    robert->setName("robert");
-                    gameMap->getTiledMap()->addChild(robert, 9.5);
-                    robert->currentState = robert->idleState;
-                    robert->currentState->EnterState();
-                    listNPC.push_back(robert);
-                    //DialogueManager::getInstance()->setNPC(durin);
-                }
-            }
+            //else if (objectName == "Robert The Fallen Slayer") {
+            //    // robert
+            //    ValueMap robertNPCPoint = NPCobjGroup->getObject("Robert The Fallen Slayer");
+            //    if (!robertNPCPoint.empty()) {
+            //        int robertX = robertNPCPoint.at("x").asInt();
+            //        int robertY = robertNPCPoint.at("y").asInt();
+            //        if (robert != nullptr)
+            //            robert->removeFromParentAndCleanup(true);
+            //        robert = NPCFactory::createNPC("Robert The Fallen Slayer");
+            //        robert->setPosition(Vec2(robertX, robertY));
+            //        robert->setName("robert");
+            //        gameMap->getTiledMap()->addChild(robert, 9.5);
+            //        robert->currentState = robert->idleState;
+            //        robert->currentState->EnterState();
+            //        listNPC.push_back(robert);
+            //        //DialogueManager::getInstance()->setNPC(durin);
+            //    }
+            //}
         }
     }
 
