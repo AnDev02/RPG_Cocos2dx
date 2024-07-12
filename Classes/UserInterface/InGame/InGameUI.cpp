@@ -122,6 +122,7 @@ void InGameUI::setTarget(Player* plr) {
     inventory->setSubInventory(subInventory);
 
     upgradeInventory = player->getUpgradeInventory();
+    upgradeInventory->setScale(visibleSize.width / upgradeInventory->bg->getContentSize().width / 2, visibleSize.height / upgradeInventory->bg->getContentSize().height / 2);
     this->addChild(upgradeInventory, 20);
 
     dropdownButton = Dropdown::create(this);

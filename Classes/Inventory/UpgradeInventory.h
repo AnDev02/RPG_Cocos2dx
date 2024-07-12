@@ -31,6 +31,9 @@ public:
     void nextInventoryPage();
     void prevInventoryPage();
     void onPageChange();
+    Size visibleSize;
+    Size bgSize;
+    Sprite* bg = nullptr;
     bool onTouchBegan(Touch* touch, Event* event);
     float widthSize;
     InventoryNode* weaponNode;

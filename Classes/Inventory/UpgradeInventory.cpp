@@ -53,55 +53,54 @@ bool UpgradeInventory::init(Player* player)
     {
         return false;
     }
+    visibleSize = Director::getInstance()->getVisibleSize();
+    bg = Sprite::create("res/background-img-3.png");
+   /* auto bg2 = Sprite::create("res/background-img-3-semi.png");
+    bg2->setAnchorPoint(Vec2(0,0));
+    bg2->setPosition(Vec2(-bg->getContentSize().width / 2, -bg->getContentSize().height / 2));*/
+    this->addChild(bg);
+    //this->addChild(bg2, 10);
+    buttonClose = Sprite::create("res/c_header_close.png");
+    buttonClose->setPosition(Vec2(bg->getContentSize().width / 2, bg->getContentSize().height / 2) - buttonClose->getContentSize() * 1.5);
+    this->addChild(buttonClose);
+    bgSize = bg->getContentSize();
 
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    inventoryBorder = Node::create();
-    this->addChild(inventoryBorder);
-    auto layer = LayerColor::create(Color4B(0, 0, 0, 180));
-    layer->setContentSize(Director::getInstance()->getVisibleSize());
-    layer->setPosition(Vec2(-Director::getInstance()->getVisibleSize().width / 2, -Director::getInstance()->getVisibleSize().height / 2));
-    inventoryBorder->addChild(layer, 1);
-
-    scrollview = Scrollview::create();
-    scrollview->setScrollViewContentSize(Size(visibleSize.width / 2, visibleSize.height / 2));
-    scrollview->setAnchorPoint(Vec2(0, 0));
-    scrollview->setGlobalZOrder(1000);
-    inventoryBorder->addChild(scrollview, 2);
-  
     hideUpgradeInventory();
-
-
     auto touchListener = EventListenerTouchOneByOne::create();
     touchListener->setSwallowTouches(true);
     touchListener->onTouchBegan = CC_CALLBACK_2(UpgradeInventory::onTouchBegan, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, layer);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
     return true;
 }
 bool UpgradeInventory::onTouchBegan(Touch* touch, Event* event) {
     if (isShow()) {
+        Vec2 touchLocation = this->convertToNodeSpace(touch->getLocation());
+        if (buttonClose->getBoundingBox().containsPoint(touchLocation)) {
+            hideUpgradeInventory();
+        }
         return true;
     }
     return false;
 }
 void UpgradeInventory::onAddEquipment() {
     auto nodesToAdd = std::vector<Node*>();
-
-    for (auto i : equipmentsData) {
-        Node* node = Node::create();
-        auto bg = Sprite::create("res/button_tab.png");
-        node->addChild(bg);
-        Label* lb = Label::createWithTTF(i.name + " Lv." + std::to_string(i.level), "fonts/Diablo Light.ttf", 15);
-        node->addChild(lb);
-        Sprite* icon = Sprite::create(i.iconPath);
-        node->addChild(icon);
-        icon->setPosition(Vec2(icon->getContentSize().width / 2 + lb->getContentSize().width / 2, 0));
-        node->setContentSize(Size(lb->getContentSize().width + icon->getContentSize().width, icon->getContentSize().height * 2));
-        bg->setScale(node->getContentSize().width / bg->getContentSize().width, node->getContentSize().height / bg->getContentSize().height);
-
-        nodesToAdd.push_back(node);
-    }
-
-    float totalHeight = scrollview->getScrollView()->getInnerContainerSize().height;
+    int equipmentsQuan = equipmentsData.size() - 1;
+    auto i = equipmentsData[equipmentsQuan];
+    Node* node = Node::create();
+    auto bgt = Sprite::create("res/button_tab.png");
+    node->addChild(bgt);
+    Label* lb = Label::createWithTTF(i.name + " Lv." + std::to_string(i.level), "fonts/Diablo Light.ttf", 20);
+    lb->setScale(0.3);
+    node->addChild(lb);
+    Sprite* icon = Sprite::create(i.iconPath);
+    node->addChild(icon);
+    icon->setScale(0.69);
+    icon->setPosition(Vec2(icon->getContentSize().width / 2 + lb->getContentSize().width * lb->getScaleX() / 2, 0));
+    bgt->setScale(node->getContentSize().width / (lb->getContentSize().width * lb->getScaleX() + icon->getContentSize().width), node->getContentSize().height / (icon->getContentSize().height * 2));
+    node->setAnchorPoint(Vec2(0,0));
+    node->setPosition(Vec2(-bgSize.width / 2 + lb->getContentSize().width * lb->getScaleX() / 2 + icon->getContentSize().width / 2, bgSize.height / 2 - (icon->getContentSize().height * (equipmentsQuan + 1))));
+    this->addChild(node, 5);
+   /* float totalHeight = scrollview->getScrollView()->getInnerContainerSize().height;
     for (auto node : nodesToAdd) {
         totalHeight += node->getContentSize().height;
     }
@@ -112,7 +111,7 @@ void UpgradeInventory::onAddEquipment() {
         node->setPosition(Vec2(node->getContentSize().width / 2, posY - node->getContentSize().height / 2));
         scrollview->addToScrollView(node);
         posY -= node->getContentSize().height;
-    }
+    }*/
 }
 
 void UpgradeInventory::nextInventoryPage() {
@@ -366,11 +365,11 @@ void UpgradeInventory::removeItem(std::string itemName) {
 }
 
 void UpgradeInventory::showUpgradeInventory() {
-    inventoryBorder->setVisible(true);
+    this->setVisible(true);
     isSo = true;
 }
 
 void UpgradeInventory::hideUpgradeInventory() {
-    inventoryBorder->setVisible(false);
+    this->setVisible(false);
     isSo = false;
 }
