@@ -457,21 +457,46 @@ bool Game::loadMap(int levelMap)
     TMXObjectGroup* NPCobjGroup = gameMap->getTiledMap()->getObjectGroup("NPC");
     if (NPCobjGroup) {
         // Durin
-        ValueMap durinNPCPoint = NPCobjGroup->getObject("Durin The Blacksmith");
-        if (!durinNPCPoint.empty()) {
-            int durinX = durinNPCPoint.at("x").asInt();
-            int durinY = durinNPCPoint.at("y").asInt();
-            if (durin != nullptr)
-                durin->removeFromParentAndCleanup(true);
-            durin = NPCFactory::createNPC("Durin The Blacksmith");
-            durin->setPosition(Vec2(durinX, durinY));
-            durin->setName("Durin");
-            gameMap->getTiledMap()->addChild(durin, 9.5);
-            durin->currentState = durin->idleState;
-            durin->currentState->EnterState();
-            //durin->setTarget(_player);
-            listNPC.push_back(durin);
-            //DialogueManager::getInstance()->setNPC(durin);
+        auto NPCobjGroups = NPCobjGroup->getObjects();
+        for (const auto& object : NPCobjGroups) {
+            auto objectMap = object.asValueMap();
+            std::string objectName = objectMap["name"].asString();
+            if (objectName == "Durin The Blacksmith") {
+                ValueMap durinNPCPoint = NPCobjGroup->getObject("Durin The Blacksmith");
+                if (!durinNPCPoint.empty()) {
+                    int durinX = durinNPCPoint.at("x").asInt();
+                    int durinY = durinNPCPoint.at("y").asInt();
+                    if (durin != nullptr)
+                        durin->removeFromParentAndCleanup(true);
+                    durin = NPCFactory::createNPC("Durin The Blacksmith");
+                    durin->setPosition(Vec2(durinX, durinY));
+                    durin->setName("Durin");
+                    gameMap->getTiledMap()->addChild(durin, 9.5);
+                    durin->currentState = durin->idleState;
+                    durin->currentState->EnterState();
+                    //durin->setTarget(_player);
+                    listNPC.push_back(durin);
+                    //DialogueManager::getInstance()->setNPC(durin);
+                }
+            }
+            else if (objectName == "Robert The Fallen Slayer") {
+                // robert
+                ValueMap robertNPCPoint = NPCobjGroup->getObject("Robert The Fallen Slayer");
+                if (!robertNPCPoint.empty()) {
+                    int robertX = robertNPCPoint.at("x").asInt();
+                    int robertY = robertNPCPoint.at("y").asInt();
+                    if (robert != nullptr)
+                        robert->removeFromParentAndCleanup(true);
+                    robert = NPCFactory::createNPC("Robert The Fallen Slayer");
+                    robert->setPosition(Vec2(robertX, robertY));
+                    robert->setName("robert");
+                    gameMap->getTiledMap()->addChild(robert, 9.5);
+                    robert->currentState = robert->idleState;
+                    robert->currentState->EnterState();
+                    listNPC.push_back(robert);
+                    //DialogueManager::getInstance()->setNPC(durin);
+                }
+            }
         }
     }
 
