@@ -188,6 +188,7 @@ list(APPEND GAME_SOURCE
      Classes/UserInterface/InGame/SelectMapButton.cpp
      Classes/UserInterface/InGame/TeleportEffect.cpp
      Classes/UserInterface/InGame/Dropdown.cpp
+     Classes/UserInterface/InGame/ShowQuestButton.cpp
 
      
      # SettingsManager
@@ -429,6 +430,7 @@ list(APPEND GAME_HEADER
      Classes/UserInterface/InGame/SelectMapButton.h
      Classes/UserInterface/InGame/TeleportEffect.h
      Classes/UserInterface/InGame/Dropdown.h
+     Classes/UserInterface/InGame/ShowQuestButton.h
 
 
 	

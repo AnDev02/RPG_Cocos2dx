@@ -9,8 +9,8 @@ class TalentButton;
 class Dropdown : public cocos2d::Node
 {
 public:
-    static Dropdown* create();
-    virtual bool init();
+    static Dropdown* create(InGameUI* inGameUI);
+    virtual bool init(InGameUI* inGameUI);
     bool onTouchBegan(Touch* touch, Event* event);
     Sprite* bg = nullptr;
     Sprite* iconSprite;
@@ -19,9 +19,9 @@ public:
     InGameUI* inGameUI = nullptr;
     InventoryButton* inventoryButton = nullptr;
     TalentButton* talentButton = nullptr;
+    bool isOpen = false;
 private:
     Sprite* toggleButton = nullptr;
-    bool isOpen = false;
     bool isScaling = false;
 };
 

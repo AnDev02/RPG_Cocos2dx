@@ -1,11 +1,12 @@
 ﻿#include "Dropdown.h"
 #include "UserInterface/InGame/InGameUI.h"
+#include "UserInterface/InGame/InventoryButton.h"
 #include "Scenes/SelectMapLayer.h"
 #include "Game/Game.h"
 
-Dropdown* Dropdown::create() {
+Dropdown* Dropdown::create(InGameUI* inGameUI) {
     auto node = new Dropdown();
-    if (node && node->init()) {
+    if (node && node->init(inGameUI)) {
         node->autorelease();
         return node;
     }
@@ -13,12 +14,13 @@ Dropdown* Dropdown::create() {
     return nullptr;
 }
 
-bool Dropdown::init() {
+bool Dropdown::init(InGameUI* inGameUI) {
     if (!Node::init()) {
         return false;
     }
+    this->inGameUI = inGameUI;
     bg = Sprite::create("res/dropdown_btn.png");
-    bg->setScale(2.8, 1.8);
+    bg->setScale(3, 1.8);
     iconSprite = Sprite::create("res/left-arr-ui2.png");
     iconSprite->setScale(1.2);
     this->addChild(bg);
@@ -46,10 +48,23 @@ bool Dropdown::onTouchBegan(Touch* touch, Event* event) {
                 return false; 
             }
             ScaleTo* scaleAction;
-            if (isOpen)
-                scaleAction = ScaleTo::create(0.5, bg->getScaleX() / 3, bg->getScaleY());
-            else
-                scaleAction = ScaleTo::create(0.5, bg->getScaleX() * 3, bg->getScaleY());
+            if (isOpen) {
+                scaleAction = ScaleTo::create(0.3, bg->getScaleX() / 2.6, bg->getScaleY());
+                inGameUI->inventoryButton->setVisible(false);
+                inGameUI->talentButton->setVisible(false);
+            }
+            else {
+                scaleAction = ScaleTo::create(0.3, bg->getScaleX() * 2.6, bg->getScaleY());
+                this->runAction(Sequence::create(
+                    DelayTime::create(0.3), 
+                    CallFunc::create([this]() {
+                    inGameUI->inventoryButton->setVisible(true);
+                    }), 
+                    DelayTime::create(0.2), 
+                    CallFunc::create([this]() {
+                    inGameUI->talentButton->setVisible(true);
+                    }), nullptr));
+            }
 
             auto sequence = Sequence::create(
                 scaleAction,

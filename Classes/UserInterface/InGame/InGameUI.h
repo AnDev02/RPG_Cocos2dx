@@ -31,6 +31,7 @@ class SelectMapButton;
 class SelectMapLayer;
 class AnimaticScene;
 class Dropdown;
+class QuestBtn;
 
 class InGameUI : public cocos2d::Layer
 {
@@ -74,6 +75,7 @@ public:
     SelectMapButton* selectMapButton = nullptr;
     SelectMapLayer* selectMapLayer = nullptr;
     AnimaticScene* storyScene = nullptr;
+    QuestBtn* questBtn = nullptr;
     std::vector<NPC*> _listNPC;
     void showLevelUpPopup();
     void update(float dt);

@@ -18,6 +18,7 @@
 #include "UserInterface/InGame/HamburgerMenuButton.h"
 #include "UserInterface/InGame/ExpBar.h"
 #include "UserInterface/InGame/HealthBar.h"
+#include "UserInterface/InGame/ShowQuestButton.h"
 #include "NPC/NPC.h"
 #include "LevelUpPopup.h"
 #include "Quest/QuestManager.h"
@@ -68,6 +69,7 @@ void InGameUI::setTarget(Player* plr) {
     if (selectMapButton != nullptr) selectMapButton->removeFromParentAndCleanup(true);
     if (storyScene != nullptr) storyScene->removeFromParentAndCleanup(true);
     if (dropdownButton != nullptr) dropdownButton->removeFromParentAndCleanup(true);
+    if (questBtn != nullptr) questBtn->removeFromParentAndCleanup(true);
 
     if (this->getChildByName("SkillButton4")) {
         this->getChildByName("SkillButton4")->removeFromParentAndCleanup(true);
@@ -122,9 +124,9 @@ void InGameUI::setTarget(Player* plr) {
     upgradeInventory = player->getUpgradeInventory();
     this->addChild(upgradeInventory, 20);
 
-    dropdownButton = Dropdown::create();
+    dropdownButton = Dropdown::create(this);
     dropdownButton->setPosition(visibleSize.width / 4 - 80, visibleSize.height / 5 - 5 - dropdownButton->bg->getContentSize().height * dropdownButton->bg->getScaleY() / 1.3);
-    this->addChild(dropdownButton, 20);
+    this->addChild(dropdownButton, 3);
     
 
     upgradeInventoryButton = UpgradeInventoryButton::create(upgradeInventory);
@@ -133,8 +135,14 @@ void InGameUI::setTarget(Player* plr) {
     upgradeInventoryButton->setVisible(false);
     this->addChild(upgradeInventoryButton, 6);
 
+    questBtn = QuestBtn::create();
+    questBtn->setPosition(dropdownButton->getPosition() - Vec2(dropdownButton->bg->getContentSize().width * dropdownButton->bg->getScaleX() / 2 - 5, -questBtn->btnSprite->getContentSize().height / 4));
+    questBtn->setScale(0.25 * Director::getInstance()->getContentScaleFactor());
+    this->addChild(questBtn, 6);
+
+
     inventoryButton = InventoryButton::create(inventory);
-    inventoryButton->setPosition(Vec2(-visibleSize.width / 4 + 50, visibleSize.height / 5 - 5));
+    inventoryButton->setPosition(questBtn->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 3, 0));
     inventoryButton->setScale(0.25 * Director::getInstance()->getContentScaleFactor());
     this->addChild(inventoryButton, 6);
     inventoryButton->retain();
@@ -190,7 +198,7 @@ void InGameUI::setTarget(Player* plr) {
     this->addChild(talentCarousel, 6);
 
     talentButton = TalentButton::create(talentCarousel);
-    talentButton->setPosition(-visibleSize.width / 4 + 110, visibleSize.height / 5 - 5);
+    talentButton->setPosition(inventoryButton->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 3, 0));
     talentButton->setScale(0.25 * Director::getInstance()->getContentScaleFactor());
     this->addChild(talentButton, 5);
 
@@ -211,6 +219,8 @@ void InGameUI::setTarget(Player* plr) {
         this->addChild(storyScene, 50);
         storyScene->show();
     }
+    talentButton->setVisible(false);
+    inventoryButton->setVisible(false);
 }
 
 void InGameUI::update(float dt) {
@@ -303,13 +313,13 @@ void InGameUI::showUI() {
     //Show subiventory
     subInventory->setVisible(true);
     //Show Skill Tree
-    talentButton->setVisible(true);
+    //talentButton->setVisible(true);
     //Show PauseGame
     hamburgerButton->setVisible(true);
     //Show QuestButton
     questButton->setVisible(true);
     //Show inventory button
-    inventoryButton->setVisible(true);
+    //inventoryButton->setVisible(true);
     //Show Player's Skills
     _player_temp->setVisibleSkillButton(true);
     //Show QuestManager

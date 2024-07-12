@@ -20,8 +20,8 @@ bool InventoryButton::init(Inventory* inventory) {
     }
 
     inven = inventory;
-    btnSprite = Sprite::create("res/action_bar_btn2.png");
-    btnSprite->setScale(3);
+    btnSprite = Sprite::create("res/action_bar_btn3.png");
+    btnSprite->setScale(2);
     Sprite* iconSprite = Sprite::create("res/chest_icon.png");
     iconSprite->setScale(0.25 * Director::getInstance()->getContentScaleFactor());
     iconSprite->setPosition(Vec2(btnSprite->getContentSize().width / 2, btnSprite->getContentSize().height / 2));
