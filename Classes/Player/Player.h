@@ -154,6 +154,7 @@ public:
     void takeDamage(float amountDamage);
     //Level Manager
     void levelUp() override;
+    void levelUpFromData();
     float calculateAngle(const Vec2& vectorA, const Vec2& vectorB);
 
     void setVisibleSkillButton(bool Visible);
@@ -336,6 +337,7 @@ public:
         currentHP = currentHPResult;
     }
     void gainExp(float amountExp);
+    void gainExpFromData(float amountExp);
     //Observer props
     std::vector<Observer*> observers;
     std::string message;
