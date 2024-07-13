@@ -35,7 +35,11 @@ public:
     Size bgSize;
     Sprite* bg = nullptr;
     bool onTouchBegan(Touch* touch, Event* event);
+    bool onTouchBegan2(Touch* touch, Event* event);
+    void onTouchMoved(Touch* touch, Event* event);
+    void onTouchEnded(Touch* touch, Event* event);
     float widthSize;
+    Sprite* bg2;
     InventoryNode* weaponNode;
     InventoryNode* materialItem1;
     InventoryNode* materialItem2;
@@ -77,7 +81,12 @@ private:
     bool isDraggingItem = false;
     bool isSo = false;
     bool isInUpgrade = false;
-
+    Vec2 touchStartPoint;
+    cocos2d::Node* currentSwipeNode = nullptr;
+    std::vector<cocos2d::Node*> nodesToAdd;
+    void adjustNodesPosition();
+    float minY = 0, maxY = minY;
+    
 };
 
 #endif // __UPGRADE_INVENTORY_H__

@@ -19,8 +19,12 @@ bool Dropdown::init(InGameUI* inGameUI) {
         return false;
     }
     this->inGameUI = inGameUI;
-    bg = Sprite::create("res/dropdown_btn.png");
+    
+    auto leftBorder = Sprite::create("res/dropdown_btn.png", Rect(0, 0, 1, 20)); // 20 is 20px of image height 
+
+    bg = ui::Scale9Sprite::create("res/dropdown_btn.png");
     bg->setOpacity(180);
+    bg->setCapInsets(Rect(40, 40, 80, 80));
     bg->setScale(3, 3);
     iconSprite = Sprite::create("res/left-arr-ui2.png");
     iconSprite->setScale(1.9);
