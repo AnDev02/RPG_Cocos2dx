@@ -141,11 +141,7 @@ void InGameUI::setTarget(Player* plr) {
     this->addChild(questBtn, 6);
 
 
-    inventoryButton = InventoryButton::create(inventory);
-    inventoryButton->setPosition(questBtn->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 3,0));
-    inventoryButton->setScale(0.35 * Director::getInstance()->getContentScaleFactor());
-    this->addChild(inventoryButton, 6);
-    inventoryButton->retain();
+
 
     questButton = QuestButton::create();
     questButton->setPosition(visibleSize.width / 4 - 60, visibleSize.height / 5 - 50);
@@ -198,9 +194,17 @@ void InGameUI::setTarget(Player* plr) {
     this->addChild(talentCarousel, 6);
 
     talentButton = TalentButton::create(talentCarousel);
-    talentButton->setPosition(inventoryButton->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 3, 0));
+    talentButton->setPosition(questBtn->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 2, 0));
+    //inventoryButton->setPosition(questBtn->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 3, 0));
     talentButton->setScale(0.35 * Director::getInstance()->getContentScaleFactor());
     this->addChild(talentButton, 5);
+
+    inventoryButton = InventoryButton::create(inventory);
+    inventoryButton->setPosition(talentButton->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 2, 0));
+    //talentButton->setPosition(inventoryButton->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 3, 0));
+    inventoryButton->setScale(0.35 * Director::getInstance()->getContentScaleFactor());
+    this->addChild(inventoryButton, 6);
+    inventoryButton->retain();
 
     DialogueManager::getInstance()->init();
     dialogueManager = DialogueManager::getInstance();
