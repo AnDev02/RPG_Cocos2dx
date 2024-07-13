@@ -171,11 +171,10 @@ bool SelectMapLayer::onTouchBegan(Touch* touch, Event* event) {
 			else if (map3Rect.containsPoint(startPoint)) {
 				mapIndex = 3;
 			}
-			else return true;
+			else return false;
 			if (game->gameMap->currentMap != mapIndex && mapIndex != -1) {
-				auto hideLayer = CallFunc::create([this, mapIndex]() {
+				auto hideLayer = CallFunc::create([this]() {
 					if (game) {
-						game->showTeleportEffect();
 						game->save();
 						hide();
 						game->inGameUI->setVisible(false);
@@ -184,22 +183,15 @@ bool SelectMapLayer::onTouchBegan(Touch* touch, Event* event) {
 					
 					//game->pauseGame();
 					});
-				auto loadRs = CallFunc::create([this, mapIndex]() {
-					if(game)
-						game->gameMap->loadResource(mapIndex);
-					});
-				auto hideOvlay = CallFunc::create([this, mapIndex]() {
+				
+				auto hideOvlay = CallFunc::create([this]() {
 					if (game) {
-						Node* temp = game->getChildByName("ovlay");
-						if (temp) {
-							temp->removeFromParentAndCleanup(true);
-						}
 						Node* overlay = LayerColor::create(Color4B::BLACK);
 						overlay->setName("ovlay");
-						game->addChild(overlay);
+						game->gameMap->getTiledMap()->addChild(overlay, 1000);
 						overlay->setVisible(true);
 						overlay->setOpacity(0);
-						overlay->runAction(FadeIn::create(1));
+						overlay->runAction(FadeIn::create(0.4));
 					}
 					
 					});
@@ -217,30 +209,15 @@ bool SelectMapLayer::onTouchBegan(Touch* touch, Event* event) {
 						
 
 						if (mapIndex == 0 && game->gameMap != nullptr && game->getPlayer())
-							game->getPlayer()->setPosition(game->gameMap->getPrevPoint().getMidX(), game->gameMap->getPrevPoint().getMidY());
+							game->getPlayer()->setPosition(game->gameMap->getEndPoint().getMidX(), game->gameMap->getEndPoint().getMidY());
 					}
 					});
-
-				auto foa = CallFunc::create([this, mapIndex]() {
-					Node* overlay2 = LayerColor::create(Color4B::BLACK);
-					overlay2->setName("ovlay2");
-					game->addChild(overlay2);
-					overlay2->setVisible(true);
-					overlay2->setOpacity(255);
-					overlay2->runAction(FadeOut::create(3));
-					});
-				
 					
 				auto sequence = Sequence::create(
 					hideLayer,
-					DelayTime::create(0.00000001),
-					loadRs,
-					DelayTime::create(3.9),
 					hideOvlay,
-					DelayTime::create(2.9),
+					DelayTime::create(0.5),
 					loadMapAction,
-					DelayTime::create(3.0),
-					foa,
 					nullptr
 				);
 				this->runAction(sequence);

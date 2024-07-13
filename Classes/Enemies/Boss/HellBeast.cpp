@@ -34,7 +34,7 @@ bool HellBeast::init() {
     //Armor
     baseArmor = 120;
     //AD
-    baseDamage = 350;
+    baseDamage = 100;
     //MS
     MS = 80;
     //AR
@@ -45,7 +45,7 @@ bool HellBeast::init() {
     expGain = 770;
 
     //STATS BONUS
-    HP_bonus = 1140;
+    HP_bonus = 5600;
     MP_bonus = 0;
     HP_regen_bonus = 0;
     MP_regen_bonus = 0;

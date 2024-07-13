@@ -331,7 +331,7 @@ void SkillTree::showSkillDetail(SkillBase* skill, Player* player)
     equip->setName("Equip");
     equip->setScale(0.08 * scaleFactor);
     equip->setRotation(180);
-    equip->setPosition(Vec2(95 / scaleFactor, 213.33 / scaleFactor));
+    equip->setPosition(Vec2(95 / scaleFactor, 233.33 / scaleFactor));
     skillDetail->addChild(equip);
     this->equipButton = equip;
 
@@ -509,7 +509,7 @@ void SkillTree::showSkillDetail(SkillBase* skill, Player* player)
     unlock->setName("Unlock");
     unlock->setScale(0.08 * scaleFactor);
     unlock->setRotation(180);
-    unlock->setPosition(Vec2(95 / scaleFactor, 213.33 / scaleFactor));
+    unlock->setPosition(Vec2(95 / scaleFactor, 233.33 / scaleFactor));
     skillDetail->addChild(unlock);
     this->unlockButton = unlock;
 
@@ -548,7 +548,7 @@ void SkillTree::showSkillDetail(SkillBase* skill, Player* player)
     upgrade->setName("Upgrade");
     upgrade->setScale(0.08 * scaleFactor);
     upgrade->setRotation(180);
-    upgrade->setPosition(Vec2(260 / scaleFactor, 213.33 / scaleFactor));
+    upgrade->setPosition(Vec2(335 / scaleFactor, 233.33 / scaleFactor));
     skillDetail->addChild(upgrade);
     this->upgradeButton = upgrade;
 

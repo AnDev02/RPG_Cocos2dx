@@ -21,7 +21,7 @@ Scene *Game::createGame()
 {
     auto scene = Scene::createWithPhysics();
     scene->setName("GameSceneCheck");
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_NONE);
     scene->getPhysicsWorld()->setGravity(Vec2(0, -98));
     scene->getPhysicsWorld()->setSubsteps(10);
 
@@ -338,7 +338,6 @@ bool Game::loadMap(int levelMap)
     playerSavedData = JsonManager::getInstance()->getPlayerData();
     if (gameMap->currentMap != JsonManager::getInstance()->getPlayerData().currentMap || JsonManager::getInstance()->getPlayerData().positionX == 0) {
         _player = Player::create();
-        _player->gainExp(1200);
 
         _player->addSkill("FireSear");
         for (auto skill : _player->skills) {
@@ -350,7 +349,6 @@ bool Game::loadMap(int levelMap)
     }
     else {
         _player = Player::create();
-        _player->gainExp(1200);
 
         _player->addSkill("FireSear");
         for (auto skill : _player->skills) {
@@ -360,9 +358,8 @@ bool Game::loadMap(int levelMap)
         _player->setPosition(playerSavedData.positionX, playerSavedData.positionY);
        // _player->setPosition(Vec2(x, y));
     }
-    _player->gainExp(playerSavedData.exp);
+    _player->gainExpFromData(playerSavedData.exp);
     _player->setExpToConsume(playerSavedData.expToConsume);
-    _player->setExpToConsume(10000);
     _player->listOfCollision = this->listOfCollision;
     _player->listOfHideObject = this->listOfHideObject;
     _player->listOfShowObjectRoom = this->listOfShowObjectRoom;

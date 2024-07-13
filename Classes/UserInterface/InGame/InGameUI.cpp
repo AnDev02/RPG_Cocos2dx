@@ -122,6 +122,7 @@ void InGameUI::setTarget(Player* plr) {
     inventory->setSubInventory(subInventory);
 
     upgradeInventory = player->getUpgradeInventory();
+    upgradeInventory->setScale(visibleSize.width / upgradeInventory->bg->getContentSize().width / 2, visibleSize.height / upgradeInventory->bg->getContentSize().height / 2);
     this->addChild(upgradeInventory, 20);
 
     dropdownButton = Dropdown::create(this);
@@ -190,6 +191,7 @@ void InGameUI::setTarget(Player* plr) {
     this->addChild(levelUpPopup);
 
     talentCarousel = TalentCarousel::create(player);
+    talentCarousel->setScale(visibleSize.width / talentCarousel->talentBorder->getContentSize().width / 2, visibleSize.height / talentCarousel->talentBorder->getContentSize().height / 2);
     talentCarousel->setPosition(Vec2());
     this->addChild(talentCarousel, 6);
 
@@ -291,42 +293,65 @@ void InGameUI::setNPCs(std::vector<NPC*> listNPC) {
 void InGameUI::hideUI() {
     //Hide Healthbar
     healthBar->setVisible(false);
+    
     //Hide Exp and Level
     expBar->setVisible(false);
+    
     //Hide subiventory
     subInventory->setVisible(false);
+    
     //Hide Skill Tree
-    talentButton->setVisible(false);
+    // talentButton->setVisible(false);
+    
     //Hide PauseGame
     hamburgerButton->setVisible(false);
+    
     //Hide QuestButton
     questButton->setVisible(false);
+    
     //Hide inventory button
-    inventoryButton->setVisible(false);
+    //inventoryButton->setVisible(false);
+    
     //Hide Player's Skills
     _player_temp->setVisibleSkillButton(false);
+    
     //Hide QuestManager
     questManager->setVisible(false);
+
+    questBtn->setVisible(false);
+
+    dropdownButton->setVisible(false);
 }
 
 void InGameUI::showUI() {
     //Show Healthbar
     healthBar->setVisible(true);
+    
     //Show Exp and Level
     expBar->setVisible(true);
+    
     //Show subiventory
     subInventory->setVisible(true);
+    
     //Show Skill Tree
     //talentButton->setVisible(true);
+    
     //Show PauseGame
     hamburgerButton->setVisible(true);
+    
     //Show QuestButton
     questButton->setVisible(true);
+    
     //Show inventory button
     //inventoryButton->setVisible(true);
+    
     //Show Player's Skills
     _player_temp->setVisibleSkillButton(true);
+   
     //Show QuestManager
     questManager->setVisible(true);
 
+    questBtn->setVisible(true);
+
+    dropdownButton->setVisible(true);
 }

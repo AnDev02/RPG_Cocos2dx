@@ -36,36 +36,36 @@ bool TalentCarousel::init(Player* player) {
     touchListener->onTouchEnded = CC_CALLBACK_2(TalentCarousel::onTouchEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
-    talentBorder = Sprite::create("res/talent-carousel2.png");
-    talentBorder->setScale(visibleSize.width / talentBorder->getContentSize().width, visibleSize.height / talentBorder->getContentSize().height);
-    talentBorder->setPosition(0, 0);
+    talentBorder = Sprite::create("res/background-img-4.png");
     //talentBorder->setOpacity(160);
-    this->setContentSize(Size(talentBorder->getContentSize().width * talentBorder->getContentSize().width / visibleSize.width, talentBorder->getContentSize().height * talentBorder->getContentSize().height / visibleSize.height));
+    this->setContentSize(talentBorder->getContentSize());
     this->addChild(talentBorder);
 
     fireTreeTabButton = Sprite::create("res/button_tab.png");
     auto fireTreeLabel = Label::createWithTTF("Fire Skills", "fonts/Diablo Heavy.ttf", 13);
     fireTreeLabel->setName("label");
+    fireTreeLabel->setScale(0.68);
     fireTreeLabel->setPosition(Vec2(fireTreeTabButton->getContentSize().width / 2, fireTreeTabButton->getContentSize().height / 2));
-    fireTreeTabButton->addChild(fireTreeLabel);
-    fireTreeTabButton->setPosition(Vec2(-talentBorder->getContentSize().width * (visibleSize.width / visibleSize.height / 2) - 35, -talentBorder->getPositionY() / 2 - fireTreeTabButton->getContentSize().height * 0.50 / 2));
     fireTreeTabButton->setScale(0.50);
+    fireTreeTabButton->addChild(fireTreeLabel);
+    fireTreeTabButton->setPosition(Vec2(-fireTreeTabButton->getContentSize().width / 4, talentBorder->getContentSize().height / 2 - fireTreeTabButton->getContentSize().height * fireTreeTabButton->getScaleY() * 1.2));
     fireTreeTabButton->setOpacity(180);
     this->addChild(fireTreeTabButton);
 
     thunderTreeTabButton = Sprite::create("res/button_tab.png");
     auto thunderTreeLabel = Label::createWithTTF("Thunder Skills", "fonts/Diablo Heavy.ttf", 13);
     thunderTreeLabel->setName("label");
+    thunderTreeLabel->setScale(0.68);
     thunderTreeLabel->setPosition(Vec2(thunderTreeTabButton->getContentSize().width / 2, thunderTreeTabButton->getContentSize().height / 2));
-    thunderTreeTabButton->addChild(thunderTreeLabel);
-    thunderTreeTabButton->setPosition(Vec2(-talentBorder->getContentSize().width * (visibleSize.width / visibleSize.height / 2) - 35, -talentBorder->getPositionY() / 2 + fireTreeTabButton->getContentSize().height * 0.50 / 2));
     thunderTreeTabButton->setScale(0.50);
+    thunderTreeTabButton->addChild(thunderTreeLabel);
+    thunderTreeTabButton->setPosition(Vec2(thunderTreeTabButton->getContentSize().width / 4, talentBorder->getContentSize().height / 2 - thunderTreeTabButton->getContentSize().height * thunderTreeTabButton->getScaleY() * 1.2));
     thunderTreeTabButton->setOpacity(180);
     this->addChild(thunderTreeTabButton);
 
     buttonClose = Sprite::create("res/c_header_close.png");
-    buttonClose->setScale(0.7 * Director::getInstance()->getContentScaleFactor());
-    buttonClose->setPosition(Vec2((visibleSize.width - buttonClose->getContentSize().width * 0.4) * 0.202, (visibleSize.height - buttonClose->getContentSize().height * 0.4 * 2) * 0.202));
+    buttonClose->setScale(0.6 * Director::getInstance()->getContentScaleFactor());
+    buttonClose->setPosition(Vec2((talentBorder->getContentSize().width / 2 - buttonClose->getContentSize().width * buttonClose->getScale() * 1.5), (talentBorder->getContentSize().height / 2 - buttonClose->getContentSize().height * buttonClose->getScale() * 1.5)));
     this->addChild(buttonClose, 6);
 
     skillTreeAoe = SkillTree::createSkillTree(player, SkillFactory::createSkill("FireBall")->getSkillTalent());
@@ -78,8 +78,8 @@ bool TalentCarousel::init(Player* player) {
     skillTreeBuff->setParentNode(this);
 
     progressBar = TalentProgressBar::create();
-    progressBar->setScale(2 * Director::getInstance()->getContentScaleFactor());
-    progressBar->setPosition(Vec2(0, -120));
+    progressBar->setScale(Director::getInstance()->getContentScaleFactor());
+    progressBar->setPosition(Vec2(0, -talentBorder->getContentSize().height / 2 + progressBar->getContentSize().height * progressBar->getScaleY() + 6 * Director::getInstance()->getContentScaleFactor()));
     this->addChild(progressBar, 3);
     progressBar->updateProgress(player->getExpToConsume(), player->getAllExp());
     
@@ -89,8 +89,8 @@ bool TalentCarousel::init(Player* player) {
     overlay->setVisible(false);
     for (int i = 0; i < listOfTrees.size(); i++)
     {
-        listOfTrees[i]->setScale(0.25);
-        listOfTrees[i]->setPosition(Vec2(-60 * Director::getInstance()->getContentScaleFactor(), 50 * Director::getInstance()->getContentScaleFactor()));
+        listOfTrees[i]->setScale(0.15);
+        listOfTrees[i]->setPosition(Vec2(-talentBorder->getContentSize().width / 2 + 39 * Director::getInstance()->getContentScaleFactor(), 22 * Director::getInstance()->getContentScaleFactor()));
         listOfTrees[i]->setProgressBar(progressBar);
         this->addChild(listOfTrees[i], 4);
         listOfTrees[i]->setVisible(false);

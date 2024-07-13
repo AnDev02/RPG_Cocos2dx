@@ -21,11 +21,11 @@ bool Skeleton::init() {
      //MS
      MS = Director::getInstance()->getContentScaleFactor()*400;
      //AR
-     attackRange = 20;
+     attackRange = 40;
      //AS
      attackSpeed = 1.0;
      //Exp gain
-     expGain = 1200;
+     expGain = 60.45;
 
      //STATS BONUS
      HP_bonus = 45.7;
