@@ -1049,17 +1049,17 @@ bool Inventory::init(Player* _player)
 
     pageLabel = Label::createWithTTF("1/3", "fonts/Diablo Light.ttf", 18);
     pageLabel->setTextColor(Color4B::WHITE);
-    pageLabel->setPosition(mainInventory->getPosition() - Vec2(pageLabel->getContentSize().width, mainInventory->getContentSize().height * mainInventory->getScaleY() * 0.5 - pageLabel->getContentSize().height * 2));
+    pageLabel->setPosition(mainInventory->getPosition() - Vec2(pageLabel->getContentSize().width, mainInventory->getContentSize().height * mainInventory->getScaleY() * 0.5 + pageLabel->getContentSize().height / 4));
     inventoryBorder->addChild(pageLabel, 50);
 
     prevInvenButton = Sprite::create("res/left-arr-ui.png");
     prevInvenButton->setScale(2);
-    prevInvenButton->setPosition(pageLabel->getPosition() + Vec2(-(prevInvenButton->getContentSize().width * 5 + pageLabel->getContentSize().width / 2), -prevInvenButton->getContentSize().height * prevInvenButton->getScaleY() / 4 + 0.2 * Director::getInstance()->getContentScaleFactor()));
+    prevInvenButton->setPosition(pageLabel->getPosition() + Vec2(-(prevInvenButton->getContentSize().width * 5 + pageLabel->getContentSize().width / 2), -prevInvenButton->getContentSize().height * prevInvenButton->getScaleY() / 8 + 0.2 * Director::getInstance()->getContentScaleFactor()));
     inventoryBorder->addChild(prevInvenButton, 25);
 
     nextInvenButton = Sprite::create("res/right-arr-ui.png");
     nextInvenButton->setScale(2);
-    nextInvenButton->setPosition(pageLabel->getPosition() + Vec2(nextInvenButton->getContentSize().width * 5 + pageLabel->getContentSize().width / 2, -nextInvenButton->getContentSize().height * prevInvenButton->getScaleY() / 4 + 0.2 * Director::getInstance()->getContentScaleFactor()));
+    nextInvenButton->setPosition(pageLabel->getPosition() + Vec2(nextInvenButton->getContentSize().width * 5 + pageLabel->getContentSize().width / 2, -nextInvenButton->getContentSize().height * prevInvenButton->getScaleY() / 8 + 0.2 * Director::getInstance()->getContentScaleFactor()));
     inventoryBorder->addChild(nextInvenButton, 25);
 
     int count = 0;
