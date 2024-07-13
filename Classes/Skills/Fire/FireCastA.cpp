@@ -219,8 +219,8 @@ void FireCastA::update(float dt) {
         if (!skillEffectiveIndicate->isVisible()) {
             skillEffectiveIndicate->setVisible(true);
         }
-        //int timeEffectToInt = std::floor(activeTime);
-        //timeEffectLabel->setString(std::to_string(timeEffectToInt));
+        int timeEffectToInt = std::floor(activeTime);
+        timeEffectLabel->setString(std::to_string(timeEffectToInt));
         activeTime -= dt;
         // Ly scene chnh t Director  kim tra c enemy no trong phm vi skill ko
         Scene* currentScene = Director::getInstance()->getRunningScene();
@@ -294,7 +294,7 @@ void FireCastA::update(float dt) {
 
         //Deactive Skill nu nh ht hiu lc 
         if (activeTime < 0) {
-            //skillEffectiveIndicate->setVisible(false);
+            skillEffectiveIndicate->setVisible(false);
             isActive = false;
             activeTime = 15;
             unschedule(CC_SCHEDULE_SELECTOR(FireCastA::update));

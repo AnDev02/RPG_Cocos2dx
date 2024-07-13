@@ -70,13 +70,13 @@ bool Player::init() {
     if (basePlayer.HP > 0)
         HP = basePlayer.HP;
     else
-        HP = 1000;
+        HP = 570;
     //MP
 
     if(basePlayer.MP > 0) 
         MP = basePlayer.MP;
     else 
-        MP = 10000;
+        MP = 340;
     //HP regen
 
     if(basePlayer.HP_regen > 0)
@@ -939,7 +939,7 @@ void Player::gainExp(float amountExp) {
             if (currentExp < expRequiredToLevelUp)break;
         }
     }
-    //InGameUI::getInstance(this)->expBar->updateExpBar(currentExp, expRequiredToLevelUp);
+    InGameUI::getInstance(this)->expBar->updateExpBar(currentExp, expRequiredToLevelUp);
 }
 
 //Level Manager
@@ -952,6 +952,30 @@ void Player::levelUp() {
         //Gain Exp Required To Level Up
         setExpRequiredToLevelUp();
         //InGameUI::getInstance(this)->levelUpPopup->show(this->level);
+
+        //
+        if (this->getChildByName("LevelUpPopup")) {
+            if(this->getChildByName("LevelUpPopup")->getNumberOfRunningActions() > 0)this->getChildByName("LevelUpPopup")->stopAllActions();
+            this->removeChildByName("LevelUpPopup");
+        }
+        auto nodeLevelUp = Node::create();
+        nodeLevelUp ->setPosition(Vec2(0, 50));
+        nodeLevelUp->setScale(0.5);
+        nodeLevelUp->setName("LevelUpPopup");
+        auto levelUpSprite = Sprite::create("res/level-up-popup.png");
+        levelUpSprite->setScale(0.12 * Director::getInstance()->getContentScaleFactor());
+        auto levelUpMsg = Label::createWithTTF("Well done on reaching a new level!" + std::to_string(level), "fonts/Diablo Light.ttf", 10);
+        levelUpMsg->setTextColor(Color4B::GREEN);
+        levelUpMsg->setPosition(Vec2(0, -levelUpSprite->getContentSize().height * levelUpSprite->getScaleY() + 12));
+        auto levelUpLabel = Label::createWithTTF("LV " + std::to_string(level), "fonts/Diablo Light.ttf", 16);
+        nodeLevelUp->addChild(levelUpSprite);
+        nodeLevelUp->addChild(levelUpMsg);
+        nodeLevelUp->addChild(levelUpLabel);
+        levelUpLabel->setString("" + std::to_string(level));
+        this->addChild(nodeLevelUp, 10);
+
+        auto sqe = Sequence::create(FadeIn::create(0.8), DelayTime::create(3.5), FadeOut::create(1.5), DelayTime::create(0.5), RemoveSelf::create(), nullptr);
+        nodeLevelUp->runAction(sqe);
     }
 }
 void Player::regenStats(float dt) {
