@@ -942,6 +942,24 @@ void Player::gainExp(float amountExp) {
     InGameUI::getInstance(this)->expBar->updateExpBar(currentExp, expRequiredToLevelUp);
 }
 
+void Player::gainExpFromData(float amountExp) {
+    currentExp += amountExp;
+    expToConsume += amountExp;
+
+    if (currentExp >= expRequiredToLevelUp) {
+        //So snh expRemain vi cc expRequired ca cc level sau, 
+        // nu cn ln hn th tr n bao gi nh hn th thi
+        // v s ln phi tr s tng ng vi s ln ln level dm
+        while (true) {
+            expRemain = currentExp - expRequiredToLevelUp;
+            this->levelUpFromData();
+            currentExp = expRemain;
+            if (currentExp < expRequiredToLevelUp)break;
+        }
+    }
+    InGameUI::getInstance(this)->expBar->updateExpBar(currentExp, expRequiredToLevelUp);
+}
+
 //Level Manager
 void Player::levelUp() {
     if (level < maxLevel) {
@@ -976,6 +994,18 @@ void Player::levelUp() {
 
         auto sqe = Sequence::create(FadeIn::create(0.8), DelayTime::create(3.5), FadeOut::create(1.5), DelayTime::create(0.5), RemoveSelf::create(), nullptr);
         nodeLevelUp->runAction(sqe);
+    }
+}
+
+void Player::levelUpFromData() {
+    if (level < maxLevel) {
+        level++;
+        //Gain Stats and Recover Full HP and MP
+        gainAllStats();
+        backToFullHealthAndMana();
+        //Gain Exp Required To Level Up
+        setExpRequiredToLevelUp();
+        //InGameUI::getInstance(this)->levelUpPopup->show(this->level);
     }
 }
 void Player::regenStats(float dt) {
