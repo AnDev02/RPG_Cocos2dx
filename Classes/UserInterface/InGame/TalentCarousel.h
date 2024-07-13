@@ -24,8 +24,8 @@ public:
     void resetUI();
     std::vector<SkillTree*> listOfTrees;
     EventListenerTouchOneByOne* touchListener = nullptr;
+    Sprite* talentBorder = nullptr;
 private: 
-    Sprite* talentBorder;
     Sprite* prevButton;
     Sprite* nextButton;
     Sprite* buttonClose;

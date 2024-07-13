@@ -21,7 +21,7 @@ bool QuestBtn::init() {
 
     btnSprite = Sprite::create("res/action_bar_btn3.png");
     btnSprite->setScale(2);
-    Sprite* iconSprite = Sprite::create("res/chest_icon.png");
+    Sprite* iconSprite = Sprite::create("res/quest-icon.png");
     iconSprite->setScale(0.25 * Director::getInstance()->getContentScaleFactor());
     iconSprite->setPosition(Vec2(btnSprite->getContentSize().width / 2, btnSprite->getContentSize().height / 2));
     this->addChild(btnSprite);

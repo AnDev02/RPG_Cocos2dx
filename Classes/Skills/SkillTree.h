@@ -34,8 +34,8 @@ public:
         return result;
     }
     void showAlert(std::string alert, bool isSuccess);
-
 	~SkillTree();
+    float treeWidth = 0;
 	float treeHeight = 0;
     Sprite* skillDetail;
     EventListenerTouchOneByOne* _touchListenerSlot1;

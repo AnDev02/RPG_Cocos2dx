@@ -34,7 +34,7 @@ bool Inventory::init(Player* _player)
     Size visibleSize = Director::getInstance()->getVisibleSize();
     inventoryBorder = Node::create();
     this->addChild(inventoryBorder);
-    auto layer = LayerColor::create(Color4B(0, 0, 0, 185));
+    auto layer = LayerColor::create(Color4B(34, 28, 25, 255));
     layer->setContentSize(visibleSize);
     layer->setPosition(Vec2(-visibleSize.width / 2, -visibleSize.height / 2));
     inventoryBorder->addChild(layer, 1);
@@ -1047,17 +1047,19 @@ bool Inventory::init(Player* _player)
     #pragma endregion
 
 
-    pageLabel = Label::createWithTTF("1/3", "fonts/Diablo Light.ttf", 13);
+    pageLabel = Label::createWithTTF("1/3", "fonts/Diablo Light.ttf", 18);
     pageLabel->setTextColor(Color4B::WHITE);
-    pageLabel->setPosition(mainInventory->getPosition() - Vec2(pageLabel->getContentSize().width, mainInventory->getContentSize().height * mainInventory->getScaleY() * 0.5 - pageLabel->getContentSize().height * 0.6));
+    pageLabel->setPosition(mainInventory->getPosition() - Vec2(pageLabel->getContentSize().width, mainInventory->getContentSize().height * mainInventory->getScaleY() * 0.5 - pageLabel->getContentSize().height));
     inventoryBorder->addChild(pageLabel, 50);
 
     prevInvenButton = Sprite::create("res/left-arr-ui.png");
-    prevInvenButton->setPosition(pageLabel->getPosition() + Vec2(-(prevInvenButton->getContentSize().width * 5 + pageLabel->getContentSize().width / 2), 0));
+    prevInvenButton->setScale(2);
+    prevInvenButton->setPosition(pageLabel->getPosition() + Vec2(-(prevInvenButton->getContentSize().width * 5 + pageLabel->getContentSize().width / 2), -prevInvenButton->getContentSize().height * prevInvenButton->getScaleY() / 2 + 1 * Director::getInstance()->getContentScaleFactor()));
     inventoryBorder->addChild(prevInvenButton, 25);
 
     nextInvenButton = Sprite::create("res/right-arr-ui.png");
-    nextInvenButton->setPosition(pageLabel->getPosition() + Vec2(nextInvenButton->getContentSize().width * 5 + pageLabel->getContentSize().width / 2, 0));
+    nextInvenButton->setScale(2);
+    nextInvenButton->setPosition(pageLabel->getPosition() + Vec2(nextInvenButton->getContentSize().width * 5 + pageLabel->getContentSize().width / 2, -nextInvenButton->getContentSize().height * prevInvenButton->getScaleY() / 2 + 1 * Director::getInstance()->getContentScaleFactor()));
     inventoryBorder->addChild(nextInvenButton, 25);
 
     int count = 0;

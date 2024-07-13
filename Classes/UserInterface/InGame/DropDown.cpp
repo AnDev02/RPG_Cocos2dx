@@ -20,6 +20,7 @@ bool Dropdown::init(InGameUI* inGameUI) {
     }
     this->inGameUI = inGameUI;
     bg = Sprite::create("res/dropdown_btn.png");
+    bg->setOpacity(180);
     bg->setScale(3, 3);
     iconSprite = Sprite::create("res/left-arr-ui2.png");
     iconSprite->setScale(1.9);
@@ -60,7 +61,7 @@ bool Dropdown::onTouchBegan(Touch* touch, Event* event) {
                     CallFunc::create([this]() {
                     inGameUI->inventoryButton->setVisible(true);
                     }), 
-                    DelayTime::create(0.4), 
+                    DelayTime::create(0.208), 
                     CallFunc::create([this]() {
                     inGameUI->talentButton->setVisible(true);
                     }), nullptr));
