@@ -7,7 +7,7 @@ bool BabySpider::init() {
 
      //STATS
         //HP
-     HP = 477;
+     HP = 965.7f;
      currentHP = HP;
      //MP
      MP = 0;
@@ -18,7 +18,7 @@ bool BabySpider::init() {
      //Armor
      baseArmor = 10;
      //AD
-     baseDamage = 20;
+     baseDamage = 40;
      //MS
      MS = Director::getInstance()->getContentScaleFactor() * 400;
      //AR
@@ -26,7 +26,7 @@ bool BabySpider::init() {
      //AS
      attackSpeed = 1.2;
      //Exp gain
-     expGain = 60.45;
+     expGain = 120.45;
 
      //STATS BONUS
      HP_bonus = 45.7;
