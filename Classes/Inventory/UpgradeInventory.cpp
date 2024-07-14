@@ -7,6 +7,7 @@
 #include "Equipment/BaseEquipment.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/InventoryNode.h"
+#include "Game/Game.h"
 UpgradeInventory* UpgradeInventory::createUpgradeInventory(Player* player)
 {
     auto inventory = new (std::nothrow) UpgradeInventory();
@@ -78,6 +79,8 @@ bool UpgradeInventory::init(Player* player)
     touchListener->onTouchEnded = CC_CALLBACK_2(UpgradeInventory::onTouchEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
+    Scene* currentScene = Director::getInstance()->getRunningScene();
+    game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
     return true;
 }
 void UpgradeInventory::adjustNodesPosition() {
@@ -153,180 +156,191 @@ void UpgradeInventory::onTouchMoved(Touch* touch, Event* event) {
     }
 }
 void UpgradeInventory::ShowEquipmentDetails(std::string eIconPath, std::string eName, int eCurrentLevel) {
-    if (currentEquipmentId != -1) {
-        // equipment icon
-        if (upgradeEIcon == nullptr) {
-            upgradeEIcon = InventoryNode::createInventoryNode(15 * Director::getInstance()->getContentScaleFactor());
-            upgradeEIcon->setPosition(0, 0);
-            this->addChild(upgradeEIcon, 20);
-        }
-        upgradeEIcon->removeBaseEquipment();
-        upgradeEIcon->setBaseEquipment(eName, eCurrentLevel);
-        upgradeEIcon->setQuantity(1);
+    if (currentEquipmentId != -1) 
+    {
+    // equipment icon
+    if (upgradeEIcon == nullptr) {
+        upgradeEIcon = InventoryNode::createInventoryNode(15 * Director::getInstance()->getContentScaleFactor());
+        upgradeEIcon->setPosition(0, 0);
+        this->addChild(upgradeEIcon, 20);
+    }
+    upgradeEIcon->removeBaseEquipment();
+    upgradeEIcon->setBaseEquipment(eName, eCurrentLevel);
+    upgradeEIcon->setQuantity(1);
 
-        auto equipmentTemp = upgradeEIcon->getBaseEquipment();
+    auto equipmentTemp = upgradeEIcon->getBaseEquipment();
 
-        // equipment name + level
-        if (eNameLabel == nullptr) {
-            eNameLabel = Label::createWithTTF("", "fonts/Diablo Light.ttf", 20);
-            eNameLabel->setScale(0.3);
-            this->addChild(eNameLabel, 20);
-        }
-        eNameLabel->setString(eName + " || Lv." + std::to_string(eCurrentLevel));
-        eNameLabel->setPosition(Vec2(upgradeEIcon->getPosition().x + eNameLabel->getContentSize().width * eNameLabel->getScaleX() / 2 + upgradeEIcon->getBoundingNode().size.width * 1.5, upgradeEIcon->getBoundingNode().size.height / 2));
-        if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::ENHANCED) {
-            eNameLabel->setTextColor(Color4B::GREEN);
-        }
-        else if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::RARE) {
-            eNameLabel->setTextColor(Color4B::MAGENTA);
-        }
-        else if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::LEGENDARY) {
-            eNameLabel->setTextColor(Color4B::RED);
-        }
-        else {
-            eNameLabel->setTextColor(Color4B::WHITE);
-        }
+    // equipment name + level
+    if (eNameLabel == nullptr) {
+        eNameLabel = Label::createWithTTF("", "fonts/Diablo Light.ttf", 20);
+        eNameLabel->setScale(0.3);
+        this->addChild(eNameLabel, 20);
+    }
+    eNameLabel->setString(eName + " || Lv." + std::to_string(eCurrentLevel));
+    eNameLabel->setPosition(Vec2(upgradeEIcon->getPosition().x + eNameLabel->getContentSize().width * eNameLabel->getScaleX() / 2 + upgradeEIcon->getBoundingNode().size.width * 1.5, upgradeEIcon->getBoundingNode().size.height / 2));
+    if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::ENHANCED) {
+        eNameLabel->setTextColor(Color4B::GREEN);
+    }
+    else if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::RARE) {
+        eNameLabel->setTextColor(Color4B::MAGENTA);
+    }
+    else if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::LEGENDARY) {
+        eNameLabel->setTextColor(Color4B::RED);
+    }
+    else {
+        eNameLabel->setTextColor(Color4B::WHITE);
+    }
 
-        if(eStatsLabel == nullptr) {
-            eStatsLabel = Label::createWithTTF("", "fonts/Diablo Light.ttf", 20);
-            eStatsLabel->setScale(0.3);
-            this->addChild(eStatsLabel, 20);
-        }
-        int count = 0;
-        bool isNewLine = (count == 2 || count == 5);
-        std::string equipmentAD = equipmentTemp->getDamage() > 0 ? "AD: " + std::to_string(static_cast<int>(equipmentTemp->getDamage())) + "  " : "";
-        count++;
-        isNewLine = (count == 2 || count == 5);
-        std::string equipmentAP = equipmentTemp->getSkillDamage() > 0 ? "AP: " + std::to_string(static_cast<int>(equipmentTemp->getSkillDamage())) : isNewLine == true ? "\n" : "";
-        count++;
-        isNewLine = (count == 2 || count == 5);
-        std::string equipmentArm = equipmentTemp->getArmor() > 0 ? "Armor: " + std::to_string(static_cast<int>(equipmentTemp->getArmor())) : isNewLine == true ? "\n" : "  ";
-        count++;
-        isNewLine = (count == 2 || count == 5);
-        std::string equipmentCDR = equipmentTemp->getCDR() > 0 ? "\nCDR (Cooldown): " + std::to_string(static_cast<int>(equipmentTemp->getArmor())) + "  " : "";
-        count++;
-        isNewLine = (count == 2 || count == 5);
-        std::string equipmentHP = equipmentTemp->getHP() > 0 ? "HP: " + std::to_string(static_cast<int>(equipmentTemp->getArmor())) : isNewLine == true ? "\n" : "  ";
-        count++;
-        isNewLine = (count == 2 || count == 5);
-        std::string equipmentMP = equipmentTemp->getMP() > 0 ? isNewLine == true ? " \nMP: " : "\n" + std::to_string(static_cast<int>(equipmentTemp->getMP())) : "  ";
-        count++;
-        isNewLine = (count == 2 || count == 5);
-        std::string equipmentMS = equipmentTemp->getMovementSpeed() > 0 ? "MS: " + std::to_string(static_cast<int>(equipmentTemp->getMovementSpeed())) : isNewLine == true ? "\n" : "  ";
+    if(eStatsLabel == nullptr) {
+        eStatsLabel = Label::createWithTTF("", "fonts/Diablo Light.ttf", 20);
+        eStatsLabel->setScale(0.3);
+        this->addChild(eStatsLabel, 20);
+    }
+    int count = 0;
+    bool isNewLine = (count == 2 || count == 5);
+    std::string equipmentAD = equipmentTemp->getDamage() > 0 ? "AD: " + std::to_string(static_cast<int>(equipmentTemp->getDamage())) + "  " : "";
+    count++;
+    isNewLine = (count == 2 || count == 5);
+    std::string equipmentAP = equipmentTemp->getSkillDamage() > 0 ? "AP: " + std::to_string(static_cast<int>(equipmentTemp->getSkillDamage())) : isNewLine == true ? "\n" : "";
+    count++;
+    isNewLine = (count == 2 || count == 5);
+    std::string equipmentArm = equipmentTemp->getArmor() > 0 ? "Armor: " + std::to_string(static_cast<int>(equipmentTemp->getArmor())) : isNewLine == true ? "\n" : "  ";
+    count++;
+    isNewLine = (count == 2 || count == 5);
+    std::string equipmentCDR = equipmentTemp->getCDR() > 0 ? "\nCDR (Cooldown): " + std::to_string(static_cast<int>(equipmentTemp->getArmor())) + "  " : "";
+    count++;
+    isNewLine = (count == 2 || count == 5);
+    std::string equipmentHP = equipmentTemp->getHP() > 0 ? "HP: " + std::to_string(static_cast<int>(equipmentTemp->getArmor())) : isNewLine == true ? "\n" : "  ";
+    count++;
+    isNewLine = (count == 2 || count == 5);
+    std::string equipmentMP = equipmentTemp->getMP() > 0 ? isNewLine == true ? " \nMP: " : "\n" + std::to_string(static_cast<int>(equipmentTemp->getMP())) : "  ";
+    count++;
+    isNewLine = (count == 2 || count == 5);
+    std::string equipmentMS = equipmentTemp->getMovementSpeed() > 0 ? "MS: " + std::to_string(static_cast<int>(equipmentTemp->getMovementSpeed())) : isNewLine == true ? "\n" : "  ";
 
-        std::string str = equipmentAD + equipmentAP + equipmentArm + equipmentCDR + equipmentHP + equipmentMP + equipmentMS;
-        eStatsLabel->setString(str);
-        eStatsLabel->setPosition(Vec2(eNameLabel->getPosition().x, eNameLabel->getPosition().y - 18 * Director::getInstance()->getContentScaleFactor()));
-
-
+    std::string str = equipmentAD + equipmentAP + equipmentArm + equipmentCDR + equipmentHP + equipmentMP + equipmentMS;
+    eStatsLabel->setString(str);
+    eStatsLabel->setPosition(Vec2(eNameLabel->getPosition().x, eNameLabel->getPosition().y - 18 * Director::getInstance()->getContentScaleFactor()));
 
 
-        if (upgradeButton == nullptr) {
-            upgradeButton = Sprite::create("res/buttonUpgradeE.png"); // , "res/buttonUpgradeE_push.png"
-            auto text = Label::createWithTTF("Upgrade", "fonts/Diablo Light.ttf", 18);
-            text->setPosition(upgradeButton->getContentSize() / 2);
-            text->setScale(0.29);
-            upgradeButton->addChild(text);
-            upgradeButton->setPosition(Vec2(eNameLabel->getPositionX(), -bgSize.height / 2 + upgradeButton->getContentSize().height + 2 * Director::getInstance()->getContentScaleFactor()));
-            this->addChild(upgradeButton, 20);
-        }
 
-        BaseEquipment::LevelUpMaterials materialsToUpgrade = equipmentTemp->materialsToUpgrade[eCurrentLevel - 1];
-        eNameLabel->setString(std::get<0>(materialsToUpgrade.materialsItem[0]));
-        eStatsLabel->setString(std::to_string(eCurrentLevel));
-        if (itemSlot1 == nullptr) {
-            itemSlot1 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
-            itemSlot1->setPosition(Vec2(eNameLabel->getPosition().x - itemSlot1->getBoundingNode().size.width * 1.5 - itemSlot1->getBoundingNode().size.width * 0.25, upgradeButton->getPosition().y + upgradeButton->getContentSize().height / 2));
-            materialNodes.push_back(itemSlot1);
-            this->addChild(itemSlot1);
-        }
-        if (itemSlot2 == nullptr) {
-            itemSlot2 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
-            itemSlot2->setPosition(itemSlot1->getPosition() + Vec2(itemSlot1->getBoundingNode().size.width + 1 * Director::getInstance()->getContentScaleFactor(), 0));
-            materialNodes.push_back(itemSlot2);
-            this->addChild(itemSlot2);
-        }
-        if (itemSlot3 == nullptr) {
-            itemSlot3 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
-            itemSlot3->setPosition(itemSlot2->getPosition() + Vec2(itemSlot2->getBoundingNode().size.width + 1 * Director::getInstance()->getContentScaleFactor(), 0));
-            materialNodes.push_back(itemSlot3);
-            this->addChild(itemSlot3);
-        }
 
-        for (auto node : materialsToUpgrade.materialsItem) {
-            for (auto item : materialNodes)
-            {
-                if (item->getStatus() == "free") 
+    if (upgradeButton == nullptr) {
+        upgradeButton = Sprite::create("res/buttonUpgradeE.png"); // , "res/buttonUpgradeE_push.png"
+        auto text = Label::createWithTTF("Upgrade", "fonts/Diablo Light.ttf", 18);
+        text->setPosition(upgradeButton->getContentSize() / 2);
+        text->setScale(0.29);
+        upgradeButton->addChild(text);
+        upgradeButton->setPosition(Vec2(eNameLabel->getPositionX(), -bgSize.height / 2 + upgradeButton->getContentSize().height + 2 * Director::getInstance()->getContentScaleFactor()));
+        this->addChild(upgradeButton, 20);
+    }
+
+    BaseEquipment::LevelUpMaterials materialsToUpgrade = equipmentTemp->materialsToUpgrade[eCurrentLevel - 1];
+
+    if (!materialNodes.empty()) {
+        std::vector<InventoryNode*> deleteNodes;
+        for (auto i : materialNodes) {
+            deleteNodes.push_back(i);
+        }
+        materialNodes.clear();
+        for (auto i : deleteNodes) {
+            if (i->getParent()) i->removeFromParentAndCleanup(true);
+        }
+    }
+
+    itemSlot1 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
+    itemSlot1->setPosition(Vec2(bgSize.width * 0.25 - itemSlot1->getBoundingNode().size.width * 1.25, upgradeButton->getPosition().y + upgradeButton->getContentSize().height / 2));
+    materialNodes.push_back(itemSlot1);
+    this->addChild(itemSlot1);
+        
+    itemSlot2 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
+    itemSlot2->setPosition(itemSlot1->getPosition() + Vec2(itemSlot1->getBoundingNode().size.width + 1 * Director::getInstance()->getContentScaleFactor(), 0));
+    materialNodes.push_back(itemSlot2);
+    this->addChild(itemSlot2);
+
+    itemSlot3 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
+    itemSlot3->setPosition(itemSlot2->getPosition() + Vec2(itemSlot2->getBoundingNode().size.width + 1 * Director::getInstance()->getContentScaleFactor(), 0));
+    materialNodes.push_back(itemSlot3);
+    this->addChild(itemSlot3);
+    for (int i = 0; i < materialsToUpgrade.materialsItem.size(); i++) {
+        materialNodes[i]->setMaterialsToUpgrade(std::get<0>(materialsToUpgrade.materialsItem[i]), std::get<1>(materialsToUpgrade.materialsItem[i]));
+        materialNodes[i]->setBaseItem(std::get<0>(materialsToUpgrade.materialsItem[i]));
+        for (auto item1 : game->getPlayer()->getInventory()->getAllItem()) {
+                auto item = game->getPlayer()->getInventory()->getItem(item1);
+                /*if (j > materialsToUpgrade.materialsItem.size() - 1) break;
+                if (std::get<0>(itemsAndQuantity[j]) == std::get<0>(materialsToUpgrade.materialsItem[i]))
                 {
-                    item->removeMaterialCondition();
-                    item->removeBaseItem();
-                    item->setMaterialsToUpgrade(std::get<0>(node), std::get<1>(node));
-                    item->setBaseItem(std::get<0>(node));
-                    item->setQuantity(0);
-                    break;
+                    NotificationManager::getInstance()->showMessageNotification(std::to_string(std::get<1>(itemsAndQuantity[j])), Vec2::ZERO, Color3B::RED, 20);
+                    materialNodes[i]->setQuantity(std::get<1>(materialsToUpgrade.materialsItem[i]));
+                }*/
+                for (auto node : materialNodes) {
+                    if (std::get<0>(item) == node->getBaseItem()->getItemName()) {
+                        node->setQuantity(std::get<1>(item));
+                    }
                 }
-                else continue;
             }
         }
-       /* if (itemSlot1 && std::get<0>(materialsToUpgrade.materialsItem[0]).length() >= 1) {
-            itemSlot1->removeMaterialCondition();
-            itemSlot1->removeBaseItem();
-            itemSlot1->setMaterialsToUpgrade(std::get<0>(materialsToUpgrade.materialsItem[0]), std::get<1>(materialsToUpgrade.materialsItem[0]));
-            itemSlot1->setBaseItem(std::get<0>(materialsToUpgrade.materialsItem[0]));
-            itemSlot1->setQuantity(0);
-        }
-        if (itemSlot2 && std::get<0>(materialsToUpgrade.materialsItem[1]).length() >= 1) {
-            itemSlot2->removeMaterialCondition();
-            itemSlot2->removeBaseItem();
-            itemSlot2->setMaterialsToUpgrade(std::get<0>(materialsToUpgrade.materialsItem[1]), std::get<1>(materialsToUpgrade.materialsItem[1]));
-            itemSlot2->setBaseItem(std::get<0>(materialsToUpgrade.materialsItem[1]));
-            itemSlot2->setQuantity(0);
-        }
-        if (itemSlot3 && std::get<0>(materialsToUpgrade.materialsItem[2]).length() >= 1 && std::get<1>(materialsToUpgrade.materialsItem[2]) > 0) {
-            itemSlot3->removeMaterialCondition();
-            itemSlot3->removeBaseItem();
-            itemSlot3->setMaterialsToUpgrade(std::get<0>(materialsToUpgrade.materialsItem[2]), std::get<1>(materialsToUpgrade.materialsItem[2]));
-            itemSlot3->setBaseItem(std::get<0>(materialsToUpgrade.materialsItem[2]));
-            itemSlot3->setQuantity(0);
-        }*/
-        //if (!materialsToUpgrade.materialsItem.empty())
-        //int count = 0;
-        //for (auto item : materialsToUpgrade.materialsItem) {
-        //    if (count > 2) break;
-        //    std::string eitemName = std::get<0>(item);
-        //    int equantity = std::get<1>(item);
-        // /*   for (auto node : materialNodes) {
-        //        if (node->getStatus() == "free") {
-        //            node->setBaseItem(eitemName);
-        //            node->setQuantity(equantity);
-        //            break;
-        //        }
-        //    }*/
-        //    switch (count)
-        //    {
-        //        case 0:
-        //            //itemSlot1->setBaseItem(itemName, quantity);
-        //            itemSlot1->setBaseItem(eitemName);
-        //            itemSlot1->setQuantity(equantity);
-        //            break;
-        //        case 1:
-        //           // itemSlot2->setMaterialsToUpgrade(itemName, quantity);
-        //            itemSlot2->setBaseItem(eitemName);
-        //            itemSlot2->setQuantity(equantity);
-        //            break;
-        //        case 2:
-        //           // itemSlot3->setMaterialsToUpgrade(itemName, quantity);
-        //            itemSlot3->setBaseItem(eitemName);
-        //            itemSlot3->setQuantity(equantity);
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //    count++;
-        //}
-        currentEquipmentId = -1;
+    currentEquipmentId = -1;
     }
+
+    /* if (itemSlot1 && std::get<0>(materialsToUpgrade.materialsItem[0]).length() >= 1) {
+        itemSlot1->removeMaterialCondition();
+        itemSlot1->removeBaseItem();
+        itemSlot1->setMaterialsToUpgrade(std::get<0>(materialsToUpgrade.materialsItem[0]), std::get<1>(materialsToUpgrade.materialsItem[0]));
+        itemSlot1->setBaseItem(std::get<0>(materialsToUpgrade.materialsItem[0]));
+        itemSlot1->setQuantity(0);
+    }
+    if (itemSlot2 && std::get<0>(materialsToUpgrade.materialsItem[1]).length() >= 1) {
+        itemSlot2->removeMaterialCondition();
+        itemSlot2->removeBaseItem();
+        itemSlot2->setMaterialsToUpgrade(std::get<0>(materialsToUpgrade.materialsItem[1]), std::get<1>(materialsToUpgrade.materialsItem[1]));
+        itemSlot2->setBaseItem(std::get<0>(materialsToUpgrade.materialsItem[1]));
+        itemSlot2->setQuantity(0);
+    }
+    if (itemSlot3 && std::get<0>(materialsToUpgrade.materialsItem[2]).length() >= 1 && std::get<1>(materialsToUpgrade.materialsItem[2]) > 0) {
+        itemSlot3->removeMaterialCondition();
+        itemSlot3->removeBaseItem();
+        itemSlot3->setMaterialsToUpgrade(std::get<0>(materialsToUpgrade.materialsItem[2]), std::get<1>(materialsToUpgrade.materialsItem[2]));
+        itemSlot3->setBaseItem(std::get<0>(materialsToUpgrade.materialsItem[2]));
+        itemSlot3->setQuantity(0);
+    }*/
+    //if (!materialsToUpgrade.materialsItem.empty())
+    //int count = 0;
+    //for (auto item : materialsToUpgrade.materialsItem) {
+    //    if (count > 2) break;
+    //    std::string eitemName = std::get<0>(item);
+    //    int equantity = std::get<1>(item);
+    // /*   for (auto node : materialNodes) {
+    //        if (node->getStatus() == "free") {
+    //            node->setBaseItem(eitemName);
+    //            node->setQuantity(equantity);
+    //            break;
+    //        }
+    //    }*/
+    //    switch (count)
+    //    {
+    //        case 0:
+    //            //itemSlot1->setBaseItem(itemName, quantity);
+    //            itemSlot1->setBaseItem(eitemName);
+    //            itemSlot1->setQuantity(equantity);
+    //            break;
+    //        case 1:
+    //           // itemSlot2->setMaterialsToUpgrade(itemName, quantity);
+    //            itemSlot2->setBaseItem(eitemName);
+    //            itemSlot2->setQuantity(equantity);
+    //            break;
+    //        case 2:
+    //           // itemSlot3->setMaterialsToUpgrade(itemName, quantity);
+    //            itemSlot3->setBaseItem(eitemName);
+    //            itemSlot3->setQuantity(equantity);
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //    count++;
+    //}
 }
+
 void UpgradeInventory::onTouchEnded(Touch* touch, Event* event) {
     if (isShow()) 
     {
@@ -597,7 +611,7 @@ void UpgradeInventory::addEquipment(std::string equipmentName, int equipmentLv, 
 }
 
 void UpgradeInventory::addItem(std::string itemName, int quantity) {
-    for (auto node : inventoryNodes) {
+  /*  for (auto node : inventoryNodes) {
         if (node->getStatus() == "busy" && node->getBaseItem()) {
             if (node->getBaseItem()->getItemName() == itemName) {
                 node->setQuantity(node->getQuantity() + quantity);
@@ -611,7 +625,8 @@ void UpgradeInventory::addItem(std::string itemName, int quantity) {
             node->setQuantity(quantity);
             return;
         }
-    }
+    }*/
+    itemsAndQuantity.push_back(std::make_tuple(itemName, quantity));
 }
 
 void UpgradeInventory::dropItem(std::string itemName) {
@@ -659,6 +674,7 @@ void UpgradeInventory::removeItem(std::string itemName) {
 }
 
 void UpgradeInventory::showUpgradeInventory() {
+    game->getPlayer()->getInventory()->sort();
     this->setVisible(true);
     isSo = true;
 }

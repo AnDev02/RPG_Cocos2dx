@@ -45,19 +45,19 @@ bool BaseEquipment::init()
 
     if (dynamic_cast<ChippedSword*>(this) == this || dynamic_cast<ChippedArmor*>(this) == this || dynamic_cast<ChippedHelmet*>(this) == this || dynamic_cast<ChippedShoe*>(this) == this || dynamic_cast<ChippedShield*>(this) == this || dynamic_cast<ChippedRing*>(this) == this) {
         LevelUpMaterials level1;
-        level1.materialsItem.push_back(std::make_tuple("cystal", 1));
+        level1.materialsItem.push_back(std::make_tuple("crystal", 1));
         level1.money = 2;
         LevelUpMaterials level2;
-        level2.materialsItem.push_back(std::make_tuple("cystal", 3));
+        level2.materialsItem.push_back(std::make_tuple("crystal", 3));
         level2.money = 3;
         LevelUpMaterials level3;
-        level3.materialsItem.push_back(std::make_tuple("cystal", 5));
+        level3.materialsItem.push_back(std::make_tuple("crystal", 5));
         level3.money = 5;
         LevelUpMaterials level4;
-        level4.materialsItem.push_back(std::make_tuple("cystal", 6));
+        level4.materialsItem.push_back(std::make_tuple("crystal", 6));
         level4.money = 6;
         LevelUpMaterials level5;
-        level5.materialsItem.push_back(std::make_tuple("cystal", 8));
+        level5.materialsItem.push_back(std::make_tuple("crystal", 8));
         level5.money = 8;
         materialsToUpgrade.push_back(level1);
         materialsToUpgrade.push_back(level2);
@@ -67,23 +67,23 @@ bool BaseEquipment::init()
     }
     else if (dynamic_cast<LongSword*>(this) == this || dynamic_cast<SwordOfKnight*>(this) == this || dynamic_cast<KnightShield*>(this) == this || dynamic_cast<Sneaker*>(this) == this || dynamic_cast<HelmetOfKnight*>(this) == this || dynamic_cast<ArmorOfKnight*>(this) == this) {
         LevelUpMaterials level1;
-        level1.materialsItem.push_back(std::make_tuple("cystal", 2));
+        level1.materialsItem.push_back(std::make_tuple("crystal", 2));
         level1.materialsItem.push_back(std::make_tuple("emerald", 1));
         level1.money = 2;
         LevelUpMaterials level2;
-        level2.materialsItem.push_back(std::make_tuple("cystal", 3));
+        level2.materialsItem.push_back(std::make_tuple("crystal", 3));
         level2.materialsItem.push_back(std::make_tuple("emerald", 2));
         level2.money = 3;
         LevelUpMaterials level3;
-        level3.materialsItem.push_back(std::make_tuple("cystal", 5));
+        level3.materialsItem.push_back(std::make_tuple("crystal", 5));
         level3.materialsItem.push_back(std::make_tuple("emerald", 2));
         level3.money = 5;
         LevelUpMaterials level4;
-        level4.materialsItem.push_back(std::make_tuple("cystal", 6));
+        level4.materialsItem.push_back(std::make_tuple("crystal", 6));
         level4.materialsItem.push_back(std::make_tuple("emerald", 3));
         level4.money = 6;
         LevelUpMaterials level5;
-        level5.materialsItem.push_back(std::make_tuple("cystal", 8));
+        level5.materialsItem.push_back(std::make_tuple("crystal", 8));
         level5.materialsItem.push_back(std::make_tuple("emerald", 5));
         level5.money = 8;
         materialsToUpgrade.push_back(level1);
@@ -152,7 +152,7 @@ bool BaseEquipment::init()
         materialsToUpgrade.push_back(level5);
     }
     else {
-         LevelUpMaterials level1;
+        LevelUpMaterials level1;
         level1.materialsItem.push_back(std::make_tuple("crystal", 1));
         level1.money = 1;
         LevelUpMaterials level2;

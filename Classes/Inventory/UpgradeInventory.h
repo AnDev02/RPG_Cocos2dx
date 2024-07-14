@@ -65,10 +65,12 @@ public:
     Sprite* upgradeButton = nullptr;
     Label* durinStoreLabel = nullptr;
     std::vector<InventoryNode*> materialNodes;
+    std::vector<std::tuple<std::string, int>> itemsAndQuantity;
     Sprite* popupBack = nullptr;
     bool isUpgradeSuccess = true;
     Label* popupFront = nullptr;
     int currentEquipmentId = 0;
+    Game* game = nullptr;
     void onPageChange();
     void nextInventoryPage();
     void prevInventoryPage();
