@@ -284,6 +284,8 @@ protected:
     Sprite* backGroundBar;
     Sprite* characterCurrentSprite;
     Label* monsterName;
+    Label* levelLabel;
+    Sprite* levelSprite;
     int direction;
     //std::vector<Skill*> skills;
 };

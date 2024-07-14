@@ -28,16 +28,16 @@ bool Skeleton::init() {
      expGain = 60.45;
 
      //STATS BONUS
-     HP_bonus = 45.7;
-     MP_bonus = 0;
-     HP_regen_bonus = 0;
-     MP_regen_bonus = 0;
-     Armor_bonus = 0.87;
-     AD_bonus = 2.8;
-     MS_bonus = 0;
-     AR_bonus = 0;
-     AS_bonus = 0;
-     expGain_bonus = 5.64;
+     HP_bonus = 1.1;
+     MP_bonus = 1;
+     HP_regen_bonus = 1;
+     MP_regen_bonus = 1;
+     Armor_bonus = 1.2;
+     AD_bonus = 1.2;
+     MS_bonus = 1;
+     AR_bonus = 1;
+     AS_bonus = 1;
+     expGain_bonus = 1.5;
 
      setAttackSpeed(attackSpeed);
      //Detect Player Range of Boss
@@ -56,7 +56,7 @@ bool Skeleton::init() {
      backGroundBar = Sprite::create("res/background_bar.jpg");
      backGroundBar->setScale(1 / (scale * 8.0f), 1/(scale*2.0f));
      /*backGroundBar->setContentSize(Size(characterCurrentSprite->getBoundingBox().size.width / scale, 30 / scale));*/
-     backGroundBar->setPosition(Vec2(0, 25));
+     backGroundBar->setPosition(Vec2(0, 30));
      //backGroundBar->setScale(0.2);
      this->addChild(backGroundBar);
 
@@ -66,19 +66,33 @@ bool Skeleton::init() {
      healthBar->setPercent(100); // Gi tr ban u ca mu
      healthBar->setScale(1 / (scale * 8.0f), 1 / (scale * 2.0f));
      /*healthBar->setContentSize(Size(characterCurrentSprite->getBoundingBox().size.width / scale, 30 / scale));*/
-     healthBar->setPosition(Vec2(0, 25));
+     healthBar->setPosition(Vec2(0, 30));
      //healthBar->setScale(0.2);
      this->addChild(healthBar, 2);
 
      //Lable Name
      monsterName = Label::createWithTTF("0", "fonts/Diablo Light.ttf", 7);
      monsterName->setColor(Color3B::GRAY);
-     monsterName->setPosition(Vec2(0, 30));
+     monsterName->setPosition(Vec2(0, 37));
      this->addChild(monsterName);
      monsterName->setString(StringUtils::format("%s", "Skeleton"));
 
+     //Level Sprite
+     levelSprite = Sprite::create("res/ab2_bonus_frame_globe_overlay_effects.png");
+     levelSprite->setScale(0.1);
+     levelSprite->setPosition(Vec2(-17, 30));
+     this->addChild(levelSprite);
+
+     //Level Label
+     levelLabel = Label::createWithTTF("2", "fonts/Diablo Light.ttf", 35);
+     levelLabel->setString("2");
+     levelLabel->setColor(Color3B::GRAY);
+     levelLabel->setPosition(Vec2(levelSprite->getContentSize().width / 2, levelSprite->getContentSize().height / 2));
+     levelSprite->addChild(levelLabel);
+
      registerObserver(QuestManager::getInstance());
 
+     maxLevel = 10;
      //Init physics
      auto physicsBody = PhysicsBody::createBox(Size(characterCurrentSprite->getContentSize().width/3, characterCurrentSprite->getContentSize().height/2), PhysicsMaterial(1.0f, 0.0f, 0.0f));
      physicsBody->setGravityEnable(false);

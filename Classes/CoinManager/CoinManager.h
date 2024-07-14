@@ -1,7 +1,7 @@
 ﻿#ifndef __COIN_MANAGER_H__
 #define __COIN_MANAGER_H__
 #include "cocos2d.h"
-
+#include "UserInterface/InGame/TalentCarousel.h"
 USING_NS_CC;
 
 class CoinManager

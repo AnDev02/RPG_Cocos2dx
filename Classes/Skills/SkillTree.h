@@ -69,7 +69,7 @@ public:
     void setOverlay(LayerColor* overlay) { _overlay = overlay; };
     void setParentNode(TalentCarousel* talentCarousel) { _talentCarousel = talentCarousel; };
     void showUI();
-
+    TalentProgressBar* _progressBar = nullptr;
     void hideUI();
     std::string treeName = "";
 private:
@@ -81,7 +81,7 @@ private:
     std::vector<DrawNode*> treeDrawedNode;
     std::vector<Label*> hideLabels;
     TalentCarousel* _talentCarousel = nullptr;
-    TalentProgressBar* _progressBar = nullptr;
+
     LayerColor* _overlay;
 	Label* skillDescriptionLable;
 	Size visibleSize;

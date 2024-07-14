@@ -29,17 +29,18 @@ bool BabySpider::init() {
      expGain = 120.45;
 
      //STATS BONUS
-     HP_bonus = 45.7;
-     MP_bonus = 0;
-     HP_regen_bonus = 0;
-     MP_regen_bonus = 0;
-     Armor_bonus = 0.87;
-     AD_bonus = 2.8;
-     MS_bonus = 0;
-     AR_bonus = 0;
-     AS_bonus = 0;
-     expGain_bonus = 5.64;
+     HP_bonus = 1.1;
+     MP_bonus = 1;
+     HP_regen_bonus = 1;
+     MP_regen_bonus = 1;
+     Armor_bonus = 1.3;
+     AD_bonus = 1.1;
+     MS_bonus = 1;
+     AR_bonus = 1;
+     AS_bonus = 1;
+     expGain_bonus = 1.7;
 
+     maxLevel = 10;
      setAttackSpeed(attackSpeed);
      //Detect Player Range of Boss
      detectionRadius = 200;
@@ -77,6 +78,19 @@ bool BabySpider::init() {
      monsterName->setPosition(Vec2(0, 35));
      this->addChild(monsterName);
      monsterName->setString(StringUtils::format("%s", "Baby Spider"));
+
+     //Level Sprite
+     levelSprite = Sprite::create("res/ab2_bonus_frame_globe_overlay_effects.png");
+     levelSprite->setScale(0.1);
+     levelSprite->setPosition(Vec2(-17, 30));
+     this->addChild(levelSprite);
+
+     //Level Label
+     levelLabel = Label::createWithTTF("4", "fonts/Diablo Light.ttf", 35);
+     levelLabel->setString("4");
+     levelLabel->setColor(Color3B::GRAY);
+     levelLabel->setPosition(Vec2(levelSprite->getContentSize().width/2, levelSprite->getContentSize().height/2));
+     levelSprite->addChild(levelLabel);
 
      registerObserver(QuestManager::getInstance());
      //Init physics
