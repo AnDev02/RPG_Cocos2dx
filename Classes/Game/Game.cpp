@@ -174,9 +174,9 @@ bool Game::loadMap(int levelMap)
         listOfMonster.clear();
         //listOfBoss.clear();
         listNPC.clear();
-        if (_player->observers.size() > 0) {
+
             _player->observers.clear();
-        }
+
         _player->removeFromParentAndCleanup(true);
         _player = nullptr;
         gameMap->getTiledMap()->removeFromParentAndCleanup(true);
