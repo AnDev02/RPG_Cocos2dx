@@ -359,7 +359,10 @@ bool Game::loadMap(int levelMap)
        // _player->setPosition(Vec2(x, y));
     }
     _player->gainExpFromData(playerSavedData.exp);
+    
     _player->setExpToConsume(playerSavedData.expToConsume);
+    //_player->setExpToConsume(20000);
+    //_player->gainExp(1200);
     _player->listOfCollision = this->listOfCollision;
     _player->listOfHideObject = this->listOfHideObject;
     _player->listOfShowObjectRoom = this->listOfShowObjectRoom;

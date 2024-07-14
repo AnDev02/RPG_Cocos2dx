@@ -119,7 +119,7 @@ void SkillTree::drawTree(Player* player, SkillBase::SkillTalent* node, Vec2 posi
     parentNode->setPosition(position);
     if (!isUnlock)
     {
-        auto scoreToUnlock = Label::createWithTTF("Locked", "fonts/Diablo Light.ttf", 25);
+        auto scoreToUnlock = Label::createWithTTF("", "fonts/Diablo Light.ttf", 25);
         scoreToUnlock->setName(node->skillName + " LevelSkill");
         scoreToUnlock->setPosition(skillSpr->getContentSize().width * 0.2 / 2, skillSpr->getContentSize().height * 0.2 / 2);
         parentNode->addChild(scoreToUnlock, 20);
@@ -1527,6 +1527,7 @@ void SkillTree::showAlert(std::string alert, bool isSuccess)
     else
         NotificationManager::getInstance()->showMessageNotification(alert, Vec2::ZERO, Color3B(251, 67, 53), 17);
 }
+
 SkillTree::~SkillTree()
 {
 }

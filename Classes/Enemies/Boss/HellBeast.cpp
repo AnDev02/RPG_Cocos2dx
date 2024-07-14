@@ -24,7 +24,7 @@ bool HellBeast::init() {
 
     //STATS
         //HP
-    HP = 100;
+    HP = 5600;
     //MP
     MP = 0;
     //HP regen
@@ -45,7 +45,7 @@ bool HellBeast::init() {
     expGain = 770;
 
     //STATS BONUS
-    HP_bonus = 5600;
+    HP_bonus = 0;
     MP_bonus = 0;
     HP_regen_bonus = 0;
     MP_regen_bonus = 0;
