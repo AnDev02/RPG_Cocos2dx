@@ -10,7 +10,8 @@ bool FireSear::init() {
     skillTalent = new SkillTalent;
     skillTalent->skillName = "FireSear";
     skillTalent->iconPath = "res/attack_button.png";
-    skillTalent->unlockPoint = 10;
+    skillTalent->unlockPoint = 0;
+    skillTalent->upgradePoint = 0;
     skillTalent->description = "";
     skillTalent->skillType = "AOE & Target";
     skillTalent->isLock = true;

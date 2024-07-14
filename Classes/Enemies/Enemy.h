@@ -66,6 +66,14 @@ public:
         notifyObservers();
     }
 
+    void setLevel(int newLevel) {
+        this->level = newLevel;
+        for (int i = 0; i < level; i++) {
+            this->levelUp();
+        }
+        this->levelLabel->setString(std::to_string(newLevel));
+    }
+
     bool isDead = false;
     CREATE_FUNC(Enemy);
 

@@ -6,6 +6,7 @@ USING_NS_CC;
 #include "Skills/SkillTree.h"
 class Player;
 class TalentProgressBar;
+class CoinManager;
 class TalentCarousel : public cocos2d::Node
 {
 public:
@@ -15,11 +16,11 @@ public:
     bool onTouchMoved(Touch* touch, Event* event);
     bool onTouchEnded(Touch* touch, Event* event);
     void showTalentCarousel();
-    bool yesOrNo();
-    void onYesClicked();
-    void onNoClicked();
-    void onCloseClicked();
-    bool onTouchBeganToResetSkills(Touch* touch, Event* event);
+    //bool yesOrNo(CoinManager* cointManager);
+    //void onYesClicked();
+    //void onNoClicked();
+    //void onCloseClicked();
+    //bool onTouchBeganToResetSkills(Touch* touch, Event* event);
     Player* _player = nullptr;
     SkillTree* skillTreeAoe = nullptr;
     SkillTree* skillTreeBuff = nullptr;
@@ -32,10 +33,12 @@ public:
     EventListenerTouchOneByOne* touchListener = nullptr;
     Sprite* talentBorder = nullptr;
 private: 
+    //Label* goldLabel;
+    //Sprite* gold;
     Sprite* prevButton;
     Sprite* nextButton;
     Sprite* buttonClose;
-    Sprite* resetSkillButton;
+    //Sprite* resetSkillButton;
     bool lastChoosedFirstTab;
     Sprite* fireTreeTabButton;
     Sprite* thunderTreeTabButton;
