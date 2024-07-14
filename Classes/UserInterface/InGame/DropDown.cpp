@@ -21,7 +21,7 @@ bool Dropdown::init(InGameUI* inGameUI) {
     this->inGameUI = inGameUI;
     bg = Sprite::create("res/dropdown_btn.png");
     bg->setOpacity(180);
-    bg->setScale(3, 3);
+    bg->setScale(4, 3);
     iconSprite = Sprite::create("res/left-arr-ui2.png");
     iconSprite->setScale(1.9);
     this->addChild(bg);
