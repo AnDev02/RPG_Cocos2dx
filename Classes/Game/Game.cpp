@@ -539,6 +539,7 @@ bool Game::loadMap(int levelMap)
                     gameMap->getTiledMap()->addChild(enemy1, 9.5);
                     enemy1->currentState = enemy1->walkState;
                     enemy1->currentState->EnterState();
+                    enemy1->setLevel(2);
                     listOfMonster.push_back(enemy1);
                 }
                 else if (objectName == "BabySpider")
@@ -552,6 +553,7 @@ bool Game::loadMap(int levelMap)
                     gameMap->getTiledMap()->addChild(spider3, 9.5);
                     spider3->currentState = spider3->walkState;
                     spider3->currentState->EnterState();
+                    spider3->setLevel(4);
                     listOfMonster.push_back(spider3);
                 }
                 else if (objectName == "terra")
@@ -589,6 +591,12 @@ bool Game::loadMap(int levelMap)
             enemy->currentState->EnterState();
             enemy->setTarget(_player);
             enemy->setName(enemy->getEnemyName());
+            if (enemy->getEnemyName() == "Skeleton") {
+                enemy->setLevel(2);
+            }
+            else if (enemy->getEnemyName() == "BabySpider") {
+                enemy->setLevel(4);
+            }
             listOfMonster.push_back(enemy);
         }
     }

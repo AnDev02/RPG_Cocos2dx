@@ -91,6 +91,7 @@ void NormalMonster::die() {
         this->healthBar->setVisible(false);
         this->backGroundBar->setVisible(false);
         this->monsterName->setVisible(false);
+        this->levelSprite->setVisible(false);
         isDead = true;
         target->gainExp(this->getExpGain());
 
