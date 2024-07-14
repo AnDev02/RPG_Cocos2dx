@@ -205,7 +205,7 @@ void InGameUI::setTarget(Player* plr) {
     inventoryButton->setPosition(talentButton->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 2, 0));
     //talentButton->setPosition(inventoryButton->getPosition() - Vec2(questBtn->btnSprite->getContentSize().width * questBtn->btnSprite->getScaleX() / 3, 0));
     inventoryButton->setScale(0.35 * Director::getInstance()->getContentScaleFactor());
-    this->addChild(inventoryButton, 6);
+    this->addChild(inventoryButton, 5);
     inventoryButton->retain();
 
     DialogueManager::getInstance()->init();
