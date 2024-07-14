@@ -296,8 +296,7 @@ void InGameUI::hideUI() {
     //Hide subiventory
     subInventory->setVisible(false);
     
-    //Hide Skill Tree
-    // talentButton->setVisible(false);
+
     
     //Hide PauseGame
     hamburgerButton->setVisible(false);
@@ -305,9 +304,12 @@ void InGameUI::hideUI() {
     //Hide QuestButton
     questButton->setVisible(false);
     
-    //Hide inventory button
-    //inventoryButton->setVisible(false);
-    
+    if (dropdownButton->isOpen == true) {
+        //Hide inventory button
+        inventoryButton->setVisible(false);
+        //Hide Skill Tree
+        talentButton->setVisible(false);
+    }
     //Hide Player's Skills
     _player_temp->setVisibleSkillButton(false);
     
@@ -329,17 +331,18 @@ void InGameUI::showUI() {
     //Show subiventory
     subInventory->setVisible(true);
     
-    //Show Skill Tree
-    //talentButton->setVisible(true);
+    if (dropdownButton->isOpen) {
+        //Hide inventory button
+        inventoryButton->setVisible(true);
+        //Hide Skill Tree
+        talentButton->setVisible(true);
+    }
     
     //Show PauseGame
     hamburgerButton->setVisible(true);
     
     //Show QuestButton
     questButton->setVisible(true);
-    
-    //Show inventory button
-    //inventoryButton->setVisible(true);
     
     //Show Player's Skills
     _player_temp->setVisibleSkillButton(true);
