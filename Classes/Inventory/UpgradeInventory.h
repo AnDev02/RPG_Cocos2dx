@@ -53,7 +53,6 @@ public:
     Label* cdrStat;
     Label* armStat;
     UpgradeProgressBar* upgradeProgressBar;
-    std::vector<InventoryNode*> materialNodes;
     std::vector<InventoryNode*> inventoryNodes;
     void ShowEquipmentDetails(std::string eIconPath, std::string eName, int eCurrentLevel);
     InventoryNode* upgradeEIcon = nullptr;
@@ -65,8 +64,9 @@ public:
     InventoryNode* itemSlot3 = nullptr;
     Sprite* upgradeButton = nullptr;
     Label* durinStoreLabel = nullptr;
+    std::vector<InventoryNode*> materialNodes;
     Sprite* popupBack = nullptr;
-    bool endEffect = true;
+    bool isUpgradeSuccess = true;
     Label* popupFront = nullptr;
     int currentEquipmentId = 0;
     void onPageChange();

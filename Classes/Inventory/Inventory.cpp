@@ -44,7 +44,6 @@ bool Inventory::init(Player* _player)
     overlay->setPosition(Vec2(-visibleSize.width / 2, -visibleSize.height / 2));
     overlay->setVisible(false);
     inventoryBorder->addChild(overlay, 100);
-    
 
     auto touchListener2 = EventListenerTouchOneByOne::create();
     touchListener2->setSwallowTouches(true);
@@ -163,7 +162,6 @@ bool Inventory::init(Player* _player)
                         isDraggingItem = true;
                         isPlayerUsing = true;
                         armorNode->getNodeSprite()->setTexture("res/inventory-node.png");
-
                     }
                     else if (itemNode1->getBoundingNode(0.6).containsPoint(startPoint) && itemNode1->getStatus() == "busy" && itemNode1->getBaseItem()->getItemType() == BaseItem::POTION_ITEM) {
                         item = ItemFactory::createItem(itemNode1->getBaseItem()->getItemName());
@@ -338,10 +336,12 @@ bool Inventory::init(Player* _player)
                                 }
                                 else if (i->getBaseItem() && TutorialManager::getInstance()->currentTutorial != 3) {
                                     item = ItemFactory::createItem(i->getBaseItem()->getItemName());
+                                    
                                     item->setScale(1.2 * Director::getInstance()->getContentScaleFactor());
-                                    if (i->getBaseItem()->getItemType() == BaseItem::POTION_ITEM) {
+                                    
+                                    if (i->getBaseItem()->getItemType() == BaseItem::POTION_ITEM) 
+                                    {
                                         //bool flag1 = 
-                         
                                         for (auto i : listItemNodes) {
                                             i->getNodeSprite()->setTexture("res/inventory-node-press.png");
                                         }
@@ -359,7 +359,6 @@ bool Inventory::init(Player* _player)
                             }
                         }
                     }
-
                     return true;
                 }
             }
@@ -1103,16 +1102,13 @@ void Inventory::nextInventoryPage() {
         onPageChange();
     }
 }
-
 void Inventory::prevInventoryPage() {
     if (nextInvenButton->isVisible() == false) nextInvenButton->setVisible(true);
-
     if (currentInventoryPage > 0) {
         currentInventoryPage--;
         onPageChange();
     }
 }
-
 void Inventory::onPageChange() {
     for (int i = 0; i < inventoryNodes.size(); i++) {
         if (i >= (currentInventoryPage == 0 ? 0 : currentInventoryPage * (numRows * numCols)) && i < (currentInventoryPage + 1) * (numRows * numCols)) {
