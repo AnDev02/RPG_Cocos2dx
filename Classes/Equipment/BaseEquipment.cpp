@@ -201,13 +201,13 @@ void BaseEquipment::levelUp()
     this->setSkillDamage(this->getSkillDamage() * 1.5);
     this->setMP(this->getMP() * 1.5);
     this->setHP(this->getHP() * 1.5);
-    currentLevel += 1;
+    stats.currentLv += 1;
 }
 
 void BaseEquipment::setLevel(int lv)
 {
-    currentLevel = lv;
-    for (int i = 1; i < currentLevel; i++)
+    stats.currentLv = lv;
+    for (int i = 1; i < stats.currentLv; i++)
     {
         this->setDamage(this->getDamage() * 1.5);
         this->setArmor(this->getArmor() * 1.5);
@@ -257,51 +257,51 @@ std::string BaseEquipment::getEquipmentStory() const
 
 void BaseEquipment::setDamage(float damage)
 {
-    this->damage = damage;
+    this->stats.ad = damage;
 }
 
 float BaseEquipment::getDamage() const
 {
-    return this->damage;
+    return this->stats.ad;
 }
 
 void BaseEquipment::setSkillDamage(float damage)
 {
-    this->skillDamage = damage;
+    this->stats.ap = damage;
 }
 
 float BaseEquipment::getSkillDamage() const
 {
-    return this->skillDamage;
+    return this->stats.ap;
 }
 
 void BaseEquipment::setMovementSpeed(float speed)
 {
-    this->movementSpeed = speed;
+    this->stats.ms = speed;
 }
 
 float BaseEquipment::getMovementSpeed() const
 {
-    return this->movementSpeed;
+    return this->stats.ms;
 }
 
 float BaseEquipment::getMP() const
 {
-    return this->MP;
+    return this->stats.mp;
 }
 void BaseEquipment::setMP(float newMp)
 {
-    this->MP = newMp;
+    this->stats.mp = newMp;
 }
 
 void BaseEquipment::setArmor(float arm)
 {
-    this->armor = arm;
+    this->stats.arm = arm;
 }
 
 float BaseEquipment::getArmor() const
 {
-    return this->armor;
+    return this->stats.arm;
 }
 
 // void BaseEquipment::setEquipmentSprite(Sprite *spr)
@@ -314,5 +314,5 @@ float BaseEquipment::getArmor() const
 // }
 
 BaseEquipment::~BaseEquipment() {
-this->release();
+    this->release();
 }

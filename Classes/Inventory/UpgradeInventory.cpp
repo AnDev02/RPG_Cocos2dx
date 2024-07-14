@@ -6,6 +6,7 @@
 #include "./UserInterface/InGame/Scrollview.h"
 #include "Equipment/BaseEquipment.h"
 #include "Inventory/Inventory.h"
+#include "Inventory/InventoryNode.h"
 UpgradeInventory* UpgradeInventory::createUpgradeInventory(Player* player)
 {
     auto inventory = new (std::nothrow) UpgradeInventory();
@@ -54,7 +55,7 @@ bool UpgradeInventory::init(Player* player)
         return false;
     }
     visibleSize = Director::getInstance()->getVisibleSize();
-    bg = Sprite::create("res/background-img-3.png");
+    bg = Sprite::create("res/background-img-3.5.png");
     bg2 = Sprite::create("res/background-img-3-semi.png");
     bg2->setAnchorPoint(Vec2(0,0));
     bg2->setPosition(Vec2(-bg->getContentSize().width / 2, -bg->getContentSize().height / 2));
@@ -87,16 +88,32 @@ bool UpgradeInventory::onTouchBegan(Touch* touch, Event* event) {
             touchStartPoint = Vec2::ZERO;
         }
 
-        //if (buttonClose->getBoundingBox().containsPoint(touchLocation)) {
-        //    hideUpgradeInventory();
-        //}
+        if (buttonClose->getBoundingBox().containsPoint(touchLocation)) {
+            hideUpgradeInventory();
+        }
 
         //for (int i = 0; i < nodesToAdd.size(); i++) {
         //    if (nodesToAdd[i]->getBoundingBox().containsPoint(touchLocation)) {
         //        currentNode = equipmentsData[i];
         //    }
         //}
-        
+
+        if (crENode != nullptr && crENode->getChildByName("bg")) {
+            Sprite* temp = dynamic_cast<Sprite*>(crENode->getChildByName("bg"));
+            if (temp) temp->setTexture("res/item_in_upgrade.png");
+            crENode = nullptr;
+            currentEquipmentId = -1;
+        }
+
+        for (int i = 0; i < nodesToAdd.size(); i++) {
+            Sprite* tempSpr = dynamic_cast<Sprite*>(nodesToAdd[i]->getChildByName("bg"));
+            auto temp = Rect(nodesToAdd[i]->getPositionX() - nodesToAdd[i]->getBoundingBox().size.width * 0.5, nodesToAdd[i]->getPositionY() - ((tempSpr == nullptr) ? (nodesToAdd[i]->getBoundingBox().size.height * 1.5) : (tempSpr->getContentSize().height * tempSpr->getScaleY() / 2)), nodesToAdd[i]->getBoundingBox().size.width, nodesToAdd[i]->getBoundingBox().size.height);
+            if (temp.containsPoint(touchLocation)) {
+                crENode = nodesToAdd[i];
+                currentEquipmentId = i;
+                break;
+            }
+        }
         
         return true;
     }
@@ -128,32 +145,115 @@ void UpgradeInventory::onTouchMoved(Touch* touch, Event* event) {
             }
             touchStartPoint = touchLocation;
         }
+    }
+}
+void UpgradeInventory::ShowEquipmentDetails(std::string eIconPath, std::string eName, int eCurrentLevel) {
+    if (currentEquipmentId != -1) {
+        // equipment icon
+        if (upgradeEIcon == nullptr) {
+            upgradeEIcon = InventoryNode::createInventoryNode(15 * Director::getInstance()->getContentScaleFactor());
+            upgradeEIcon->setPosition(0, 0);
+            this->addChild(upgradeEIcon, 20);
+        }
+        upgradeEIcon->removeBaseEquipment();
+        upgradeEIcon->setBaseEquipment(eName, eCurrentLevel);
+        upgradeEIcon->setQuantity(1);
 
+        auto equipmentTemp = upgradeEIcon->getBaseEquipment();
 
+        // equipment name + level
+        if (eNameLabel == nullptr) {
+            eNameLabel = Label::createWithTTF("", "fonts/Diablo Light.ttf", 20);
+            eNameLabel->setScale(0.3);
+            this->addChild(eNameLabel, 20);
+        }
+        eNameLabel->setString(eName + " || Lv." + std::to_string(eCurrentLevel));
+        eNameLabel->setPosition(Vec2(upgradeEIcon->getPosition().x + eNameLabel->getContentSize().width * eNameLabel->getScaleX() / 2 + upgradeEIcon->getBoundingNode().size.width * 1.2, upgradeEIcon->getBoundingNode().size.height / 2));
+        if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::ENHANCED) {
+            eNameLabel->setTextColor(Color4B::GREEN);
+        }
+        else if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::RARE) {
+            eNameLabel->setTextColor(Color4B::MAGENTA);
+        }
+        else if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::LEGENDARY) {
+            eNameLabel->setTextColor(Color4B::RED);
+        }
+        else {
+            eNameLabel->setTextColor(Color4B::WHITE);
+        }
+
+        if(eStatsLabel == nullptr) {
+            eStatsLabel = Label::createWithTTF("", "fonts/Diablo Light.ttf", 20);
+            eStatsLabel->setScale(0.3);
+            this->addChild(eStatsLabel, 20);
+        }
+        int count = 0;
+        bool isNewLine = (count == 2 || count == 5);
+        std::string equipmentAD = equipmentTemp->getDamage() > 0 ? "AD: " + std::to_string(equipmentTemp->getDamage()) + "  " : "";
+        count++;
+        isNewLine = (count == 2 || count == 5);
+        std::string equipmentAP = equipmentTemp->getSkillDamage() > 0 ? "AP: " + std::to_string(equipmentTemp->getSkillDamage()) + "  " : "";
+        count++;
+        isNewLine = (count == 2 || count == 5);
+        std::string equipmentArm = equipmentTemp->getArmor() > 0 ? "Armor: " + std::to_string(equipmentTemp->getArmor()) : isNewLine == true ? "\n" : "  ";
+        count++;
+        isNewLine = (count == 2 || count == 5);
+        std::string equipmentCDR = equipmentTemp->getCDR() > 0 ? "\nCDR (Cooldown): " + std::to_string(equipmentTemp->getArmor()) + "  " : "";
+        count++;
+        isNewLine = (count == 2 || count == 5);
+        std::string equipmentHP = equipmentTemp->getHP() > 0 ? "HP: " + std::to_string(equipmentTemp->getArmor()) : isNewLine == true ? "\n" : "  ";
+        count++;
+        isNewLine = (count == 2 || count == 5);
+        std::string equipmentMP = equipmentTemp->getMP() > 0 ? "MP: " + std::to_string(equipmentTemp->getMP()) : isNewLine == true ? "\n" : "  ";
+        count++;
+        isNewLine = (count == 2 || count == 5);
+        std::string equipmentMS = equipmentTemp->getMovementSpeed() > 0 ? "MS: " + std::to_string(equipmentTemp->getMovementSpeed()) : isNewLine == true ? "\n" : "  ";
+
+        std::string str = equipmentAD + equipmentAP + equipmentArm + equipmentCDR + equipmentHP + equipmentMP + equipmentMS;
+        eStatsLabel->setString(str);
+        eStatsLabel->setPosition(Vec2(eNameLabel->getPosition().x, eNameLabel->getPosition().y - 10 * Director::getInstance()->getContentScaleFactor()));
     }
 }
 void UpgradeInventory::onTouchEnded(Touch* touch, Event* event) {
     if (isShow()) {
-      //  Vec2 touchLocation = this->convertToNodeSpace(touch->getLocation());
-        
+        Vec2 touchLocation = this->convertToNodeSpace(touch->getLocation());
+        if (crENode && crENode->getChildByName("bg")) {
+            Sprite* temp = dynamic_cast<Sprite*>(crENode->getChildByName("bg"));
+            if (temp) temp->setTexture("res/item_in_upgrade_push.png");
+
+            UpgradeInventory::ShowEquipmentDetails(equipmentsData[currentEquipmentId].iconPath, equipmentsData[currentEquipmentId].name, equipmentsData[currentEquipmentId].level);
+        }
     }
 }
 void UpgradeInventory::onAddEquipment() {
     int equipmentsQuan = equipmentsData.size() - 1;
     auto i = equipmentsData[equipmentsQuan];
     Node* node = Node::create();
-    auto bgt = Sprite::create("res/button_tab_push.png");
+    auto bgt = Sprite::create("res/item_in_upgrade.png");
+    bgt->setName("bg");
     node->addChild(bgt);
     Label* lb = Label::createWithTTF(i.name + " Lv." + std::to_string(i.level), "fonts/Diablo Light.ttf", 20);
-    lb->setScale(0.3);
+    lb->setScale(0.23);
+    lb->setName("lb");
+
+    /*if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::ENHANCED) {
+        eNameLabel->setTextColor(Color4B::GREEN);
+    }
+    else if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::RARE) {
+        eNameLabel->setTextColor(Color4B::MAGENTA);
+    }
+    else if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::LEGENDARY) {
+        eNameLabel->setTextColor(Color4B::RED);
+    }*/
     node->addChild(lb);
     Sprite* icon = Sprite::create(i.iconPath);
     node->addChild(icon);
     icon->setScale(0.69);
-    icon->setPosition(Vec2(icon->getContentSize().width / 2 + lb->getContentSize().width * lb->getScaleX() / 2, 0));
-    bgt->setScale(node->getContentSize().width / (lb->getContentSize().width * lb->getScaleX() + icon->getContentSize().width), node->getContentSize().height / (icon->getContentSize().height * 2));
+    bgt->setScale(bgt->getContentSize().width / bg2->getContentSize().width * 0.9 * Director::getInstance()->getContentScaleFactor(), bgt->getContentSize().height / (icon->getContentSize().height * icon->getScaleY() * 8));
+    icon->setPosition(Vec2(bg2->getContentSize().width / 2 - icon->getContentSize().width * icon->getScaleX(), 0));
+    node->setContentSize(bgt->getContentSize() * bgt->getScale());
     node->setAnchorPoint(Vec2(0,0));
-    node->setPosition(Vec2(-bgSize.width / 2 + lb->getContentSize().width * lb->getScaleX() / 2 + icon->getContentSize().width / 2, bgSize.height / 4 - (icon->getContentSize().height * (equipmentsQuan + 1))));
+    node->setPosition(Vec2(-bgSize.width / 2 + bgt->getContentSize().width * bgt->getScaleX() / 2, bgSize.height / 4 - (icon->getContentSize().height * (equipmentsQuan + 1))));
     this->addChild(node, 5);
     nodesToAdd.push_back(node);
     if (nodesToAdd.size() == 1) {

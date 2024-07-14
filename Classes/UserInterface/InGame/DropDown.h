@@ -12,7 +12,7 @@ public:
     static Dropdown* create(InGameUI* inGameUI);
     virtual bool init(InGameUI* inGameUI);
     bool onTouchBegan(Touch* touch, Event* event);
-    ui::Scale9Sprite* bg = nullptr;
+    Sprite* bg = nullptr;
     Sprite* iconSprite;
     void updateIconSpritePosition();
     bool didOpen() { return isOpen == true && isScaling == false; }
