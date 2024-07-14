@@ -63,14 +63,17 @@ public:
     InventoryNode* itemSlot1 = nullptr;
     InventoryNode* itemSlot2 = nullptr;
     InventoryNode* itemSlot3 = nullptr;
-    ui::Button* upgrade;
+    Sprite* upgradeButton = nullptr;
+    Label* durinStoreLabel = nullptr;
     Sprite* popupBack = nullptr;
+    bool endEffect = true;
     Label* popupFront = nullptr;
     int currentEquipmentId = 0;
     void onPageChange();
     void nextInventoryPage();
     void prevInventoryPage();
     void sort();
+   // void upgradeEquipment();
 private:
     std::vector<BaseEquipment::EquipmentData> equipmentsData;
     const int totalInventoryPage = 3;

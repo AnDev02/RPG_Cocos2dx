@@ -66,7 +66,10 @@ bool UpgradeInventory::init(Player* player)
     buttonClose->setPosition(Vec2(bg->getContentSize().width / 2, bg->getContentSize().height / 2) - buttonClose->getContentSize() * 1.5);
     this->addChild(buttonClose);
     bgSize = bg->getContentSize();
-
+    durinStoreLabel = Label::createWithTTF("Durin's Store", "fonts/Diablo Light.ttf", 20);
+    durinStoreLabel->setScale(0.6);
+    durinStoreLabel->setPosition(Vec2(0, bgSize.height / 2 - durinStoreLabel->getContentSize().height));
+    this->addChild(durinStoreLabel, 50);
     hideUpgradeInventory();
     auto touchListener = EventListenerTouchOneByOne::create();
     touchListener->setSwallowTouches(true);
@@ -91,7 +94,9 @@ bool UpgradeInventory::onTouchBegan(Touch* touch, Event* event) {
         if (buttonClose->getBoundingBox().containsPoint(touchLocation)) {
             hideUpgradeInventory();
         }
-
+        if (upgradeButton && upgradeButton->getBoundingBox().containsPoint(touchLocation)) {
+            upgradeButton->setTexture("res/buttonUpgradeE_push.png");
+        }
         //for (int i = 0; i < nodesToAdd.size(); i++) {
         //    if (nodesToAdd[i]->getBoundingBox().containsPoint(touchLocation)) {
         //        currentNode = equipmentsData[i];
@@ -168,7 +173,7 @@ void UpgradeInventory::ShowEquipmentDetails(std::string eIconPath, std::string e
             this->addChild(eNameLabel, 20);
         }
         eNameLabel->setString(eName + " || Lv." + std::to_string(eCurrentLevel));
-        eNameLabel->setPosition(Vec2(upgradeEIcon->getPosition().x + eNameLabel->getContentSize().width * eNameLabel->getScaleX() / 2 + upgradeEIcon->getBoundingNode().size.width * 1.2, upgradeEIcon->getBoundingNode().size.height / 2));
+        eNameLabel->setPosition(Vec2(upgradeEIcon->getPosition().x + eNameLabel->getContentSize().width * eNameLabel->getScaleX() / 2 + upgradeEIcon->getBoundingNode().size.width * 1.5, upgradeEIcon->getBoundingNode().size.height / 2));
         if (equipmentTemp->getEquipmentType() == BaseEquipment::Type::ENHANCED) {
             eNameLabel->setTextColor(Color4B::GREEN);
         }
@@ -189,29 +194,72 @@ void UpgradeInventory::ShowEquipmentDetails(std::string eIconPath, std::string e
         }
         int count = 0;
         bool isNewLine = (count == 2 || count == 5);
-        std::string equipmentAD = equipmentTemp->getDamage() > 0 ? "AD: " + std::to_string(equipmentTemp->getDamage()) + "  " : "";
+        std::string equipmentAD = equipmentTemp->getDamage() > 0 ? "AD: " + std::to_string(static_cast<int>(equipmentTemp->getDamage())) + "  " : "";
         count++;
         isNewLine = (count == 2 || count == 5);
-        std::string equipmentAP = equipmentTemp->getSkillDamage() > 0 ? "AP: " + std::to_string(equipmentTemp->getSkillDamage()) + "  " : "";
+        std::string equipmentAP = equipmentTemp->getSkillDamage() > 0 ? "AP: " + std::to_string(static_cast<int>(equipmentTemp->getSkillDamage())) : isNewLine == true ? "\n" : "";
         count++;
         isNewLine = (count == 2 || count == 5);
-        std::string equipmentArm = equipmentTemp->getArmor() > 0 ? "Armor: " + std::to_string(equipmentTemp->getArmor()) : isNewLine == true ? "\n" : "  ";
+        std::string equipmentArm = equipmentTemp->getArmor() > 0 ? "Armor: " + std::to_string(static_cast<int>(equipmentTemp->getArmor())) : isNewLine == true ? "\n" : "  ";
         count++;
         isNewLine = (count == 2 || count == 5);
-        std::string equipmentCDR = equipmentTemp->getCDR() > 0 ? "\nCDR (Cooldown): " + std::to_string(equipmentTemp->getArmor()) + "  " : "";
+        std::string equipmentCDR = equipmentTemp->getCDR() > 0 ? "\nCDR (Cooldown): " + std::to_string(static_cast<int>(equipmentTemp->getArmor())) + "  " : "";
         count++;
         isNewLine = (count == 2 || count == 5);
-        std::string equipmentHP = equipmentTemp->getHP() > 0 ? "HP: " + std::to_string(equipmentTemp->getArmor()) : isNewLine == true ? "\n" : "  ";
+        std::string equipmentHP = equipmentTemp->getHP() > 0 ? "HP: " + std::to_string(static_cast<int>(equipmentTemp->getArmor())) : isNewLine == true ? "\n" : "  ";
         count++;
         isNewLine = (count == 2 || count == 5);
-        std::string equipmentMP = equipmentTemp->getMP() > 0 ? "MP: " + std::to_string(equipmentTemp->getMP()) : isNewLine == true ? "\n" : "  ";
+        std::string equipmentMP = equipmentTemp->getMP() > 0 ? isNewLine == true ? " \nMP: " : "\n" + std::to_string(static_cast<int>(equipmentTemp->getMP())) : "  ";
         count++;
         isNewLine = (count == 2 || count == 5);
-        std::string equipmentMS = equipmentTemp->getMovementSpeed() > 0 ? "MS: " + std::to_string(equipmentTemp->getMovementSpeed()) : isNewLine == true ? "\n" : "  ";
+        std::string equipmentMS = equipmentTemp->getMovementSpeed() > 0 ? "MS: " + std::to_string(static_cast<int>(equipmentTemp->getMovementSpeed())) : isNewLine == true ? "\n" : "  ";
 
         std::string str = equipmentAD + equipmentAP + equipmentArm + equipmentCDR + equipmentHP + equipmentMP + equipmentMS;
         eStatsLabel->setString(str);
         eStatsLabel->setPosition(Vec2(eNameLabel->getPosition().x, eNameLabel->getPosition().y - 18 * Director::getInstance()->getContentScaleFactor()));
+
+
+
+
+        if (upgradeButton == nullptr) {
+            upgradeButton = Sprite::create("res/buttonUpgradeE.png"); // , "res/buttonUpgradeE_push.png"
+            auto text = Label::createWithTTF("Upgrade", "fonts/Diablo Light.ttf", 18);
+            text->setPosition(upgradeButton->getContentSize() / 2);
+            text->setScale(0.29);
+            upgradeButton->addChild(text);
+            upgradeButton->setPosition(Vec2(eNameLabel->getPositionX(), -bgSize.height / 2 + upgradeButton->getContentSize().height + 2 * Director::getInstance()->getContentScaleFactor()));
+           /* upgradeButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+                switch (type) {
+                case ui::Widget::TouchEventType::BEGAN:
+                    upgradeButton->setScale(upgradeButton->getScale() * 1.05);
+                    break;
+                case ui::Widget::TouchEventType::ENDED:
+                    upgradeButton->setScale(upgradeButton->getScale() / 1.05);
+                    break;
+                default:
+                    break;
+                }
+                });*/
+
+            this->addChild(upgradeButton, 20);
+        }
+
+        if (itemSlot1 == nullptr) {
+            itemSlot1 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
+            itemSlot1->setPosition(Vec2(eNameLabel->getPosition().x - itemSlot1->getBoundingNode().size.width * 1.5 - itemSlot1->getBoundingNode().size.width * 0.25, upgradeButton->getPosition().y + upgradeButton->getContentSize().height / 2));
+            this->addChild(itemSlot1);
+        }
+        if (itemSlot2 == nullptr) {
+            itemSlot2 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
+            itemSlot2->setPosition(itemSlot1->getPosition() + Vec2(itemSlot1->getBoundingNode().size.width + 1 * Director::getInstance()->getContentScaleFactor(), 0));
+            this->addChild(itemSlot2);
+        }
+        if (itemSlot3 == nullptr) {
+            itemSlot3 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
+            itemSlot3->setPosition(itemSlot2->getPosition() + Vec2(itemSlot2->getBoundingNode().size.width + 1 * Director::getInstance()->getContentScaleFactor(), 0));
+            this->addChild(itemSlot3);
+        }
+
     }
 }
 void UpgradeInventory::onTouchEnded(Touch* touch, Event* event) {
@@ -220,8 +268,15 @@ void UpgradeInventory::onTouchEnded(Touch* touch, Event* event) {
         if (crENode && crENode->getChildByName("bg")) {
             Sprite* temp = dynamic_cast<Sprite*>(crENode->getChildByName("bg"));
             if (temp) temp->setTexture("res/item_in_upgrade_push.png");
-
             UpgradeInventory::ShowEquipmentDetails(equipmentsData[currentEquipmentId].iconPath, equipmentsData[currentEquipmentId].name, equipmentsData[currentEquipmentId].level);
+        }
+        if (endEffect == true && upgradeButton && upgradeButton->getBoundingBox().containsPoint(touchLocation)) {
+            endEffect = false;
+            auto cb = CallFunc::create([this]() {
+                this->upgradeButton->setTexture("res/buttonUpgradeE.png");
+                this->endEffect = true;
+                });
+            upgradeButton->runAction(Sequence::create(DelayTime::create(1), cb));
         }
     }
 }
@@ -262,6 +317,9 @@ void UpgradeInventory::onAddEquipment() {
     if (nodesToAdd.size() == 6) {
         maxY = nodesToAdd[nodesToAdd.size() - 1]->getPosition().y + nodesToAdd[nodesToAdd.size() - 1]->getContentSize().height / 2;
     }
+
+
+
 }
 
 void UpgradeInventory::nextInventoryPage() {
