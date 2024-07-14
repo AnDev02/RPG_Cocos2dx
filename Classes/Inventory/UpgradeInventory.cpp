@@ -211,7 +211,7 @@ void UpgradeInventory::ShowEquipmentDetails(std::string eIconPath, std::string e
 
         std::string str = equipmentAD + equipmentAP + equipmentArm + equipmentCDR + equipmentHP + equipmentMP + equipmentMS;
         eStatsLabel->setString(str);
-        eStatsLabel->setPosition(Vec2(eNameLabel->getPosition().x, eNameLabel->getPosition().y - 10 * Director::getInstance()->getContentScaleFactor()));
+        eStatsLabel->setPosition(Vec2(eNameLabel->getPosition().x, eNameLabel->getPosition().y - 18 * Director::getInstance()->getContentScaleFactor()));
     }
 }
 void UpgradeInventory::onTouchEnded(Touch* touch, Event* event) {
