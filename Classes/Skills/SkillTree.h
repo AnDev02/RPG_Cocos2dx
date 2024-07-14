@@ -69,6 +69,7 @@ public:
     void setOverlay(LayerColor* overlay) { _overlay = overlay; };
     void setParentNode(TalentCarousel* talentCarousel) { _talentCarousel = talentCarousel; };
     void showUI();
+
     void hideUI();
     std::string treeName = "";
 private:

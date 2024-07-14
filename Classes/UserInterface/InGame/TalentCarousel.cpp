@@ -1,6 +1,6 @@
 ﻿#include "TalentCarousel.h"
 #include "Player/Player.h"
-#include "Skills/SkillTree.h"
+//#include "Skills/SkillTree.h"
 #include "Skills/SkillFactory.h"
 #include "Audio/AudioEngine.h"
 #include "SettingsManager/SettingsData.h"
@@ -68,6 +68,11 @@ bool TalentCarousel::init(Player* player) {
     buttonClose->setPosition(Vec2((talentBorder->getContentSize().width / 2 - buttonClose->getContentSize().width * buttonClose->getScale() * 1.5), (talentBorder->getContentSize().height / 2 - buttonClose->getContentSize().height * buttonClose->getScale() * 1.5)));
     this->addChild(buttonClose, 6);
 
+    resetSkillButton = Sprite::create("res/reset_skills_button.png");
+    resetSkillButton->setScale(0.3 * Director::getInstance()->getContentScaleFactor());
+    resetSkillButton->setPosition(Vec2((talentBorder->getContentSize().width / 2 - buttonClose->getContentSize().width * buttonClose->getScale() * 1.46), -(talentBorder->getContentSize().height / 2 - buttonClose->getContentSize().height * buttonClose->getScale() * 1.5)));
+    this->addChild(resetSkillButton, 6);
+
     skillTreeAoe = SkillTree::createSkillTree(player, SkillFactory::createSkill("FireBall")->getSkillTalent());
     skillTreeAoe->treeName = "Fire";
     skillTreeBuff = SkillTree::createSkillTree(player, SkillFactory::createSkill("ThunderCrackle")->getSkillTalent());
@@ -104,6 +109,12 @@ bool TalentCarousel::init(Player* player) {
     currentTree = 0;
     dynamic_cast<Label*>(thunderTreeTabButton->getChildByName("label"))->setColor(Color3B::BLACK);
     dynamic_cast<Label*>(fireTreeTabButton->getChildByName("label"))->setColor(Color3B::WHITE);
+
+    auto touchListenerToResetSkill = EventListenerTouchOneByOne::create();
+    touchListenerToResetSkill->setSwallowTouches(true);
+    touchListenerToResetSkill->onTouchBegan = CC_CALLBACK_2(TalentCarousel::onTouchBeganToResetSkills, this);
+    resetSkillButton->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListenerToResetSkill, resetSkillButton);
+
     return true;
 }
 
@@ -147,6 +158,7 @@ bool TalentCarousel::onTouchBegan(Touch* touch, Event* event) {
             game->resumeGame();
 
             this->setVisible(false);
+            InGameUI::getInstance(_player)->showUI();
             listOfTrees[currentTree]->setVisible(false);
 
             int currentTutorial = UserDefault::getInstance()->getIntegerForKey("current_tutorial", 0);
@@ -191,6 +203,7 @@ bool TalentCarousel::onTouchEnded(Touch* touch, Event* event)
 
 void TalentCarousel::showTalentCarousel() {
     this->setVisible(true);
+    InGameUI::getInstance(_player)->hideUI();
     resetUI();
    // listOfTrees[currentTree]->setVisible(true);
     progressBar->updateProgress(_player->getExpToConsume(), _player->getAllExp());
@@ -214,4 +227,200 @@ void TalentCarousel::showComponents() {
     buttonClose->setVisible(true);
     talentBorder->setVisible(true);
     progressBar->setVisible(true);
+}
+
+void TalentCarousel::resetSkill(Player* player) {
+    
+}
+
+bool TalentCarousel::onTouchBeganToResetSkills(Touch* touch, Event* event) {
+    if (isVisible()) {
+        auto target = static_cast<Sprite*>(event->getCurrentTarget());
+        Point locationInNode = target->convertToNodeSpace(touch->getLocation());
+        Size s = target->getContentSize();
+        Rect rect = Rect(0, 0, s.width, s.height);
+
+        if (rect.containsPoint(locationInNode)) {
+/*            bool result = */yesOrNo();
+            //if (result) {
+            //    resetSkill(_player);
+            //    NotificationManager::getInstance()->showMessageNotification("Reset skills Completed!", Vec2::ZERO, Color3B::GREEN, 10);
+            //}
+            //else NotificationManager::getInstance()->showMessageNotification("Reset skills Failed!", Vec2::ZERO, Color3B::RED, 10);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool TalentCarousel::yesOrNo() {
+    Player* player = _player;
+    auto spriteBg = Sprite::create("res/papper_container2.png");
+    spriteBg->setName("YesOrNo");
+    this->addChild(spriteBg, 10);
+    /*spriteBg->setPosition(Vec2((talentBorder->getContentSize().width / 2), (talentBorder->getContentSize().height / 2 )));*/
+    spriteBg->setScale(0.4);
+    auto askLabel = Label::createWithTTF("Reset skills will cost 300 Gold", "fonts/Diablo Heavy.ttf", 13);
+    askLabel->setPosition(Vec2(spriteBg->getContentSize().width / 2, spriteBg->getContentSize().height / 2 + 50));
+    spriteBg->addChild(askLabel);
+
+    auto yesButton = Sprite::create("res/quest_list_row_checkbox.png");
+    yesButton->setScale(2);
+    yesButton->setPosition(Vec2(spriteBg->getContentSize().width/2 - 40, spriteBg->getContentSize().height/2));
+    spriteBg->addChild(yesButton);
+
+    auto yesLabel = Label::createWithTTF("Yes", "fonts/Diablo Heavy.ttf", 10);
+    yesLabel->setPosition(Vec2(yesButton->getContentSize().width / 2, yesButton->getContentSize().height / 2));
+    yesButton->addChild(yesLabel);
+
+    auto noButton = Sprite::create("res/quest_list_row_checkbox.png");
+    noButton->setScale(2);
+    noButton->setPosition(Vec2(spriteBg->getContentSize().width / 2 + 40, spriteBg->getContentSize().height / 2));
+    spriteBg->addChild(noButton);
+
+    auto noLabel = Label::createWithTTF("No", "fonts/Diablo Heavy.ttf", 10);
+    noLabel->setPosition(Vec2(noButton->getContentSize().width / 2, noButton->getContentSize().height / 2));
+    noButton->addChild(noLabel);
+
+    auto closeButton = Sprite::create("res/close_icon.png");
+    closeButton->setScale(2);
+    closeButton->setPosition(Vec2(spriteBg->getContentSize().width - 10, spriteBg->getContentSize().height -10 ));
+    spriteBg->addChild(closeButton);
+
+    // Thêm sự kiện nhấn nút Yes
+    auto yesListener = EventListenerTouchOneByOne::create();
+    yesListener->setSwallowTouches(true);
+    yesListener->onTouchBegan = [this, yesButton, spriteBg, player](Touch* touch, Event* event) {
+        auto target = static_cast<Sprite*>(event->getCurrentTarget());
+        Point locationInNode = target->convertToNodeSpace(touch->getLocation());
+        Size s = target->getContentSize();
+        Rect rect = Rect(0, 0, s.width, s.height);
+
+        if (rect.containsPoint(locationInNode)) {
+            this->getChildByName("YesOrNo")->removeFromParent();
+            int totalExp = 0;
+            for (auto skill : player->getPlayerSkills()) {
+                int totalPoint = (skill->getCurrentLevelSkill() - 1) * skill->getSkillTalent()->upgradePoint + skill->getSkillTalent()->unlockPoint;
+                totalExp += totalPoint;
+            }
+            player->setExpToConsume(player->getExpToConsume() + totalExp);
+
+            for (auto skill : player->getPlayerSkills()) {
+                if(skill->getSkillIndex() != 5)
+                skill->setSkillIndex(0);
+            }
+            player->resetSkillSlotOrder();
+
+            if (this->skillTreeAoe->getChildByName("FireBall Node"))this->skillTreeAoe->getChildByName("FireBall Node")->setVisible(false);
+            if (this->skillTreeAoe->getChildByName("FireBall Node"))this->skillTreeAoe->getChildByName("FireBall Node")->setName("false");
+            if (this->skillTreeAoe->getChildByName("FireCastA Node"))this->skillTreeAoe->getChildByName("FireCastA Node")->setVisible(false);
+            if (this->skillTreeAoe->getChildByName("FireCastA Node"))this->skillTreeAoe->getChildByName("FireCastA Node")->setName("false");
+            if (this->skillTreeAoe->getChildByName("FireCastB Node"))this->skillTreeAoe->getChildByName("FireCastB Node")->setVisible(false);
+            if (this->skillTreeAoe->getChildByName("FireCastB Node"))this->skillTreeAoe->getChildByName("FireCastB Node")->setName("false");
+            if (this->skillTreeAoe->getChildByName("FireCombust Node"))this->skillTreeAoe->getChildByName("FireCombust Node")->setVisible(false);
+            if (this->skillTreeAoe->getChildByName("FireCombust Node"))this->skillTreeAoe->getChildByName("FireCombust Node")->setName("false");
+            if (this->skillTreeAoe->getChildByName("FireConflagration Node"))this->skillTreeAoe->getChildByName("FireConflagration Node")->setVisible(false);
+            if (this->skillTreeAoe->getChildByName("FireConflagration Node"))this->skillTreeAoe->getChildByName("FireConflagration Node")->setName("false");
+            if (this->skillTreeAoe->getChildByName("FireFlare Node"))this->skillTreeAoe->getChildByName("FireFlare Node")->setVisible(false);
+            if (this->skillTreeAoe->getChildByName("FireFlare Node"))this->skillTreeAoe->getChildByName("FireFlare Node")->setName("false");
+            if (this->skillTreeAoe->getChildByName("FireScorch Node"))this->skillTreeAoe->getChildByName("FireScorch Node")->setVisible(false);
+            if (this->skillTreeAoe->getChildByName("FireScorch Node"))this->skillTreeAoe->getChildByName("FireScorch Node")->setName("false");
+
+
+            //this->skillTreeBuff->removeAllChildren();
+            if (this->skillTreeBuff->getChildByName("ThunderCrackle Node"))this->skillTreeBuff->getChildByName("ThunderCrackle Node")->setVisible(false);
+            if (this->skillTreeBuff->getChildByName("ThunderCrackle Node"))this->skillTreeBuff->getChildByName("ThunderCrackle Node")->setName("false");
+            if (this->skillTreeBuff->getChildByName("ThunderCastA Node"))this->skillTreeBuff->getChildByName("ThunderCastA Node")->setVisible(false);
+            if (this->skillTreeBuff->getChildByName("ThunderCastA Node"))this->skillTreeBuff->getChildByName("ThunderCastA Node")->setName("false");
+            if (this->skillTreeBuff->getChildByName("ThunderCastB Node"))this->skillTreeBuff->getChildByName("ThunderCastB Node")->setVisible(false);
+            if (this->skillTreeBuff->getChildByName("ThunderCastB Node"))this->skillTreeBuff->getChildByName("ThunderCastB Node")->setName("false");
+            if (this->skillTreeBuff->getChildByName("ThunderShock Node"))this->skillTreeBuff->getChildByName("ThunderShock Node")->setVisible(false);
+            if (this->skillTreeBuff->getChildByName("ThunderShock Node"))this->skillTreeBuff->getChildByName("ThunderShock Node")->setName("false");
+            if (this->skillTreeBuff->getChildByName("ThunderCurrent Node"))this->skillTreeBuff->getChildByName("ThunderCurrent Node")->setVisible(false);
+            if (this->skillTreeBuff->getChildByName("ThunderCurrent Node"))this->skillTreeBuff->getChildByName("ThunderCurrent Node")->setName("false");
+            if (this->skillTreeBuff->getChildByName("ThunderDynamo Node"))this->skillTreeBuff->getChildByName("ThunderDynamo Node")->setVisible(false);
+            if (this->skillTreeBuff->getChildByName("ThunderDynamo Node"))this->skillTreeBuff->getChildByName("ThunderDynamo Node")->setName("false");
+            if (this->skillTreeBuff->getChildByName("ThunderVoltage Node"))this->skillTreeBuff->getChildByName("ThunderVoltage Node")->setVisible(false);
+            if (this->skillTreeBuff->getChildByName("ThunderVoltage Node"))this->skillTreeBuff->getChildByName("ThunderVoltage Node")->setName("false");
+            if (this->skillTreeBuff->getChildByName("ThunderBolt Node"))this->skillTreeBuff->getChildByName("ThunderBolt Node")->setVisible(false);
+            if (this->skillTreeBuff->getChildByName("ThunderBolt Node"))this->skillTreeBuff->getChildByName("ThunderBolt Node")->setName("false");
+
+            if (this->skillTreeBuff->getChildByName("SkillDetail"))
+            {
+                auto child = this->skillTreeBuff->getChildByName("SkillDetail");
+                child->removeAllChildren();
+                child->removeFromParent();
+            }
+            if (this->skillTreeAoe->getChildByName("SkillDetail"))
+            {
+                auto child = this->skillTreeAoe->getChildByName("SkillDetail");
+                child->removeAllChildren();
+                child->removeFromParent();
+            }
+            ////Clear skills
+            player->skills.clear();
+            skillTreeAoe->drawTree(player, SkillFactory::createSkill("FireBall")->getSkillTalent(), Vec2(0, 0), 200, 200, nullptr);
+            skillTreeBuff->drawTree(player, SkillFactory::createSkill("ThunderCrackle")->getSkillTalent(), Vec2(0, 0), 200, 200, nullptr);
+
+            return true;
+        }
+        return false;
+        };
+    yesButton->getEventDispatcher()->addEventListenerWithSceneGraphPriority(yesListener, yesButton);
+
+    // Thêm sự kiện nhấn nút No
+    auto noListener = EventListenerTouchOneByOne::create();
+    noListener->setSwallowTouches(true);
+    noListener->onTouchBegan = [this, noButton, spriteBg](Touch* touch, Event* event) {
+        auto target = static_cast<Sprite*>(event->getCurrentTarget());
+        Point locationInNode = target->convertToNodeSpace(touch->getLocation());
+        Size s = target->getContentSize();
+        Rect rect = Rect(0, 0, s.width, s.height);
+
+        if (rect.containsPoint(locationInNode)) {
+            this->getChildByName("YesOrNo")->removeFromParent();
+            return true;
+        }
+        return false;
+        };
+    noButton->getEventDispatcher()->addEventListenerWithSceneGraphPriority(noListener, noButton);
+
+    // Thêm sự kiện nhấn nút X
+    auto closeListener = EventListenerTouchOneByOne::create();
+    closeListener->setSwallowTouches(true);
+    closeListener->onTouchBegan = [this, closeButton, spriteBg](Touch* touch, Event* event) {
+        auto target = static_cast<Sprite*>(event->getCurrentTarget());
+        Point locationInNode = target->convertToNodeSpace(touch->getLocation());
+        Size s = target->getContentSize();
+        Rect rect = Rect(0, 0, s.width, s.height);
+
+        if (rect.containsPoint(locationInNode)) {
+            this->getChildByName("YesOrNo")->removeFromParent();
+            return true;
+        }
+        return false;
+        };
+    closeButton->getEventDispatcher()->addEventListenerWithSceneGraphPriority(closeListener, closeButton);
+    //// Sử dụng std::future để đợi lựa chọn của người chơi
+    //std::future<bool> future = promise.get_future();
+    //return future.get(); // Đợi cho đến khi người chơi chọn Yes hoặc No
+    return true;
+}
+
+void TalentCarousel::onYesClicked() {
+    // Xử lý khi người chơi nhấn Yes
+    CCLOG("Yes clicked!");
+    promise.set_value(true); // Đặt giá trị trả về là true
+}
+
+void TalentCarousel::onNoClicked() {
+    // Xử lý khi người chơi nhấn No
+    CCLOG("No clicked!");
+    promise.set_value(false); // Đặt giá trị trả về là false
+}
+
+void TalentCarousel::onCloseClicked() {
+    // Xử lý khi người chơi nhấn No
+    CCLOG("Close clicked!");
+    promise.set_value(false); // Đặt giá trị trả về là false
 }

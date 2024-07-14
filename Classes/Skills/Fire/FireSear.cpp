@@ -35,6 +35,7 @@ bool FireSear::init() {
     //Skill Sprite
     _skillSprite = Sprite::createWithSpriteFrameName("normal_attack_effect (1).png");
     _skillSprite->setScale(1);
+    _skillSprite->setOpacity(100);
     _skillSprite->setAnchorPoint(Vec2(0.5, 0.25));
     _skillSprite->retain();
 
@@ -127,7 +128,7 @@ void FireSear::performSkill(Vec2 target) {
                 //Boss
                 auto boss = game->boss;
                 if (boss && !boss->isDead && player->getPosition().distance(boss->getPosition()) <= player->getAttackRange()) {
-                    boss->takeDamage(skillDamage);
+                    boss->takeDamage(player->getDamage() + player->getEquipmentSkillDamage());
                     if (boss->getCurrentHP() <= 0) {
                         boss->die();
                     }

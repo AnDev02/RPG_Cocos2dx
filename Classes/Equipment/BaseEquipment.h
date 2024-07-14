@@ -5,6 +5,7 @@
 #include "../Engine/Engine.h"
 #include "./EquipmentFactory.h"
 #include "./UserInterface/InGame/EquipmentDetails.h"
+#include "Inventory/InventoryNode.h"
 USING_NS_CC;
 
 class BaseEquipment : public cocos2d::Sprite
@@ -32,7 +33,12 @@ public:
         std::string name;
         int level;
         std::string iconPath;
+        BaseEquipment::Type type;
     };
+    struct EquipmentStats {
+        float ad = 0, ap = 0, hp = 0, mp = 0, ms = 0, arm = 0, cdr = 0, currentLv = 0, maxLv = 0, coinToUpgrade = 0;
+    };
+
     EquipmentDetails* equipmentDetails = nullptr;
     Element getElement() const;
     void setElement(Element element);
@@ -57,14 +63,14 @@ public:
     void setTypeName(std::string newType) { typeName = newType; };
     // void setEquipmentSprite(Sprite *spr);
     // Sprite *getEquipmentSprite() const;
-    void setCDR(float time) { CDR = time; };
-    float getCDR() const { return CDR; };
-    void setHP(float newHP) { HP = newHP; };
-    float getHP() const { return HP; };
+    void setCDR(float time) { stats.cdr = time; };
+    float getCDR() const { return stats.cdr; };
+    void setHP(float newHP) { stats.hp = newHP; };
+    float getHP() const { return stats.hp; };
     void levelUp();
     void setLevel(int lv);
-    int getLevel() const { return currentLevel; };
-    int getMaxLevel() const { return maxLevel; };
+    int getLevel() const { return stats.currentLv; };
+    int getMaxLevel() const { return stats.maxLv; };
     LevelUpMaterials getMaterialsToUpgrade(int level) const { return materialsToUpgrade[level - 1]; };
     void showLootIndicator() {
         if(lootIndicator) lootIndicator->setVisible(true);
@@ -88,16 +94,7 @@ private:
     std::string description;
     std::string name;
     std::string typeName;
-    float damage = 0;
-    float skillDamage = 0;
-    float movementSpeed = 0;
-    float armor = 0;
-    float CDR = 0;
-    float MP = 0;
-    float HP = 0;
-    int currentLevel = 0;
-    int maxLevel = 5;
-    int coinToUpgrade = 10;
+    EquipmentStats stats;
 protected:
     Sprite* titleIndicator = nullptr;
     Label* itemNameIndicator = nullptr;

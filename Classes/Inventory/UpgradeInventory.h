@@ -8,9 +8,11 @@
 #include "./InventoryNode.h"
 #include "../UserInterface/InGame/UpgradeProgressBar.h"
 #include "UserInterface/InGame/ItemDetails.h"
+#include "ui/CocosGUI.h"
 USING_NS_CC;
 class Player;
 class Scrollview;
+
 class UpgradeInventory : public Node
 {
 public:
@@ -25,17 +27,17 @@ public:
     void removeEquipment(std::string equipmentName);
     void removeItem(std::string itemName);
     void showUpgradeInventory();
-    void sort();
     void hideUpgradeInventory();
     bool isShow() const { return isSo; };
-    void nextInventoryPage();
-    void prevInventoryPage();
-    void onPageChange();
     Size visibleSize;
     Size bgSize;
     Sprite* bg = nullptr;
     bool onTouchBegan(Touch* touch, Event* event);
+    bool onTouchBegan2(Touch* touch, Event* event);
+    void onTouchMoved(Touch* touch, Event* event);
+    void onTouchEnded(Touch* touch, Event* event);
     float widthSize;
+    Sprite* bg2;
     InventoryNode* weaponNode;
     InventoryNode* materialItem1;
     InventoryNode* materialItem2;
@@ -53,6 +55,22 @@ public:
     UpgradeProgressBar* upgradeProgressBar;
     std::vector<InventoryNode*> materialNodes;
     std::vector<InventoryNode*> inventoryNodes;
+    void ShowEquipmentDetails(std::string eIconPath, std::string eName, int eCurrentLevel);
+    InventoryNode* upgradeEIcon = nullptr;
+    Label* eNameLabel = nullptr;
+    Label* eStatsLabel = nullptr;
+    Label* eCurrentLevelLabel = nullptr;
+    InventoryNode* itemSlot1 = nullptr;
+    InventoryNode* itemSlot2 = nullptr;
+    InventoryNode* itemSlot3 = nullptr;
+    ui::Button* upgrade;
+    Sprite* popupBack = nullptr;
+    Label* popupFront = nullptr;
+    int currentEquipmentId = 0;
+    void onPageChange();
+    void nextInventoryPage();
+    void prevInventoryPage();
+    void sort();
 private:
     std::vector<BaseEquipment::EquipmentData> equipmentsData;
     const int totalInventoryPage = 3;
@@ -77,7 +95,12 @@ private:
     bool isDraggingItem = false;
     bool isSo = false;
     bool isInUpgrade = false;
-
+    Vec2 touchStartPoint;
+    cocos2d::Node* currentSwipeNode = nullptr;
+    std::vector<cocos2d::Node*> nodesToAdd;
+    void adjustNodesPosition();
+    float minY = 0, maxY = minY;
+    Node* crENode = nullptr;
 };
 
 #endif // __UPGRADE_INVENTORY_H__
