@@ -53,7 +53,6 @@ public:
     Label* cdrStat;
     Label* armStat;
     UpgradeProgressBar* upgradeProgressBar;
-    std::vector<InventoryNode*> materialNodes;
     std::vector<InventoryNode*> inventoryNodes;
     void ShowEquipmentDetails(std::string eIconPath, std::string eName, int eCurrentLevel);
     InventoryNode* upgradeEIcon = nullptr;
@@ -63,14 +62,20 @@ public:
     InventoryNode* itemSlot1 = nullptr;
     InventoryNode* itemSlot2 = nullptr;
     InventoryNode* itemSlot3 = nullptr;
-    ui::Button* upgrade;
+    Sprite* upgradeButton = nullptr;
+    Label* durinStoreLabel = nullptr;
+    std::vector<InventoryNode*> materialNodes;
+    std::vector<std::tuple<std::string, int>> itemsAndQuantity;
     Sprite* popupBack = nullptr;
+    bool isUpgradeSuccess = true;
     Label* popupFront = nullptr;
     int currentEquipmentId = 0;
+    Game* game = nullptr;
     void onPageChange();
     void nextInventoryPage();
     void prevInventoryPage();
     void sort();
+   // void upgradeEquipment();
 private:
     std::vector<BaseEquipment::EquipmentData> equipmentsData;
     const int totalInventoryPage = 3;

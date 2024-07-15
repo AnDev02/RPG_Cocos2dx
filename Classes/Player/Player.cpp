@@ -587,11 +587,13 @@ void Player::pickUpEquipment(std::string equipmentName, int equipmentLv) {
 }
 
 void Player::pickUpItem(std::string itemName) {
-    if(itemName != "Gold") inventory->addItem(itemName, 1);
-    setMessage(itemName);
-    auto item = ItemFactory::createItem(itemName);
-    if (item->getItemType() != BaseItem::Type::POTION_ITEM && item->getItemType() != BaseItem::Type::COMON) {
-        upgradeInventory->addItem(itemName, 1);
+    if (itemName != "Gold") {
+        inventory->addItem(itemName, 1);
+        setMessage(itemName);
+        auto item = ItemFactory::createItem(itemName);
+        if (item->getItemType() == BaseItem::Type::UPGRADE_ITEM) {
+            upgradeInventory->addItem(itemName, 1);
+        }
     }
 
     //Gold 

@@ -114,6 +114,7 @@ bool InventoryNode::setBaseEquipment(std::string be, int equipmentLv)
 
 bool InventoryNode::setBaseItem(std::string be)
 {
+    if (be == "") return false;
     if (this->getStatus() == "busy")
     {
         this->removeBaseItem();
@@ -160,6 +161,7 @@ bool InventoryNode::removeBaseEquipment()
         this->baseEquipment = nullptr;
         this->setQuantity(0);
         this->setStatus("free");
+        //Color4B(20, 20, 23, 21);
         return true;
     }
     return false;
@@ -267,6 +269,7 @@ bool InventoryNode::decreaseBaseItem(std::string itemName, int quantity)
 
 
 void InventoryNode::setMaterialsToUpgrade(std::string itemName, int itemQuantity) {
+    if (itemName == "" || itemQuantity == 0) return;
     if (!isMaterialNode)
     {
         isMaterialNode = true;
@@ -352,6 +355,7 @@ void InventoryNode::setQuantity(int qtt)
         if (this->baseItem) {
             quantityLabel->setVisible(true);
             quantityLabel->setString(std::to_string(quantityItem) + "/" + std::to_string(requiredQuantity));
+            quantityLabel->setScale(0.6);
             if (quantityItem < requiredQuantity) {
                 quantityLabel->setTextColor(Color4B::RED);
             }
