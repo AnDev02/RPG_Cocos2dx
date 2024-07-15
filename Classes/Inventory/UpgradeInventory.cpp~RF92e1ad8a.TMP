@@ -265,15 +265,22 @@ void UpgradeInventory::ShowEquipmentDetails(std::string eIconPath, std::string e
         for (int i = 0; i < materialsToUpgrade.materialsItem.size(); i++) {
             materialNodes[i]->setMaterialsToUpgrade(std::get<0>(materialsToUpgrade.materialsItem[i]), std::get<1>(materialsToUpgrade.materialsItem[i]));
             materialNodes[i]->setBaseItem(std::get<0>(materialsToUpgrade.materialsItem[i]));
-            for (auto item1 : game->getPlayer()->getInventory()->getAllItem()) {
-                    auto item = game->getPlayer()->getInventory()->getItem(item1);
-                    if (std::get<0>(item) == std::get<0>(materialsToUpgrade.materialsItem[i]))
-                    {
-                        materialNodes[i]->setQuantity(std::get<1>(item));
-                    }
-                    NotificationManager::getInstance()->showMessageNotification(std::to_string(std::get<1>(item)), Vec2::ZERO, Color3B::RED, 20);
-                }
-            }
+            //for (auto item1 : game->getPlayer()->getInventory()->getAllItem()) {
+            //        auto item = game->getPlayer()->getInventory()->getItem(item1);
+            //        /*if (j > materialsToUpgrade.materialsItem.size() - 1) break;
+            //        if (std::get<0>(itemsAndQuantity[j]) == std::get<0>(materialsToUpgrade.materialsItem[i]))
+            //        {
+            //            materialNodes[i]->setQuantity(std::get<1>(materialsToUpgrade.materialsItem[i]));
+            //        }*/
+            //        NotificationManager::getInstance()->showMessageNotification(std::to_string(std::get<1>(item)), Vec2::ZERO, Color3B::RED, 20);
+
+            //        for (auto node : materialNodes) {
+            //            if (std::get<0>(item) == node->getBaseItem()->getItemName()) {
+            //                node->setQuantity(std::get<1>(item));
+            //            }
+            //        }
+            //    }
+            //}
             currentEquipmentId = -1;
         }
     }
@@ -333,6 +340,7 @@ void UpgradeInventory::ShowEquipmentDetails(std::string eIconPath, std::string e
     //    }
     //    count++;
     //}
+}
 
 void UpgradeInventory::onTouchEnded(Touch* touch, Event* event) {
     if (isShow()) 
