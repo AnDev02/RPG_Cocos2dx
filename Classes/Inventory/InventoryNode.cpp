@@ -146,6 +146,12 @@ bool InventoryNode::setBaseItem(std::string be)
             
             this->quantityLabel->setScale(0.5 * Director::getInstance()->getContentScaleFactor());
         }
+        if (isMaterialNode) {
+            this->baseItem->setScale(0.45 * Director::getInstance()->getContentScaleFactor());
+            this->baseItem->setPosition(Vec2(this->getBoundingNode().size.width / 2, this->getBoundingNode().size.height / 2));
+            this->quantityLabel->setScale(0.5 * Director::getInstance()->getContentScaleFactor());
+            this->quantityLabel->setPosition(this->quantityLabel->getPosition() + Vec2(-this->quantityLabel->getContentSize().width / 6, this->quantityLabel->getContentSize().height / 2));
+        }
         this->addChild(this->baseItem);
     }
     return true;
@@ -288,6 +294,7 @@ void InventoryNode::setMaterialsToUpgrade(std::string itemName, int itemQuantity
                 quantityLabel->setTextColor(Color4B::RED);
                 quantityLabel->setVisible(true);
                 this->addChild(this->conditionItem);
+                this->conditionItem->setVisible(false);
             }
             return;
         }
@@ -312,6 +319,7 @@ void InventoryNode::setMaterialsToUpgrade(std::string itemName, int itemQuantity
             
             quantityLabel->setVisible(true);
             this->addChild(this->conditionItem);
+            this->conditionItem->setVisible(false);
         }
         return;
     }
@@ -354,6 +362,7 @@ void InventoryNode::setQuantity(int qtt)
     else {
         if (this->baseItem) {
             quantityLabel->setVisible(true);
+            if (quantityItem > requiredQuantity) quantityItem = requiredQuantity;
             quantityLabel->setString(std::to_string(quantityItem) + "/" + std::to_string(requiredQuantity));
             quantityLabel->setScale(0.6);
             if (quantityItem < requiredQuantity) {

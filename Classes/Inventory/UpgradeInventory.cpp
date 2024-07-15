@@ -265,18 +265,21 @@ void UpgradeInventory::ShowEquipmentDetails(std::string eIconPath, std::string e
         for (int i = 0; i < materialsToUpgrade.materialsItem.size(); i++) {
             materialNodes[i]->setMaterialsToUpgrade(std::get<0>(materialsToUpgrade.materialsItem[i]), std::get<1>(materialsToUpgrade.materialsItem[i]));
             materialNodes[i]->setBaseItem(std::get<0>(materialsToUpgrade.materialsItem[i]));
-            for (auto item1 : game->getPlayer()->getInventory()->getAllItem()) {
-                    auto item = game->getPlayer()->getInventory()->getItem(item1);
-                    if (std::get<0>(item) == std::get<0>(materialsToUpgrade.materialsItem[i]))
-                    {
-                        materialNodes[i]->setQuantity(std::get<1>(item));
-                    }
-                    NotificationManager::getInstance()->showMessageNotification(std::to_string(std::get<1>(item)), Vec2::ZERO, Color3B::RED, 20);
-                }
-            }
+            
             currentEquipmentId = -1;
         }
+        for (auto item1 : game->getPlayer()->getInventory()->getAllItem()) {
+            auto item = game->getPlayer()->getInventory()->getItem(item1);
+            if (std::get<0>(item).length() > 0) {
+                for (auto it : materialNodes) {
+                    if (it->conditionItem && it->conditionItem->getItemName() == std::get<0>(item)) {
+                        it->setQuantity(std::get<1>(item));
+                    }
+                }
+            }
+        }
     }
+}
     /* if (itemSlot1 && std::get<0>(materialsToUpgrade.materialsItem[0]).length() >= 1) {
         itemSlot1->removeMaterialCondition();
         itemSlot1->removeBaseItem();

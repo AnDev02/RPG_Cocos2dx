@@ -36,6 +36,7 @@ public:
     void setIsInventory(bool isTrue) { _inven = isTrue; };
     void hide();
     void show();
+    BaseItem* conditionItem;
     Sprite* getNodeSprite() {
         return nodeSpr;
     }
@@ -47,7 +48,6 @@ private:
     std::string status; // busy, free
     BaseEquipment* baseEquipment;
     BaseItem* baseItem;
-    BaseItem* conditionItem;
     Label* quantityLabel;
     int quantityItem;
     int id;
