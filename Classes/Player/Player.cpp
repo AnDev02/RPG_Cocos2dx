@@ -100,7 +100,7 @@ bool Player::init() {
     if(basePlayer.AD > 0)
         baseDamage = basePlayer.AD;
     else 
-        baseDamage = 68;
+        baseDamage = 1000;
 
     //AP
     if(basePlayer.AP > 0)

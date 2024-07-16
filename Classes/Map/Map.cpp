@@ -88,7 +88,6 @@ void GameMap::loadResource(int mapIndex)
     else if (mapIndex == 3) {
         if (!UserDefault::getInstance()->getBoolForKey("HellBeastInCache", false)) {
             loadHellBeastToCache();
-            loadSkeletonToCache();
             UserDefault::getInstance()->setBoolForKey("HellBeastInCache", true);
         }
     }

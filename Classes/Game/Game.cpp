@@ -1223,7 +1223,7 @@ void Game::moveCameraToBoss() {
         (-_player->getPosition().y + visibleSize.height * 0.5) * zoomLevel);
     Vec2 bossPos = Vec2((-boss->getPosition().x + visibleSize.width * 0.5) * zoomLevel,
         (-boss->getPosition().y + visibleSize.height * 0.5) * zoomLevel);
-    auto sqe = Sequence::create(DelayTime::create(3.0f), cocos2d::CallFunc::create([this]() {
+    auto sqe = Sequence::create(DelayTime::create(1.5f), cocos2d::CallFunc::create([this]() {
                 unschedule(CC_SCHEDULE_SELECTOR(Game::updateCamera));
                 inGameUI->setVisible(false);
                 Scene* currentscene = Director::getInstance()->getRunningScene();

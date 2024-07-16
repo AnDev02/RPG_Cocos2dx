@@ -14,9 +14,9 @@ bool HellBeast::init() {
     this->getHitState = new BossGetHit(this);
     this->deadState = new BossDead(this);
     //Boss Skills
-    this->addSkill("Summon");
+    //this->addSkill("Summon");
     this->addSkill("Unleash");
-    //this->addSkill("BombRainbow");
+    ////this->addSkill("BombRainbow");
     this->addSkill("MultiFireBall");
     this->addSkill("Fortify");
 

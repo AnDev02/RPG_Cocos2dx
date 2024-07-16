@@ -62,6 +62,8 @@ public:
     void showTeleportEffect();
     Boss* boss = nullptr;
     InGameUI* inGameUI;
+
+    void moveCameraToBoss();
     ~Game();
     CREATE_FUNC(Game);
 private:

@@ -116,7 +116,7 @@ void MultiFireBall::update(float dt) {
 				auto children = game->gameMap->getTiledMap()->getChildren();
 				for (const auto& child : children) {
 					auto player = dynamic_cast<Player*>(child);
-					if (player && skillSprite->getPosition().distance(player->getPosition()) <= 60) {
+					if (player && skillSprite->getPosition().distance(player->getPosition()) <= 35) {
 						player->takeDamage(skillDamage);
 						unschedule(CC_SCHEDULE_SELECTOR(MultiFireBall::update));
 						break;

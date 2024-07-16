@@ -37,7 +37,7 @@ bool HamburgerMenuButton::init(HamburgerMenu* hamburgerMenu)
 
 bool HamburgerMenuButton::onTouchBegan(Touch *touch, Event *event)
 {
-    if (isVisible() && btnSprite->isVisible()) {
+    if (isVisible() && btnSprite->isVisible() && this->getParent()->isVisible()) {
         if (btnSprite->getBoundingBox().containsPoint(this->convertToNodeSpace(touch->getLocation())))
         {
             UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/click_button_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
