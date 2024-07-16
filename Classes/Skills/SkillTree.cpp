@@ -54,6 +54,7 @@ bool SkillTree::init(Player* player, SkillBase::SkillTalent* skillRoot)
     listener->setSwallowTouches(true);
     listener->onTouchBegan = [this, player](cocos2d::Touch* touch, cocos2d::Event* event)
         {
+
             if (this->isVisible())
             {
                 auto touchPoint = this->convertToNodeSpace(touch->getLocation());
@@ -65,7 +66,8 @@ bool SkillTree::init(Player* player, SkillBase::SkillTalent* skillRoot)
                         auto parentPosition = std::get<1>(parentNode)->getPosition();
                         auto nodeSize = std::get<1>(parentNode)->getContentSize();
                         auto parentBoundingBox = cocos2d::Rect(parentPosition.x - nodeSize.width / 2, parentPosition.y - nodeSize.height / 2, nodeSize.width, nodeSize.height);
-                        if (isVisible() && parentBoundingBox.containsPoint(touchPoint) && this->getParent()->isVisible() && std::get<1>(parentNode)->getParent()->isVisible())
+                        
+                        if (isVisible() && parentBoundingBox.containsPoint(touchPoint) && this->getParent()->isVisible() && std::get<1>(parentNode)->getParent()->isVisible() && std::get<1>(parentNode)->isVisible())
                         {
                             if (std::get<0>(parentNode)->skillName.find(this->treeName) != std::string::npos) {
                                 UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/click_button_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
