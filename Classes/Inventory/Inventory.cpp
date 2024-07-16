@@ -1716,15 +1716,17 @@ void Inventory::upgradeEquipment(std::string equipmentName) {
         return;
     }
     for (auto node : inventoryNodes) {
-        auto baseEquipmentI = node->getBaseEquipment();
-        if (baseEquipmentI && baseEquipmentI->getEquipmentName() == equipmentName) {
-            auto materialsToUpgrade = baseEquipmentI->materialsToUpgrade[baseEquipmentI->getLevel() - 1];
-            for (auto j : materialsToUpgrade.materialsItem) {
-                std::string name = std::get<0>(j);
-                int quantity = std::get<1>(j);
-                for (auto k : inventoryNodes) {
-                    if (k->getBaseItem() && k->getBaseItem()->getItemName() == name) {
-                        k->decreaseBaseItem(quantity);
+        if (node) {
+            auto baseEquipmentI = node->getBaseEquipment();
+            if (baseEquipmentI && baseEquipmentI->getEquipmentName() == equipmentName) {
+                auto& materialsToUpgrade = baseEquipmentI->materialsToUpgrade[baseEquipmentI->getLevel() - 1];
+                for (auto j : materialsToUpgrade.materialsItem) {
+                    std::string name = std::get<0>(j);
+                    int quantity = std::get<1>(j);
+                    for (auto k : inventoryNodes) {
+                        if (k->getBaseItem() && k->getBaseItem()->getItemName() == name) {
+                            k->decreaseBaseItem(quantity);
+                        }
                     }
                 }
             }

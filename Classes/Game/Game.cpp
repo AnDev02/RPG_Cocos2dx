@@ -30,6 +30,8 @@ Scene *Game::createGame()
         layer->removeAllChildren();
         layer->removeFromParentAndCleanup(true);
     }
+
+
     layer = Game::create();
     layer->setName("GameInstance");
     layer->setPhysicsWorld(scene->getPhysicsWorld());
@@ -443,8 +445,7 @@ bool Game::loadMap(int levelMap)
     else
     {
         _player->pickUpEquipment("Chipped Shoe", 1);
-        _player->pickUpEquipment("Chipped Shoe", 1);
-        _player->pickUpEquipment("Chipped Shoe", 1);
+        _player->pickUpEquipment("Soul Slayer Sword", 1);
         _player->pickUpEquipment("Chipped Shoe", 1);
         _player->pickUpEquipment("Chipped Shoe", 1);
         _player->pickUpEquipment("Chipped Shoe", 1);
