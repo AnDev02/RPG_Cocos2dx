@@ -443,7 +443,6 @@ bool Game::loadMap(int levelMap)
     else
     {
         _player->pickUpEquipment("Chipped Shoe", 1);
-        _player->pickUpEquipment("Soul Armor", 1);
         _player->pickUpEquipment("Soul Slayer Sword", 1);
         _player->pickUpEquipment("Chipped Shoe", 1);
         _player->pickUpEquipment("Chipped Shoe", 1);
