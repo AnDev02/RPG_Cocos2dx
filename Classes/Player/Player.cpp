@@ -70,7 +70,7 @@ bool Player::init() {
     if (basePlayer.HP > 0)
         HP = basePlayer.HP;
     else
-        HP = 11570;
+        HP = 570;
     //MP
 
     if(basePlayer.MP > 0) 

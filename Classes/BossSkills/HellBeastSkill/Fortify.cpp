@@ -42,7 +42,7 @@ void Fortify::performSkill(Vec2 target) {
 					auto player = dynamic_cast<Player*>(child);
 					if (player) {
 						//Kim tra xem enemy c nm trong vng nh hng ca skill hay khng
-						if (target.distance(player->getPosition()) <= 80) {
+						if (target.distance(player->getPosition()) <= 60) {
 							player->takeDamage(skillDamage);
 							if (player->getCurrentHP() == 0) {
 

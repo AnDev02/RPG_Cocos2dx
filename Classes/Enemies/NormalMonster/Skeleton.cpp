@@ -21,7 +21,7 @@ bool Skeleton::init() {
      //MS
      MS = Director::getInstance()->getContentScaleFactor()*400;
      //AR
-     attackRange = 40;
+     attackRange = 20;
      //AS
      attackSpeed = 1.0;
      //Exp gain
