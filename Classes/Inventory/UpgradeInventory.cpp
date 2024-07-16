@@ -55,6 +55,7 @@ bool UpgradeInventory::init(Player* player)
     {
         return false;
     }
+
     visibleSize = Director::getInstance()->getVisibleSize();
     bg = Sprite::create("res/background-img-3.5.png");
     bg2 = Sprite::create("res/background-img-3-semi.png");
