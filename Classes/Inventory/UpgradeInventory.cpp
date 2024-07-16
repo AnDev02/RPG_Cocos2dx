@@ -539,6 +539,7 @@ void UpgradeInventory::sort() {
 
 void UpgradeInventory::showItemDetails(BaseItem* item, bool isInMaterialsNode) {
     std::string path = item->getItemSprite()->getTexture()->getPath();
+
     std::string name = item->getItemName();
     if (item->itemDetails == nullptr) {
         item->itemDetails = ItemDetails::create(path, name, item->getItemDesc(), item->getItemType(), "", true, movingItemQuantity, isInMaterialsNode, item->getItemLevel());
