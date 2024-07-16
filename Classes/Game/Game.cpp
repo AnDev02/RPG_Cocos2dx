@@ -175,7 +175,7 @@ bool Game::loadMap(int levelMap)
         //listOfBoss.clear();
         listNPC.clear();
 
-            _player->observers.clear();
+        _player->observers.clear();
 
         _player->removeFromParentAndCleanup(true);
         _player = nullptr;

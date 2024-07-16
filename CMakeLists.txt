@@ -411,7 +411,7 @@ list(APPEND GAME_HEADER
      Classes/UserInterface/InGame/Joystick.h
      Classes/UserInterface/InGame/SkillButton.h
      Classes/UserInterface/InGame/InventoryButton.h
-     Classes/UserInterface/InGame/UpgradeInventoryButton.h
+     Classes/UserInterface/InGame/.h
      Classes/UserInterface/InGame/TalentButton.h
      Classes/UserInterface/InGame/Minimap.h
      Classes/UserInterface/InGame/TalentCarousel.h
