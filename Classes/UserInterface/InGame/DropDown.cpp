@@ -52,19 +52,19 @@ bool Dropdown::onTouchBegan(Touch* touch, Event* event) {
             ScaleTo* scaleAction;
             if (isOpen) {
                 scaleAction = ScaleTo::create(0.3, bg->getScaleX() * 2.6, bg->getScaleY());
-                inGameUI->inventoryButton->setVisible(false);
-                inGameUI->talentButton->setVisible(false);
+                inGameUI->inventoryButton->setVisible(true);
+                inGameUI->talentButton->setVisible(true);
             }
             else {
                 scaleAction = ScaleTo::create(0.3, bg->getScaleX() / 2.6, bg->getScaleY());
                 this->runAction(Sequence::create(
                     DelayTime::create(0.2), 
                     CallFunc::create([this]() {
-                    inGameUI->inventoryButton->setVisible(true);
+                    inGameUI->inventoryButton->setVisible(false);
                     }), 
                     DelayTime::create(0.208), 
                     CallFunc::create([this]() {
-                    inGameUI->talentButton->setVisible(true);
+                    inGameUI->talentButton->setVisible(false);
                     }), nullptr));
             }
 
