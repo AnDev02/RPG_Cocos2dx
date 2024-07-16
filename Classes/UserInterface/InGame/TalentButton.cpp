@@ -38,7 +38,7 @@ bool TalentButton::init(TalentCarousel* talentCarousel) {
 }
 
 bool TalentButton::onTouchBegan(Touch* touch, Event* event) {
-    if (isVisible() && btnSprite->isVisible()&& UserDefault::getInstance()->getIntegerForKey("current_tutorial", 0) >= 4) {
+    if (isVisible() && btnSprite->isVisible()&& this->getParent()->isVisible() && UserDefault::getInstance()->getIntegerForKey("current_tutorial", 0) >= 4) {
         if (btnSprite->getBoundingBox().containsPoint(this->convertToNodeSpace(touch->getLocation()))) {
             UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/click_button_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
 

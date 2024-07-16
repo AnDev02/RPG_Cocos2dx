@@ -40,7 +40,7 @@ bool Dropdown::init(InGameUI* inGameUI) {
 }
 
 bool Dropdown::onTouchBegan(Touch* touch, Event* event) {
-    if (isVisible()) {
+    if (isVisible() && this->getParent()->isVisible()) {
         auto startPoint = this->convertToNodeSpace(touch->getLocation());
         if (iconSprite->getBoundingBox().containsPoint(startPoint)) {
             iconSprite->setVisible(false);
