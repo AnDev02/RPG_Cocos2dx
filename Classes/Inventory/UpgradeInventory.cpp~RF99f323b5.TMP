@@ -405,8 +405,6 @@ void UpgradeInventory::onTouchEnded(Touch* touch, Event* event) {
                         if (currentLabel) currentLabel->setString(currentEquipmentName + " || Lv." + std::to_string(currentEquipmentLv));
                     }
 
-                        if(currentEquipmentId != -1 && equipmentsData[currentEquipmentId])
-                            equipmentsData[currentEquipmentId]->level += 1;
                     this->ShowEquipmentDetails(currentEquipmentName, currentEquipmentLv);
                 }
               //  resetUI();
