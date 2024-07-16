@@ -97,7 +97,7 @@ bool UpgradeInventory::onTouchBegan(Touch* touch, Event* event) {
         if (buttonClose->getBoundingBox().containsPoint(touchLocation)) {
             hideUpgradeInventory();
         }
-        if (upgradeButton && upgradeButton->getBoundingBox().containsPoint(touchLocation)) {
+        if (upgradeButton != nullptr && upgradeButton->getBoundingBox().containsPoint(touchLocation)) {
             UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/click_button_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
             upgradeButton->setTexture("res/buttonUpgradeE_push.png");
         }
@@ -289,17 +289,17 @@ void UpgradeInventory::ShowEquipmentDetails(std::string eName, int eCurrentLevel
         }
         eStatsLabel->setString(temp.statsStr);
 
-        if (upgradeButton == nullptr) {
-            upgradeButton = Sprite::create("res/buttonUpgradeE.png"); // , "res/buttonUpgradeE_push.png"
-            auto text = Label::createWithTTF("Upgrade", "fonts/Diablo Light.ttf", 18);
-            text->setPosition(upgradeButton->getContentSize() / 2);
-            text->setScale(0.29);
-            upgradeButton->addChild(text);
-            upgradeButton->setPosition(Vec2(eNameLabel->getPositionX(), -bgSize.height / 2 + upgradeButton->getContentSize().height + 2 * Director::getInstance()->getContentScaleFactor()));
-            this->addChild(upgradeButton, 20);
-            upgradeButton->retain();
+        if(upgradeButton) {
+            upgradeButton->removeFromParentAndCleanup(true);
+            upgradeButton = nullptr;
         }
-        
+        upgradeButton = Sprite::create("res/buttonUpgradeE.png"); // , "res/buttonUpgradeE_push.png"
+        auto text = Label::createWithTTF("Upgrade", "fonts/Diablo Light.ttf", 18);
+        text->setPosition(upgradeButton->getContentSize() / 2);
+        text->setScale(0.29);
+        upgradeButton->addChild(text);
+        upgradeButton->setPosition(Vec2(eNameLabel->getPositionX(), -bgSize.height / 2 + upgradeButton->getContentSize().height + 2 * Director::getInstance()->getContentScaleFactor()));
+        this->addChild(upgradeButton, 20);
 
         BaseEquipment::LevelUpMaterials materialsToUpgrade = onUpgradeEquipment->materialsToUpgrade[eCurrentLevel - 1];
 
