@@ -30,6 +30,8 @@ Scene *Game::createGame()
         layer->removeAllChildren();
         layer->removeFromParentAndCleanup(true);
     }
+
+
     layer = Game::create();
     layer->setName("GameInstance");
     layer->setPhysicsWorld(scene->getPhysicsWorld());
