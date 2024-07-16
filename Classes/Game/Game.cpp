@@ -1239,6 +1239,7 @@ void Game::moveCameraToBoss() {
             MoveTo::create(6.0f, bossPos),
         cocos2d::CallFunc::create([this]() {
             boss->SwitchState(boss->roarState);
+            UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/terra_roar.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
             }), 
             DelayTime::create(3.0f), MoveTo::create(3.0f, playerPos),
             cocos2d::CallFunc::create([this]() {
