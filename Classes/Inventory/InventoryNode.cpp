@@ -1,5 +1,5 @@
 #include "InventoryNode.h"
-
+#include "NotificationManager/NotificationManager.h"
 InventoryNode* InventoryNode::createInventoryNode(float size)
 {
     auto inventoryNode = new (std::nothrow) InventoryNode();
@@ -252,6 +252,7 @@ bool InventoryNode::decreaseBaseItem(int quantity)
         if (this->quantityItem >= quantity)
         {
             this->quantityItem -= quantity;
+            NotificationManager::getInstance()->showMessageNotification("\n\n\nDecrease Base Item Success!", Vec2::ZERO, Color3B::ORANGE, 30);
             quantityLabel->setString(std::to_string(quantityItem) + "/" + std::to_string(requiredQuantity));
             if (this->getQuantity() <= 0 && this->baseItem)
             {
@@ -300,11 +301,11 @@ void InventoryNode::setMaterialsToUpgrade(std::string itemName, int itemQuantity
         }
     }
     else {
+        requiredQuantity = itemQuantity;
         if (this->conditionItem) this->conditionItem->removeFromParentAndCleanup(true);
         this->conditionItem = ItemFactory::createItem(itemName);
         if (this->conditionItem)
         {
-            requiredQuantity = itemQuantity;
             float itemScaleX = nodeSpr->getContentSize().width * (nodeScaleX * 0.28) / this->conditionItem->getItemSprite()->getContentSize().width;
             float itemScaleY = nodeSpr->getContentSize().height * (nodeScaleY * 0.5) / this->conditionItem->getItemSprite()->getContentSize().height;
             this->conditionItem->setScale(itemScaleX);
@@ -367,8 +368,10 @@ void InventoryNode::setQuantity(int qtt)
             quantityLabel->setScale(0.6);
             if (quantityItem < requiredQuantity) {
                 quantityLabel->setTextColor(Color4B::RED);
+                checkQuantityRequired = false;
             }
             else {
+                checkQuantityRequired = true;
                 quantityLabel->setTextColor(Color4B::GREEN);
             }
         }

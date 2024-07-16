@@ -174,12 +174,10 @@ bool BaseEquipment::init()
         materialsToUpgrade.push_back(level5);
     }
    
-    this->retain();
 
 
     return true;
 }
-
 void BaseEquipment::setElement(Element element) {
     this->element = element;
 }

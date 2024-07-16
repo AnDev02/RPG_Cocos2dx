@@ -40,8 +40,10 @@ public:
     Sprite* getNodeSprite() {
         return nodeSpr;
     }
+    bool checkQuantityRequire() const { return checkQuantityRequired; };
     ~InventoryNode();
 private:
+    bool checkQuantityRequired = false;
     bool _subInven;
     bool _inven;
     Sprite* nodeSpr;

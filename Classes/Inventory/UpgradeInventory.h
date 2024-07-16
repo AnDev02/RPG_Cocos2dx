@@ -12,6 +12,7 @@
 USING_NS_CC;
 class Player;
 class Scrollview;
+class UpgradeDetails;
 
 class UpgradeInventory : public Node
 {
@@ -36,6 +37,7 @@ public:
     bool onTouchBegan2(Touch* touch, Event* event);
     void onTouchMoved(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);
+    bool isUpgrade = false;
     float widthSize;
     Sprite* bg2;
     InventoryNode* weaponNode;
@@ -54,7 +56,8 @@ public:
     Label* armStat;
     UpgradeProgressBar* upgradeProgressBar;
     std::vector<InventoryNode*> inventoryNodes;
-    void ShowEquipmentDetails(std::string eIconPath, std::string eName, int eCurrentLevel);
+    void ShowEquipmentDetails(std::string eName, int eCurrentLevel);
+    UpgradeDetails* upgradeDetails = nullptr;
     InventoryNode* upgradeEIcon = nullptr;
     Label* eNameLabel = nullptr;
     Label* eStatsLabel = nullptr;
@@ -71,13 +74,21 @@ public:
     Label* popupFront = nullptr;
     int currentEquipmentId = 0;
     Game* game = nullptr;
+    std::string currentEquipmentName = "";
+    int currentEquipmentLv = 1;
+    std::string currentIconPath = "";
+    BaseEquipment* equipmentTemp = nullptr;
+    Label* currentLabel = nullptr;
+    void resetUI();
     void onPageChange();
     void nextInventoryPage();
     void prevInventoryPage();
+    void resetMaterialNodes();
     void sort();
+    BaseEquipment* onUpgradeEquipment = nullptr;
    // void upgradeEquipment();
 private:
-    std::vector<BaseEquipment::EquipmentData> equipmentsData;
+    std::vector<BaseEquipment::EquipmentData*> equipmentsData;
     const int totalInventoryPage = 3;
     const int numRows = 5;
     const int numCols = 5;
@@ -85,7 +96,6 @@ private:
     Sprite* prevInvenButton = nullptr;
     Sprite* nextInvenButton = nullptr;
     Label* pageLabel = nullptr;
-    void showEquipmentDetails(BaseEquipment* equipment, bool isInUpgrade);
     void showItemDetails(BaseItem* item, bool isInMaterialsNode);
     Sprite* buttonClose;
     Sprite* mainUpgradeInventory;
