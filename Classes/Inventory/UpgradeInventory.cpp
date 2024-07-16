@@ -458,9 +458,6 @@ void UpgradeInventory::onAddEquipment() {
     if (nodesToAdd.size() == 6) {
         maxY = nodesToAdd[nodesToAdd.size() - 1]->getPosition().y + nodesToAdd[nodesToAdd.size() - 1]->getContentSize().height / 2;
     }
-
-
-
 }
 /// <summary>
 /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
