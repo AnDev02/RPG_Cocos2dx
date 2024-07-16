@@ -54,7 +54,7 @@ public:
     InventoryNode* itemNode3 = nullptr;
     InventoryNode* itemNode4 = nullptr;
     LayerColor* overlay = nullptr;
-
+    Vec2 prevPoint = Vec2::ZERO;
     std::vector<InventoryNode*> listItemNodes;
     Node* playerStats;
     Label* dmgStat;

@@ -389,6 +389,7 @@ bool Inventory::init(Player* _player)
 
                 auto endPoint = this->convertToNodeSpace(touch->getLocation());
                 isSorting = false;
+                bool isShowDetail = false;
                 if ((equipment && currentNode->getBoundingNode().containsPoint(endPoint)) || (equipment && TutorialManager::getInstance()->currentTutorial == 3 && currentNode->getBoundingNode().containsPoint(endPoint))) {
                     equipment->setGlobalZOrder(50);
                  /*   for (auto i : this->listItemNodes) {
@@ -397,6 +398,7 @@ bool Inventory::init(Player* _player)
                         }
                     }*/
                     showEquipmentDetails(equipment, isPlayerUsing);
+                    isShowDetail = true;
                 }
                 else if (item && currentNode->getBoundingNode().containsPoint(endPoint) && TutorialManager::getInstance()->currentTutorial != 3) {
                     if (currentNode == itemNode1 || currentNode == itemNode2 || currentNode == itemNode3 || currentNode == itemNode4) {
@@ -405,6 +407,7 @@ bool Inventory::init(Player* _player)
                     else {
                         showItemDetails(item);
                     }
+                    isShowDetail = true;
                 }
                 isPlayerUsing = false;
                 if (isDraggingItem && isSo)
@@ -669,14 +672,14 @@ bool Inventory::init(Player* _player)
                         for (auto& i : inventoryNodes)
                         {
                             if (i->isVisible()) {
-                                if (equipment && i->getBoundingNode().containsPoint(equipment->getPosition()) && i->getStatus() == "free")
+                                if (isShowDetail == false && equipment && i->getBoundingNode().containsPoint(equipment->getPosition()) && i->getStatus() == "free")
                                 {
                                     i->setBaseEquipment(equipment->getEquipmentName(), equipment->getLevel());
                                     i->setQuantity(1);
                                     count++;
                                     break;
                                 }
-                                else if (item && i->getBoundingNode().containsPoint(item->getPosition()) && i->getStatus() == "free") {
+                                else if (isShowDetail == false && item && i->getBoundingNode().containsPoint(item->getPosition()) && i->getStatus() == "free") {
                                     i->setBaseItem(item->getItemName());
                                     i->setQuantity(movingItemQuantity);
                                     movingItemQuantity = 0;
