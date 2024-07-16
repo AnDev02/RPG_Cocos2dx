@@ -182,28 +182,22 @@ void UpgradeInventory::resetUI() {
         }
     }
 
-    for (auto node : materialNodes) {
-
-    }
-         auto materialsToUpgrade = equipmentTemp->getMaterialsToUpgrade(equipmentTemp->getLevel());
-    if (itemSlot1) itemSlot1->removeFromParentAndCleanup(true);
+    auto materialsToUpgrade = onUpgradeEquipment->getMaterialsToUpgrade(onUpgradeEquipment->getLevel());
     itemSlot1 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
     itemSlot1->setPosition(Vec2(bgSize.width * 0.25 - itemSlot1->getBoundingNode().size.width * 1.25, upgradeButton->getPosition().y + upgradeButton->getContentSize().height / 2));
     materialNodes.push_back(itemSlot1);
     this->addChild(itemSlot1);
 
-    if (itemSlot2) itemSlot2->removeFromParentAndCleanup(true);
     itemSlot2 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
     itemSlot2->setPosition(itemSlot1->getPosition() + Vec2(itemSlot1->getBoundingNode().size.width + 1 * Director::getInstance()->getContentScaleFactor(), 0));
     materialNodes.push_back(itemSlot2);
     this->addChild(itemSlot2);
 
-    if (itemSlot3) itemSlot3->removeFromParentAndCleanup(true);
     itemSlot3 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
     itemSlot3->setPosition(itemSlot2->getPosition() + Vec2(itemSlot2->getBoundingNode().size.width + 1 * Director::getInstance()->getContentScaleFactor(), 0));
     materialNodes.push_back(itemSlot3);
     this->addChild(itemSlot3);
-    for (int i = 0; i < materialsToUpgrade.materialsItem.size(); i++) {
+    for (int i = 0; i < materialNodes.size(); i++) {
         materialNodes[i]->setMaterialsToUpgrade(std::get<0>(materialsToUpgrade.materialsItem[i]), std::get<1>(materialsToUpgrade.materialsItem[i]));
         materialNodes[i]->setBaseItem(std::get<0>(materialsToUpgrade.materialsItem[i]));
 
