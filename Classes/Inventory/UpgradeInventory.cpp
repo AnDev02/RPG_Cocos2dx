@@ -182,7 +182,7 @@ void UpgradeInventory::resetUI() {
         }
     }
 
-    auto materialsToUpgrade = onUpgradeEquipment->getMaterialsToUpgrade(onUpgradeEquipment->getLevel());
+   // auto materialsToUpgrade = onUpgradeEquipment->getMaterialsToUpgrade(onUpgradeEquipment->getLevel());
     /*itemSlot1 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
     itemSlot1->setPosition(Vec2(bgSize.width * 0.25 - itemSlot1->getBoundingNode().size.width * 1.25, upgradeButton->getPosition().y + upgradeButton->getContentSize().height / 2));
     materialNodes.push_back(itemSlot1);
@@ -287,13 +287,15 @@ void UpgradeInventory::ShowEquipmentDetails(std::string eName, int eCurrentLevel
     }
     eStatsLabel->setString(temp.statsStr);
 
-        upgradeButton = Sprite::create("res/buttonUpgradeE.png"); // , "res/buttonUpgradeE_push.png"
-        auto text = Label::createWithTTF("Upgrade", "fonts/Diablo Light.ttf", 18);
-        text->setPosition(upgradeButton->getContentSize() / 2);
-        text->setScale(0.29);
-        upgradeButton->addChild(text);
-        upgradeButton->setPosition(Vec2(eNameLabel->getPositionX(), -bgSize.height / 2 + upgradeButton->getContentSize().height + 2 * Director::getInstance()->getContentScaleFactor()));
-        this->addChild(upgradeButton, 20);
+        if(upgradeButton = nullptr) {
+            upgradeButton = Sprite::create("res/buttonUpgradeE.png"); // , "res/buttonUpgradeE_push.png"
+            auto text = Label::createWithTTF("Upgrade", "fonts/Diablo Light.ttf", 18);
+            text->setPosition(upgradeButton->getContentSize() / 2);
+            text->setScale(0.29);
+            upgradeButton->addChild(text);
+            upgradeButton->setPosition(Vec2(eNameLabel->getPositionX(), -bgSize.height / 2 + upgradeButton->getContentSize().height + 2 * Director::getInstance()->getContentScaleFactor()));
+            this->addChild(upgradeButton, 20);
+        }
 
         BaseEquipment::LevelUpMaterials materialsToUpgrade = onUpgradeEquipment->materialsToUpgrade[eCurrentLevel - 1];
 
@@ -327,9 +329,10 @@ void UpgradeInventory::ShowEquipmentDetails(std::string eName, int eCurrentLevel
             materialNodes[i]->setBaseItem(std::get<0>(materialsToUpgrade.materialsItem[i]));
             
         }
-        for (auto item1 : game->getPlayer()->getInventory()->getAllItem()) {
-            auto item = game->getPlayer()->getInventory()->getItem(item1);
-            if (std::get<0>(item).length() > 0) {
+        if(game && game->inGameUI && game->inGameUI->inventory)
+        for (auto item1 : game->inGameUI->inventory->getAllItem()) {
+            auto item = game->inGameUI->inventory->getItem(item1);
+            if (std::get<0>(item).length() > 1) {
                 for (auto it : materialNodes) {
                     if (it->conditionItem && it->conditionItem->getItemName() == std::get<0>(item)) {
                         it->setQuantity(std::get<1>(item));
@@ -352,7 +355,7 @@ void UpgradeInventory::onTouchEnded(Touch* touch, Event* event) {
             {
                 temp->setTexture("res/item_in_upgrade_push.png");
                 if(currentEquipmentId != -1)
-                    UpgradeInventory::ShowEquipmentDetails(equipmentsData[currentEquipmentId]->name, equipmentsData[currentEquipmentId]->level);
+                    this->ShowEquipmentDetails(equipmentsData[currentEquipmentId]->name, equipmentsData[currentEquipmentId]->level);
             }
         }
         if (upgradeButton && upgradeButton->getBoundingBox().containsPoint(touchLocation) && isUpgradeSuccess)
