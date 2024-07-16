@@ -625,6 +625,7 @@ std::vector<std::string> Player::getAllItem() {
 }
 
 void Player::upgradeEquipment(std::string equipmentName) {
+    if (equipmentName.length() < 1) return;
     inventory->upgradeEquipment(equipmentName);
 }
 

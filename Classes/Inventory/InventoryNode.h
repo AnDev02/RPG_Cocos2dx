@@ -36,18 +36,20 @@ public:
     void setIsInventory(bool isTrue) { _inven = isTrue; };
     void hide();
     void show();
+    BaseItem* conditionItem;
     Sprite* getNodeSprite() {
         return nodeSpr;
     }
+    bool checkQuantityRequire() const { return checkQuantityRequired; };
     ~InventoryNode();
 private:
+    bool checkQuantityRequired = false;
     bool _subInven;
     bool _inven;
     Sprite* nodeSpr;
     std::string status; // busy, free
     BaseEquipment* baseEquipment;
     BaseItem* baseItem;
-    BaseItem* conditionItem;
     Label* quantityLabel;
     int quantityItem;
     int id;

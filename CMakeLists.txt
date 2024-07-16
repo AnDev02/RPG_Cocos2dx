@@ -104,8 +104,9 @@ list(APPEND GAME_SOURCE
      Classes/Inventory/InventoryNode.cpp
      Classes/Inventory/UpgradeInventory.cpp
      Classes/Inventory/SubInventory.cpp
+     Classes/Inventory/UpgradeDetails.cpp
 
-     #Character
+        #Character
      Classes/BaseCharacter/BaseCharacter.cpp
      #+ NormalMonster
      Classes/Enemies/Enemy.cpp
@@ -337,6 +338,7 @@ list(APPEND GAME_HEADER
      Classes/Inventory/InventoryNode.h
      Classes/Inventory/UpgradeInventory.h
      Classes/Inventory/SubInventory.h
+     Classes/Inventory/UpgradeDetails.h
 
      #Character
      Classes/BaseCharacter/BaseCharacter.h
