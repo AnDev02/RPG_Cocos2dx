@@ -183,7 +183,7 @@ void UpgradeInventory::resetUI() {
     }
 
     auto materialsToUpgrade = onUpgradeEquipment->getMaterialsToUpgrade(onUpgradeEquipment->getLevel());
-    /*itemSlot1 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
+    itemSlot1 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
     itemSlot1->setPosition(Vec2(bgSize.width * 0.25 - itemSlot1->getBoundingNode().size.width * 1.25, upgradeButton->getPosition().y + upgradeButton->getContentSize().height / 2));
     materialNodes.push_back(itemSlot1);
     this->addChild(itemSlot1);
@@ -211,19 +211,19 @@ void UpgradeInventory::resetUI() {
                 }
             }
         }
-    }*/
- /*   if (game && game->getPlayer()) {
-        for (auto node : materialNodes) {
-            if (node->conditionItem->getItemName().length() > 0) {
-                auto itemTemp = game->getPlayer()->getInventory()->getItem(node->conditionItem->getItemName());
-                int quanTemp = node->getQuantity();
-                if (std::get<1>(itemTemp) < quanTemp) {
-                    node->setQuantity();
-                }
-            }
-        }
+    }
+    //if (game && game->getPlayer() && game->getPlayer()->getInventory()) {
+    //    for (auto node : materialNodes) {
+    //        if (node->conditionItem->getItemName().length() > 0) {
+    //            auto itemTemp = game->getPlayer()->getInventory()->getItem(node->conditionItem->getItemName());
+    //            int quanTemp = node->getQuantity();
+    //            if (std::get<1>(itemTemp) > quanTemp) {
+    //                node->setQuantity();
+    //            }
+    //        }
+    //    }
 
-    }*/
+    //}
 
 }
 
@@ -308,6 +308,18 @@ void UpgradeInventory::ShowEquipmentDetails(std::string eName, int eCurrentLevel
             materialNodes.clear();
             deleteNodes.clear();
         }
+        if (itemSlot1) {
+            itemSlot1->removeFromParentAndCleanup(true);
+            itemSlot1 = nullptr;
+        }
+        if (itemSlot2) {
+            itemSlot2->removeFromParentAndCleanup(true);
+            itemSlot2 = nullptr;
+        }
+        if (itemSlot3) {
+            itemSlot3->removeFromParentAndCleanup(true);
+            itemSlot3 = nullptr;
+        }
         itemSlot1 = InventoryNode::createInventoryNode(10 * Director::getInstance()->getContentScaleFactor());
         itemSlot1->setPosition(Vec2(bgSize.width * 0.25 - itemSlot1->getBoundingNode().size.width * 1.25, upgradeButton->getPosition().y + upgradeButton->getContentSize().height / 2));
         materialNodes.push_back(itemSlot1);
@@ -357,6 +369,8 @@ void UpgradeInventory::onTouchEnded(Touch* touch, Event* event) {
         }
         if (upgradeButton && upgradeButton->getBoundingBox().containsPoint(touchLocation) && isUpgradeSuccess)
         {
+            Scene* currentScene = Director::getInstance()->getRunningScene();
+            game = dynamic_cast<Game*>(currentScene->getChildByName("GameInstance"));
             upgradeButton->setTexture("res/buttonUpgradeE.png");
             for (auto node : materialNodes) {
                 if (node && node->getStatus() == "busy" && node->checkQuantityRequire() == false) {
@@ -383,10 +397,10 @@ void UpgradeInventory::onTouchEnded(Touch* touch, Event* event) {
                   /*  for (auto node : materialNodes) {
 
                     }*/
+                    this->ShowEquipmentDetails(currentEquipmentName, currentEquipmentLv);
                 }
                 
-                resetUI();
-                //this->ShowEquipmentDetails(currentEquipmentName, currentEquipmentLv);
+              //  resetUI();
             }
             else {
                 std::string tempStr2 = "Upgrade false!";
