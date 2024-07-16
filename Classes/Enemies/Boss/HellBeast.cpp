@@ -58,6 +58,7 @@ bool HellBeast::init() {
 
     currentHP = HP;
 
+    direction = 7;
     setAttackSpeed(attackSpeed);
     //SKILLS
     //

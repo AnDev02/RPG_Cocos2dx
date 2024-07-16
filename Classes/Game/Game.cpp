@@ -1236,7 +1236,11 @@ void Game::moveCameraToBoss() {
                     if (game->gameMap->getTiledMap()->getLayer("topshadow") && game->gameMap->getTiledMap()->getLayer("topshadow")->isVisible() == true)
                         game->gameMap->getTiledMap()->getLayer("topshadow")->setVisible(false);
                 }}),
-            MoveTo::create(6.0f, bossPos), DelayTime::create(1.0f), MoveTo::create(3.0f, playerPos),
+            MoveTo::create(6.0f, bossPos),
+        cocos2d::CallFunc::create([this]() {
+            boss->SwitchState(boss->roarState);
+            }), 
+            DelayTime::create(3.0f), MoveTo::create(3.0f, playerPos),
             cocos2d::CallFunc::create([this]() {
             schedule(CC_SCHEDULE_SELECTOR(Game::updateCamera), 0.0f);
             inGameUI->setVisible(true);
