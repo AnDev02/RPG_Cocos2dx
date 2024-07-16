@@ -6,8 +6,9 @@
 #include "./EquipmentFactory.h"
 #include "./UserInterface/InGame/EquipmentDetails.h"
 #include "Inventory/InventoryNode.h"
+#include "Inventory/UpgradeDetails.h"
 USING_NS_CC;
-
+class UpgradeDetails;
 class BaseEquipment : public cocos2d::Sprite
 {
 public:
@@ -84,8 +85,11 @@ public:
         }
     };
     std::vector<LevelUpMaterials> materialsToUpgrade;
+    UpgradeDetails* upgradeDetails = nullptr;
     ~BaseEquipment();
-
+    void showUpgradeDetails();
+    void hideUpgradeDetails();
+    void levelUpInUpgradeDetails();
     CREATE_FUNC(BaseEquipment);
 private:
     Element element = Element::NONE;
