@@ -21,13 +21,13 @@ bool Dropdown::init(InGameUI* inGameUI) {
     this->inGameUI = inGameUI;
     bg = Sprite::create("res/dropdown_btn.png");
     bg->setOpacity(180);
-    bg->setScale(4, 3);
+    bg->setScale(4 * 2.6, 3);
     iconSprite = Sprite::create("res/left-arr-ui2.png");
     iconSprite->setScale(1.9);
     this->addChild(bg);
     this->addChild(iconSprite);
-    isOpen = false;
-    isScaling = false;  // Khởi tạo biến cờ
+    isOpen = true;
+    isScaling = true;  // Khởi tạo biến cờ
     bg->setAnchorPoint(Vec2(1.0, 0));
     updateIconSpritePosition();
 
