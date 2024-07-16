@@ -89,7 +89,7 @@ void BossAttack::EnterState() {
             }
             //Idle
             if (boss->getPhysicsBody()->getVelocity().y == 0 && boss->getPhysicsBody()->getVelocity().x == 0) {
-                if (boss->isTargetInAttackRange) { 
+                if (boss->isTargetInAttackRange && boss->target->currentState != boss->target->deadState) { 
                     boss->SwitchState(boss->attackState); 
                 }
                 else {

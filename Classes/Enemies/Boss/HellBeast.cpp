@@ -45,16 +45,16 @@ bool HellBeast::init() {
     expGain = 770;
 
     //STATS BONUS
-    HP_bonus = 0;
+    HP_bonus = 1.1;
     MP_bonus = 0;
     HP_regen_bonus = 0;
     MP_regen_bonus = 0;
-    Armor_bonus = 12.8;
-    AD_bonus = 23.5;
+    Armor_bonus = 1.1;
+    AD_bonus = 1.1;
     MS_bonus = 0;
     AR_bonus = 0;
     AS_bonus = 0;
-    expGain_bonus = 45.8;
+    expGain_bonus = 1.35;
 
     currentHP = HP;
 

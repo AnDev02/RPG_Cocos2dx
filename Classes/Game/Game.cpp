@@ -517,6 +517,7 @@ bool Game::loadMap(int levelMap)
     inGameUI->setTarget(_player);
     inGameUI->setNPCs(listNPC);
 
+    if(levelMap != 3)
     _player->registerObserver(QuestManager::getInstance());
 
     if (gameMap->currentMap != JsonManager::getInstance()->getPlayerData().currentMap) {
