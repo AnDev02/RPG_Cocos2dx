@@ -137,7 +137,7 @@ void InGameUI::setTarget(Player* plr) {
     this->addChild(upgradeInventoryButton, 6);
 
     questBtn = QuestBtn::create();
-    questBtn->setPosition(dropdownButton->getPosition() - Vec2(dropdownButton->bg->getContentSize().width * dropdownButton->bg->getScaleX() / 2, -questBtn->btnSprite->getContentSize().height / 4 - 8));
+    questBtn->setPosition(dropdownButton->getPosition() - Vec2(dropdownButton->bg->getContentSize().width * dropdownButton->bg->getScaleX() / 7, -questBtn->btnSprite->getContentSize().height / 4 - 8));
     questBtn->setScale(0.35 * Director::getInstance()->getContentScaleFactor());
     this->addChild(questBtn, 6);
 

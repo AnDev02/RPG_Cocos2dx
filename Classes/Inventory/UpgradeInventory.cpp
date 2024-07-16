@@ -102,6 +102,7 @@ bool UpgradeInventory::onTouchBegan(Touch* touch, Event* event) {
             UserDefault::getInstance()->setIntegerForKey("sound_effect", Audio::getInstance()->play2d("sound/sounds effect/click_button_sound.mp3", false, SettingsData::getInstance()->getSoundSlider() / 100.0f));
             upgradeButton->setTexture("res/buttonUpgradeE_push.png");
         }
+
         //for (int i = 0; i < nodesToAdd.size(); i++) {
         //    if (nodesToAdd[i]->getBoundingBox().containsPoint(touchLocation)) {
         //        currentNode = equipmentsData[i];
@@ -301,6 +302,7 @@ void UpgradeInventory::ShowEquipmentDetails(std::string eName, int eCurrentLevel
         upgradeButton->addChild(text);
         upgradeButton->setPosition(Vec2(eNameLabel->getPositionX(), -bgSize.height / 2 + upgradeButton->getContentSize().height + 2 * Director::getInstance()->getContentScaleFactor()));
         this->addChild(upgradeButton, 20);
+        upgradeButton->retain();
 
         BaseEquipment::LevelUpMaterials materialsToUpgrade = onUpgradeEquipment->materialsToUpgrade[eCurrentLevel - 1];
 

@@ -44,7 +44,7 @@ bool Dropdown::onTouchBegan(Touch* touch, Event* event) {
         auto startPoint = this->convertToNodeSpace(touch->getLocation());
         if (iconSprite->getBoundingBox().containsPoint(startPoint)) {
             iconSprite->setVisible(false);
-            iconSprite->setRotation(isOpen ? 180 : 0);
+            iconSprite->setRotation(!isOpen ? 180 : 0);
             if (isScaling) {
                 return false; 
             }
