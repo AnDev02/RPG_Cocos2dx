@@ -291,10 +291,7 @@ void UpgradeInventory::ShowEquipmentDetails(std::string eName, int eCurrentLevel
         }
         eStatsLabel->setString(temp.statsStr);
 
-        if(upgradeButton) {
-            upgradeButton->removeFromParentAndCleanup(true);
-            upgradeButton = nullptr;
-        }
+        if (upgradeButton) upgradeButton->removeFromParentAndCleanup(true);
         upgradeButton = Sprite::create("res/buttonUpgradeE.png"); // , "res/buttonUpgradeE_push.png"
         auto text = Label::createWithTTF("Upgrade", "fonts/Diablo Light.ttf", 18);
         text->setPosition(upgradeButton->getContentSize() / 2);

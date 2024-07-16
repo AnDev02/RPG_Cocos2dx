@@ -24,10 +24,11 @@ bool Dropdown::init(InGameUI* inGameUI) {
     bg->setScale(4 * 2.6, 3);
     iconSprite = Sprite::create("res/left-arr-ui2.png");
     iconSprite->setScale(1.9);
+    iconSprite->setRotation(180);
     this->addChild(bg);
     this->addChild(iconSprite);
-    isOpen = true;
-    isScaling = true;  // Khởi tạo biến cờ
+    isOpen = false;
+    isScaling = false;  // Khởi tạo biến cờ
     bg->setAnchorPoint(Vec2(1.0, 0));
     updateIconSpritePosition();
 
@@ -44,18 +45,18 @@ bool Dropdown::onTouchBegan(Touch* touch, Event* event) {
         auto startPoint = this->convertToNodeSpace(touch->getLocation());
         if (iconSprite->getBoundingBox().containsPoint(startPoint)) {
             iconSprite->setVisible(false);
-            iconSprite->setRotation(!isOpen ? 180 : 0);
+            iconSprite->setRotation(isOpen ? 0 : 180);
             if (isScaling) {
                 return false; 
             }
             ScaleTo* scaleAction;
             if (isOpen) {
-                scaleAction = ScaleTo::create(0.3, bg->getScaleX() / 2.6, bg->getScaleY());
+                scaleAction = ScaleTo::create(0.3, bg->getScaleX() * 2.6, bg->getScaleY());
                 inGameUI->inventoryButton->setVisible(false);
                 inGameUI->talentButton->setVisible(false);
             }
             else {
-                scaleAction = ScaleTo::create(0.3, bg->getScaleX() * 2.6, bg->getScaleY());
+                scaleAction = ScaleTo::create(0.3, bg->getScaleX() / 2.6, bg->getScaleY());
                 this->runAction(Sequence::create(
                     DelayTime::create(0.2), 
                     CallFunc::create([this]() {
