@@ -513,10 +513,10 @@ bool Game::loadMap(int levelMap)
             //}
         }
     }
-if(inGameUI) {
-    inGameUI->setTarget(_player);
-    inGameUI->setNPCs(listNPC);
-}
+    if(inGameUI) {
+        inGameUI->setTarget(_player);
+        inGameUI->setNPCs(listNPC);
+    }
     if(levelMap == 1)
     _player->registerObserver(QuestManager::getInstance());
 
@@ -603,6 +603,9 @@ if(inGameUI) {
     }
     setCurrentQuestFromData();
 
+    if (boss && _player && levelMap == 3) {
+        moveCameraToBoss();
+    }
     compass = Compass::create();
     compass->setScale(0.05 * Director::getInstance()->getContentScaleFactor());
     this->addChild(compass);
@@ -1208,4 +1211,50 @@ Game::~Game() {
         loadingSceneFirst->removeFromParentAndCleanup(true);
         loadingSceneFirst = nullptr;
     }
+}
+
+void Game::moveCameraToBoss() {
+    //
+    Scene* currentscene = Director::getInstance()->getRunningScene();
+    Game* game = dynamic_cast<Game*>(currentscene->getChildByName("GameInstance"));
+    //
+    Vec2 playerPos = Vec2((-_player->getPosition().x + visibleSize.width * 0.5) * zoomLevel,
+        (-_player->getPosition().y + visibleSize.height * 0.5) * zoomLevel);
+    Vec2 bossPos = Vec2((-boss->getPosition().x + visibleSize.width * 0.5) * zoomLevel,
+        (-boss->getPosition().y + visibleSize.height * 0.5) * zoomLevel);
+    auto sqe = Sequence::create(DelayTime::create(3.0f), cocos2d::CallFunc::create([this]() {
+                unschedule(CC_SCHEDULE_SELECTOR(Game::updateCamera));
+                inGameUI->setVisible(false);
+                Scene* currentscene = Director::getInstance()->getRunningScene();
+                Game* game = dynamic_cast<Game*>(currentscene->getChildByName("GameInstance"));
+                if (game->gameMap && game->gameMap->getTiledMap()) {
+                    if (game->gameMap->getTiledMap()->getLayer("topgrass") && game->gameMap->getTiledMap()->getLayer("topgrass")->isVisible() == true)
+                        game->gameMap->getTiledMap()->getLayer("topgrass")->setVisible(false);
+                    if (game->gameMap->getTiledMap()->getLayer("topwall") && game->gameMap->getTiledMap()->getLayer("topwall")->isVisible() == true)
+                        game->gameMap->getTiledMap()->getLayer("topwall")->setVisible(false);
+                    if (game->gameMap->getTiledMap()->getLayer("topshadow") && game->gameMap->getTiledMap()->getLayer("topshadow")->isVisible() == true)
+                        game->gameMap->getTiledMap()->getLayer("topshadow")->setVisible(false);
+                }}),
+            MoveTo::create(6.0f, bossPos), DelayTime::create(1.0f), MoveTo::create(3.0f, playerPos),
+            cocos2d::CallFunc::create([this]() {
+            schedule(CC_SCHEDULE_SELECTOR(Game::updateCamera), 0.0f);
+            inGameUI->setVisible(true);
+            Scene* currentscene = Director::getInstance()->getRunningScene();
+            Game* game = dynamic_cast<Game*>(currentscene->getChildByName("GameInstance"));
+            if (game->gameMap && game->gameMap->getTiledMap()) {
+                if (game->gameMap->getTiledMap()->getLayer("topgrass") && game->gameMap->getTiledMap()->getLayer("topgrass")->isVisible() == false)
+                    game->gameMap->getTiledMap()->getLayer("topgrass")->setVisible(true);
+                if (game->gameMap->getTiledMap()->getLayer("topwall") && game->gameMap->getTiledMap()->getLayer("topwall")->isVisible() == false)
+                    game->gameMap->getTiledMap()->getLayer("topwall")->setVisible(true);
+                if (game->gameMap->getTiledMap()->getLayer("topshadow") && game->gameMap->getTiledMap()->getLayer("topshadow")->isVisible() == false)
+                    game->gameMap->getTiledMap()->getLayer("topshadow")->setVisible(true);
+
+            }
+                }),
+            nullptr);
+
+    currentscene->runAction(sqe);
+
+        
+
 }
